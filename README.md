@@ -98,3 +98,48 @@ Presenter - презентер содержит основную логику п
 `emit<T extends object>(event: string, data?: T): void` - инициализация события. При вызове события в метод передается название события и объект с данными, который будет использован как аргумент для вызова обработчика.  
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
+
+### Данные
+Базовыми сущностями для приложения являются товар и покупатель.
+
+#### Интерфейс товара IProduct
+Описывает параметры товара
+
+|Поле|Тип|Описание|
+|----|---|--------|
+|id|`string`|Уникальный идентификатор товара|
+|description|`string`|Описание товара|
+|image|`string`|Изображение товара|
+|title|`string`|Название товара|
+|category|`string`|Категория товара|
+|price|`number \| null`|Категория товара|
+
+```typescript
+interface IProduct {
+  id: string;
+  description: string;
+  image: string;
+  title: string;
+  category: string;
+  price: number | null;
+} 
+```
+
+#### Интерфейс покупателя IBuyer
+Описывает параметры покупателя
+
+|Поле|Тип|Описание|
+|----|---|--------|
+|payment|`TPayment`|Тип оплаты|
+|email|`string`|Электронная почта покупателя|
+|phone|`string`|Телефон покупателя|
+|address|`string`|Адрес покупателя|
+
+```typescript
+interface IBuyer {
+  payment: TPayment;
+  email: string;
+  phone: string;
+  address: string;
+} 
+```
