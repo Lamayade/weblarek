@@ -166,7 +166,7 @@ type TPayment = 'card' | 'cash';
 `getProducts(): IProduct[]` - получение массива товаров из модели;
 `getProduct(id: string): IProduct \| undefined` - получение одного товара по его id;
 `setDetailedProduct(product: IProduct): void` - сохранение товара для подробного отображения;
-`getDetailedProduct(id: string): IProduct` - получение товара для подробного отображения.
+`getDetailedProduct(): IProduct \| null` - получение товара для подробного отображения.
 
 #### Класс корзины Cart
 Хранит массив товаров, выбранных покупателем для покупки.
@@ -186,7 +186,7 @@ type TPayment = 'card' | 'cash';
 `clear(): void` - очистка корзины;
 `getTotalPrice(): number` - получение стоимости всех товаров в корзине; 
 `getCount(): number` - получение количества товаров в корзине;
-`isContain(id: string): boolean` - проверка наличия товара в корзине по его id, полученного в параметр метода.
+`contains(id: string): boolean` - проверка наличия товара в корзине по его id, полученного в параметр метода.
 
 #### Класс покупателя Buyer
 
