@@ -112,7 +112,7 @@ Presenter - презентер содержит основную логику п
 |image|`string`|Изображение товара|
 |title|`string`|Название товара|
 |category|`string`|Категория товара|
-|price|`number \| null`|Категория товара|
+|price|`number \| null`|Цена товара|
 
 ```typescript
 interface IProduct {
