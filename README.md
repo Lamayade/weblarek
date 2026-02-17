@@ -162,10 +162,15 @@ type TPayment = 'card' | 'cash';
 |currentItem|`IProduct \| null`|Выбранный товар|
 
 Методы класса:  
+
 `setProducts(products: IProduct[]): void` - сохранение массива товаров полученного в параметрах метода;
+
 `getProducts(): IProduct[]` - получение массива товаров из модели;
+
 `getProduct(id: string): IProduct \| undefined` - получение одного товара по его id;
+
 `setDetailedProduct(product: IProduct): void` - сохранение товара для подробного отображения;
+
 `getDetailedProduct(): IProduct \| null` - получение товара для подробного отображения.
 
 #### Класс корзины Cart
@@ -180,12 +185,19 @@ type TPayment = 'card' | 'cash';
 |items|`IProduct[]`|Массив товаров в корзине|
 
 Методы класса:  
+
 `getProducts(): IProduct[]` - получение массива товаров, которые находятся в корзине;
+
 `addProduct(product: IProduct): void` - добавление товара, который был получен в параметре, в массив корзины;
+
 `removeProduct(product: IProduct): void` - удаление товара, полученного в параметре из массива корзины;
+
 `clear(): void` - очистка корзины;
+
 `getTotalPrice(): number` - получение стоимости всех товаров в корзине; 
+
 `getCount(): number` - получение количества товаров в корзине;
+
 `contains(id: string): boolean` - проверка наличия товара в корзине по его id, полученного в параметр метода.
 
 #### Класс покупателя Buyer
@@ -214,6 +226,7 @@ type TPayment = 'card' | 'cash';
 ```
 
 Методы класса:  
+
 `set(buyer: IBuyer): void` - сохранение данных в модели;
 
 `get(): IBuyer` - получение всех данных покупателя;
