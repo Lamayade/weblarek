@@ -14,7 +14,7 @@ export interface IProduct {
   price: number | null;
 }
 
-export interface IBuyer {
+export interface IUser {
   payment: TPayment;
   email: string;
   phone: string;
