@@ -21,4 +21,4 @@ export interface IUser {
   address: string;
 }
 
-type TPayment = 'card' | 'cash';
+export type TPayment = 'card' | 'cash' | null;

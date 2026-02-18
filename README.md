@@ -146,7 +146,7 @@ interface IUser {
 Тип оплаты TPayment является текстовым полем с одним из трёх вариантов:
 
 ```typescript
-type TPayment = 'card' | 'cash';
+type TPayment = 'card' | 'cash' | null;
 ```
 ### Модели данных
 #### Класс каталога товаров Catalog
@@ -224,7 +224,7 @@ interface IUser {
 Тип оплаты TPayment является текстовым полем с одним из трёх вариантов:
 
 ```typescript
-type TPayment = 'card' | 'cash';
+type TPayment = 'card' | 'cash' | null;
 ```
 
 Методы класса:  

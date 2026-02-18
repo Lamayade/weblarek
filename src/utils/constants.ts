@@ -20,3 +20,8 @@ export const settings = {
 
 };
 
+export const errorNoPayment = 'Не указан вид оплаты';
+export const errorNoEmail = 'Не указана почта';
+export const errorNoPhone = 'Не указан номер телефона';
+export const errorNoAddress = 'Не указан адрес';
+
