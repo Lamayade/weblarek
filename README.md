@@ -158,8 +158,8 @@ type TPayment = 'card' | 'cash';
 
 |Поле|Тип|Описание|
 |----|---|--------|
-|items|`IProduct[]`|Массив товаров|
-|currentItem|`IProduct \| null`|Выбранный товар|
+|products|`IProduct[]`|Массив товаров|
+|detailed|`IProduct \| null`|Выбранный товар|
 
 Методы класса:  
 
@@ -182,7 +182,7 @@ type TPayment = 'card' | 'cash';
 
 |Поле|Тип|Описание|
 |----|---|--------|
-|items|`IProduct[]`|Массив товаров в корзине|
+|products|`IProduct[]`|Массив товаров в корзине|
 
 Методы класса:  
 
