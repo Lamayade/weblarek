@@ -125,7 +125,7 @@ interface IProduct {
 } 
 ```
 
-#### Интерфейс покупателя IBuyer
+#### Интерфейс покупателя IUser
 Описывает параметры покупателя
 
 |Поле|Тип|Описание|
@@ -136,7 +136,7 @@ interface IProduct {
 |address|`string`|Адрес покупателя|
 
 ```typescript
-interface IBuyer {
+interface IUser {
   payment: TPayment;
   email: string;
   phone: string;
@@ -202,7 +202,7 @@ type TPayment = 'card' | 'cash';
 
 `contains(id: string): boolean` - проверка наличия товара в корзине по его id, полученного в параметр метода.
 
-#### Класс покупателя Buyer
+#### Класс покупателя User
 
 Содержит следующие поля:
 
@@ -214,7 +214,7 @@ type TPayment = 'card' | 'cash';
 |address|`string`|Адрес покупателя|
 
 ```typescript
-interface IBuyer {
+interface IUser {
   payment: TPayment;
   email: string;
   phone: string;
@@ -229,9 +229,9 @@ type TPayment = 'card' | 'cash';
 
 Методы класса:  
 
-`set(buyer: IBuyer): void` - сохранение данных в модели;
+`set(user: IUser): void` - сохранение данных в модели;
 
-`get(): IBuyer` - получение всех данных покупателя;
+`get(): IUser` - получение всех данных покупателя;
 
 `clear(): void` - очистка данных покупателя;
 
