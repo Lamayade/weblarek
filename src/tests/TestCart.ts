@@ -3,51 +3,58 @@ import { apiProducts } from '../utils/data';
 
 
 export function testCart(): void {
-    const CartModel = new Cart();
+    const cartModel = new Cart();
 
-    CartModel.addProduct(apiProducts.items[0]);
-    CartModel.addProduct(apiProducts.items[1]);
-    CartModel.addProduct(apiProducts.items[3]);
+    cartModel.addProduct(apiProducts.items[0]);
+    cartModel.addProduct(apiProducts.items[1]);
+    cartModel.addProduct(apiProducts.items[3]);
 
     console.info(
         'Массив товаров в корзине: ', 
-        [...CartModel.getProducts()],
+        [...cartModel.getProducts()],
     );
 
     console.info(
         'Количество товаров в корзине: ', 
-        CartModel.getCount(),
+        cartModel.getCount(),
     );
 
     console.info(
         'Цена товаров в корзине: ', 
-        CartModel.getTotalPrice(),
+        cartModel.getTotalPrice(),
     );
 
-    CartModel.removeProduct(apiProducts.items[3]);
+    cartModel.removeProduct(apiProducts.items[3]);
 
     console.info(
         'Массив товаров в корзине: ', 
-        [...CartModel.getProducts()],
+        [...cartModel.getProducts()],
     );
 
     console.info(
         'Количество товаров в корзине: ', 
-        CartModel.getCount(),
+        cartModel.getCount(),
     );
 
     console.info(
         'Цена товаров в корзине: ', 
-        CartModel.getTotalPrice(),
+        cartModel.getTotalPrice(),
     );
 
     console.info(
         'Проверка наличия товара в корзине: ', 
-        CartModel.contains(apiProducts.items[0].id),
+        cartModel.contains(apiProducts.items[0].id),
     );
 
     console.info(
-        'Проверка наличия товара в корзине: ', 
-        CartModel.contains(apiProducts.items[3].id),
+        'Проверка наличия удаленного товара в корзине: ', 
+        cartModel.contains(apiProducts.items[3].id),
     );
+    cartModel.clear();
+
+    console.info(
+        'Массив товаров в корзине после очистки корзины: ', 
+        [...cartModel.getProducts()],
+    );
+
 }

@@ -8,7 +8,7 @@ import {
 } from '../utils/constants';
 
 export function testUser(): void {
-    const UserModel = new User();
+    const userModel = new User();
     const newUser: IUser = {
         payment: testPayment,
         email: testEmail,
@@ -16,26 +16,26 @@ export function testUser(): void {
         address: testAddress,
     }
 
-    UserModel.set(newUser);
+    userModel.set(newUser);
 
     console.info(
         'Данные покупателя: ', 
-        UserModel.get(),
+        userModel.get(),
     );
     console.info(
         'Проверка данных покупателя: ', 
-        UserModel.validate(),
+        userModel.validate(),
     );
 
-    UserModel.clear();
+    userModel.clear();
 
     console.info(
         'Данные покупателя: ', 
-        UserModel.get(),
+        userModel.get(),
     );
     console.info(
         'Проверка данных покупателя: ', 
-        UserModel.validate(),
+        userModel.validate(),
     );
 
 }

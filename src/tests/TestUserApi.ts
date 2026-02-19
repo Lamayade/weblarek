@@ -1,6 +1,8 @@
+import { Api } from "../components/base/Api";
 import { UserApi } from "../components/models/UserApi";
 import { Catalog } from "../components/models/Catalog";
-import { 
+import {
+    API_URL,
     testAddress,
     testEmail,
     testPayment,
@@ -9,7 +11,8 @@ import {
 
 export async function testUserApi() {
     try {
-        const userApi = new UserApi(import.meta.env.VITE_API_ORIGIN);
+        const api = new Api(API_URL);
+        const userApi = new UserApi(api);
         const catalog = new Catalog();
 
         //Product List
@@ -18,13 +21,6 @@ export async function testUserApi() {
         console.info(
             'Полученный каталог с сервера: ',
             catalog.getProducts(),
-        )
-
-        //Product Item
-        const product = await userApi.get(products.items[0].id);
-        console.info(
-            'Полученный товар с сервера: ',
-            product,
         )
 
         //Order
