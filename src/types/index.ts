@@ -22,3 +22,18 @@ export interface IUser {
 }
 
 export type TPayment = 'card' | 'cash' | null;
+
+export interface IProducts {
+  total: number;
+  items: IProduct[];
+}
+
+export interface IOrderRequest extends IUser {
+  total: number;
+  items: string[];
+}
+
+export interface IOrderResponse {
+  id: string;
+  total: number;
+}

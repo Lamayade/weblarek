@@ -1,13 +1,19 @@
 import { User } from '../components/models/User';
 import { IUser } from '../types';
+import { 
+    testAddress, 
+    testEmail, 
+    testPayment, 
+    testPhone 
+} from '../utils/constants';
 
 export function testUser(): void {
     const UserModel = new User();
     const newUser: IUser = {
-        payment: 'card',
-        email: 'new@user.com',
-        phone: '88005553535',
-        address: '3-я улица Строителей, дом 25, квартира 12',
+        payment: testPayment,
+        email: testEmail,
+        phone: testPhone,
+        address: testAddress,
     }
 
     UserModel.set(newUser);

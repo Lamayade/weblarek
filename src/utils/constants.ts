@@ -24,4 +24,14 @@ export const errorNoPayment = 'Не указан вид оплаты';
 export const errorNoEmail = 'Не указана почта';
 export const errorNoPhone = 'Не указан номер телефона';
 export const errorNoAddress = 'Не указан адрес';
+export const errorNotFound = 'NotFound';
+export const errorProductNotFound = 'Товар с id c101ab44-ed99-4a54-990d-47aa2bb4e7d не найден';
+export const errorWrongTotal = 'Неверная сумма заказа';
+export const routeProduct = '/product/';
+export const routeOrder = '/order/';
+export const testPayment = 'card';
+export const testEmail = 'new@user.com';
+export const testPhone = '88005553535';
+export const testAddress = '3-я улица Строителей, дом 25, квартира 12';
+
 

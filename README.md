@@ -236,3 +236,16 @@ type TPayment = 'card' | 'cash' | null;
 `clear(): void` - очистка данных покупателя;
 
 `validate(): Record<string, string>` - валидация данных;
+
+### Слой коммуникации
+#### Класс UserApi
+Отвечает за коммуникацию с сервером при помощи базового класса `Api`.
+
+Не содержит полей.
+
+Методы класса:
+
+`get(url: string): Promise<object>` - GET запрос на переданный эндпоинт и возврат объекта, полученного от сервера;
+
+`post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object>` - POST запрос по умолчанию на переданный эндпоинт, формирование JSON из данных для запроса.
+
