@@ -14,7 +14,7 @@ export class Catalog {
         return this.products;
     }
 
-    public getProduct(id: string): IProduct | undefined {
+    public getProductById(id: string): IProduct | undefined {
         return this.products.find(
             product => product.id === id
         );

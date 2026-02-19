@@ -10,7 +10,7 @@ export function testCatalog(): void {
         'Массив товаров из каталога: ', 
         productsModel.getProducts(),
     );
-    const chosenProduct = productsModel.getProduct(apiProducts.items[0].id);
+    const chosenProduct = productsModel.getProductById(apiProducts.items[0].id);
     console.info(
         'Избранный продукт: ',
         productsModel.getDetailedProduct(),
