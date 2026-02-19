@@ -3,8 +3,6 @@ import { IProduct } from "../../types";
 
 export class Cart {
     private products: IProduct[] = [];
-    private totalPrice: number = 0;
-    private count: number = 0;
 
 
     public getProducts(): IProduct[] {
@@ -13,8 +11,6 @@ export class Cart {
 
     public addProduct(product: IProduct): void {
         this.products.push(product);
-        this.totalPrice += product.price ?? 0;
-        this.count += 1;
     }
 
     public removeProduct(product: IProduct): void {
@@ -23,23 +19,23 @@ export class Cart {
         );
         if (idx !== -1) {
             this.products.splice(idx, 1);
-            this.totalPrice -= product.price ?? 0;
-            this.count -= 1;
         }
     }
 
     public clear(): void {
         this.products = [];
-        this.totalPrice = 0;
-        this.count = 0;
     }
 
     public getTotalPrice(): number {
-        return this.totalPrice;
+        const total = this.products.reduce(
+            (sum, product) => sum + (product.price ?? 0),
+            0
+        );
+        return total;
     }
 
     public getCount(): number {
-        return this.count;
+        return this.products.length;
     }
 
     public contains(id: string): boolean {
