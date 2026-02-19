@@ -21,6 +21,11 @@ export interface IUser {
   address: string;
 }
 
+export type IUserError = Partial<
+  Record<keyof IUser, string>
+>;
+
+
 export type TPayment = 'card' | 'cash' | null;
 
 export interface IProducts {

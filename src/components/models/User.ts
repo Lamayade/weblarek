@@ -1,4 +1,8 @@
-import { IUser, TPayment } from "../../types";
+import { 
+    IUser,
+    IUserError,
+    TPayment,
+} from "../../types";
 
 import {
     errorNoPayment,
@@ -14,11 +18,8 @@ export class User {
     private phone: string = '';
     private address: string = '';
 
-    public set(user: IUser): void {
-        this.payment = user.payment;
-        this.email = user.email;
-        this.phone = user.phone;
-        this.address = user.address;
+    public set(user: Partial<IUser>): void {
+        Object.assign(this, user);
     }
 
     public get(): IUser {
@@ -37,23 +38,23 @@ export class User {
         this.address = '';
     }
 
-    public validate() : Record<string, string> {
-        const not_valid: Record<string, string> = {};
+    public validate() : IUserError {
+        const errors: IUserError = {};
 
         if (this.payment === null) {
-            not_valid.payment = errorNoPayment;
+            errors.payment = errorNoPayment;
         }
         if (this.email === '') {
-            not_valid.email = errorNoEmail;
+            errors.email = errorNoEmail;
         }
         if (this.phone === '') {
-            not_valid.phone = errorNoPhone;
+            errors.phone = errorNoPhone;
         }
         if (this.address === '') {
-            not_valid.address = errorNoAddress;
+            errors.address = errorNoAddress;
         }
 
-        return not_valid;
+        return errors;
     }
 
     
