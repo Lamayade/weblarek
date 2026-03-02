@@ -114,7 +114,7 @@ Presenter - презентер содержит основную логику п
 |category|`string`|Категория товара|
 |price|`number \| null`|Цена товара|
 
-```typescript
+```ts
 interface IProduct {
   id: string;
   description: string;
@@ -135,7 +135,7 @@ interface IProduct {
 |phone|`string`|Телефон покупателя|
 |address|`string`|Адрес покупателя|
 
-```typescript
+```ts
 interface IUser {
   payment: TPayment;
   email: string;
@@ -145,15 +145,18 @@ interface IUser {
 ```
 Тип оплаты TPayment является текстовым полем с одним из трёх вариантов:
 
-```typescript
+```ts
 type TPayment = 'card' | 'cash' | null;
 ```
 ### Модели данных
 #### Класс каталога товаров Catalog
 Хранит массив всех товаров (каталог) и товар, выбранный для подробного отображения
 
-Конструктор:  
-`constructor(container: HTMLElement)` - принимает ссылку на DOM элемент за отображение, которого он отвечает.
+_Конструктор:_  
+```ts
+constructor(container: HTMLElement)
+``` 
+принимает ссылку на DOM элемент за отображение, которого он отвечает.
 
 
 |Поле|Тип|Описание|
@@ -161,23 +164,41 @@ type TPayment = 'card' | 'cash' | null;
 |products|`IProduct[]`|Массив товаров|
 |detailed|`IProduct \| null`|Выбранный товар|
 
-Методы класса:  
+_Методы класса_:  
 
-`setProducts(products: IProduct[]): void` - сохранение массива товаров полученного в параметрах метода;
+```ts
+setProducts(products: IProduct[]): void
+```
+– сохранение массива товаров полученного в параметрах метода;
 
-`getProducts(): IProduct[]` - получение массива товаров из модели;
+```ts
+getProducts(): IProduct[]
+```
+– получение массива товаров из модели;
 
-`getProduct(id: string): IProduct \| undefined` - получение одного товара по его id;
+```ts
+getProduct(id: string): IProduct | undefined
+``` 
+– получение одного товара по его id;
 
-`setDetailedProduct(product: IProduct): void` - сохранение товара для подробного отображения;
+```ts
+setDetailedProduct(product: IProduct): void
+```
+– сохранение товара для подробного отображения;
 
-`getDetailedProduct(): IProduct \| null` - получение товара для подробного отображения.
+```ts
+getDetailedProduct(): IProduct \| null
+```
+– получение товара для подробного отображения.
 
 #### Класс корзины Cart
 Хранит массив товаров, выбранных покупателем для покупки.
 
-Конструктор:  
-`constructor(container: HTMLElement)` - принимает ссылку на DOM элемент за отображение, которого он отвечает.
+_Конструктор_:  
+```ts
+constructor(container: HTMLElement)
+```
+– принимает ссылку на DOM элемент за отображение, которого он отвечает.
 
 
 |Поле|Тип|Описание|
@@ -186,21 +207,42 @@ type TPayment = 'card' | 'cash' | null;
 |totalPrice|`number`|Стоимость всех товаров в корзине|
 |count|`number`|Количество товаров в корзине|
 
-Методы класса:  
+_Методы класса_:  
 
-`getProducts(): IProduct[]` - получение массива товаров, которые находятся в корзине;
+```ts
+getProducts(): IProduct[]
+```
+– получение массива товаров, которые находятся в корзине;
 
-`addProduct(product: IProduct): void` - добавление товара, который был получен в параметре, в массив корзины;
+```ts
+addProduct(product: IProduct): void
+```
+– добавление товара, который был получен в параметре, в массив корзины;
 
-`removeProduct(product: IProduct): void` - удаление товара, полученного в параметре из массива корзины;
+```ts
+removeProduct(product: IProduct): void
+``` 
+– удаление товара, полученного в параметре, из массива корзины;
 
-`clear(): void` - очистка корзины;
+```ts
+clear(): void
+``` 
+– очистка корзины;
 
-`getTotalPrice(): number` - получение стоимости всех товаров в корзине; 
+```ts
+getTotalPrice(): number
+```
+– получение стоимости всех товаров в корзине; 
 
-`getCount(): number` - получение количества товаров в корзине;
+```ts
+getCount(): number
+```
+– получение количества товаров в корзине;
 
-`contains(id: string): boolean` - проверка наличия товара в корзине по его id, полученного в параметр метода.
+```ts
+contains(id: string): boolean
+```
+–  проверка наличия товара в корзине по его id, полученного в параметр метода.
 
 #### Класс покупателя User
 
@@ -213,7 +255,7 @@ type TPayment = 'card' | 'cash' | null;
 |phone|`string`|Телефон покупателя|
 |address|`string`|Адрес покупателя|
 
-```typescript
+```ts
 interface IUser {
   payment: TPayment;
   email: string;
@@ -223,19 +265,31 @@ interface IUser {
 ```
 Тип оплаты TPayment является текстовым полем с одним из трёх вариантов:
 
-```typescript
+```ts
 type TPayment = 'card' | 'cash' | null;
 ```
 
 Методы класса:  
 
-`set(user: IUser): void` - сохранение данных в модели;
+```ts
+set(user: IUser): void
+```
+–  сохранение данных в модели;
 
-`get(): IUser` - получение всех данных покупателя;
+```ts
+get(): IUser
+```
+– получение всех данных покупателя;
 
-`clear(): void` - очистка данных покупателя;
+```ts
+clear(): void
+```
+– очистка данных покупателя;
 
-`validate(): Record<string, string>` - валидация данных;
+```ts
+validate(): Record<string, string>
+```
+– валидация данных;
 
 ### Слой коммуникации
 #### Класс UserApi
@@ -245,9 +299,15 @@ type TPayment = 'card' | 'cash' | null;
 
 Методы класса:
 
-`get(url: string): Promise<object>` - GET запрос на переданный эндпоинт и возврат объекта, полученного от сервера;
+```ts
+get(url: string): Promise<object>
+```
+– GET запрос на переданный эндпоинт и возврат объекта, полученного от сервера;
 
-`post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object>` - POST запрос по умолчанию на переданный эндпоинт, формирование JSON из данных для запроса.
+```ts
+post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object>
+```
+– POST запрос по умолчанию на переданный эндпоинт, формирование JSON из данных для запроса.
 
 ### Слой представления
 Отвечает за отображение элементов сайта и получение данных от пользователя.
@@ -260,7 +320,7 @@ type TPayment = 'card' | 'cash' | null;
 |title|`string`|Название товара|
 |price|`string \| null`|Цена товара|
 
-```typescript
+```ts
 interface ICard {
   title: string;
   price: number | null;
@@ -268,4 +328,29 @@ interface ICard {
 ```
 
 #### Класс Card
-Абстрактный класс, содержащий методы для записи названия и цены товара
+Абстрактный класс, содержащий методы для записи названия и цены товара в карточке.
+
+Конструктор:  
+
+```ts
+constructor(container: HTMLElement)
+```
+– принимает HTML-элемент товара.
+
+Поля класса:
+
+```ts
+_title: HTMLElement
+```
+– защищённое поле названия товара в карточке;
+
+```ts
+_price: HTMLElement
+```
+– защищённое поле цены товара в карточке.
+
+Методы класса:
+
+```ts
+set title(value )
+```
