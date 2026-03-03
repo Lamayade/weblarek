@@ -58,3 +58,8 @@ export interface ICardDetailed extends ICardCatalog {
   text: string;
   isInCart: boolean;
 }
+
+export interface IForm {
+  isValid: boolean;
+  errors: IUserError;
+}
