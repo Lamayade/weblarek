@@ -43,10 +43,6 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
 
     protected set isInCart(value: boolean) {
         this._isInCart = value;
-        this.updateButtonState();
-    }
-    
-    private updateButtonState() {
         if (!this._isAvailable) {
             this._button.disabled = true;
             this._button.textContent = textButtonUnavailable;
