@@ -42,3 +42,19 @@ export interface IOrderResponse {
   id: string;
   total: number;
 }
+
+export interface ICard {
+  title: string;
+  price: number | null;
+  isAvailable: boolean;
+}
+
+export interface ICardCatalog extends ICard {
+  image: string;
+  category: string;
+}
+
+export interface ICardDetailed extends ICardCatalog {
+  text: string;
+  isInCart: boolean;
+}

@@ -14,7 +14,9 @@ export const categoryMap = {
   'кнопка': 'card__category_button',
   'дополнительное': 'card__category_additional',
   'другое': 'card__category_other',
-};
+} as const;
+
+export type TCategory = keyof typeof categoryMap;
 
 export const settings = {
 
@@ -24,6 +26,18 @@ export const errorNoPayment = 'Не указан вид оплаты';
 export const errorNoEmail = 'Не указана почта';
 export const errorNoPhone = 'Не указан номер телефона';
 export const errorNoAddress = 'Не указан адрес';
+export const errorNoCardTitle = 'Не найден HTML-элемент заголовка карточки с классом "card__title"';
+export const errorNoCardPrice = 'Не найден HTML-элемент цены карточки с классом "card__price"';
+export const errorNoCardImage = 'Не найден HTML-элемент изображения карточки с классом "card__image"';
+export const errorNoCardCategory = 'Не найден HTML-элемент категории карточки с классом "card__category"';
+export const errorNoCardText = 'Не найден HTML-элемент текста карточки с классом "card__text"';
+export const errorNoCardButton = 'Не найден HTML-элемент кнопки карточки с классом "card__button"';
+
+export const textPriceAppendix = ' синапсов';
+export const textPriceUnavailable = 'Бесценно';
+export const textButtonAddToCart = 'Купить';
+export const textButtonRemoveFromCart = 'Удалить из корзины';
+export const textButtonUnavailable = 'Недоступно';
 
 export const routeProduct = '/product/';
 export const routeOrder = '/order/';

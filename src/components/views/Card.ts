@@ -1,14 +1,17 @@
 import { Component } from "../base/Component";
-import { ICard } from "./Card.types";
+import { ICard } from "../../types";
 import {
     errorNoCardTitle,
     errorNoCardPrice,
+    textPriceAppendix,
+    textPriceUnavailable,
 } from "../../utils/constants";
 
 
 export abstract class Card<T extends ICard> extends Component<T> {
     protected _title: HTMLElement;
     protected _price: HTMLElement;
+    protected _isAvailable: boolean = true;
 
     protected constructor(container: HTMLElement) {
         super(container);
@@ -35,8 +38,10 @@ export abstract class Card<T extends ICard> extends Component<T> {
     }
 
     protected set price(value: number | null) {
-        this._price.textContent = value !== null 
-        ? `${value} синапсов` 
-        : 'Бесценно';
+        this._isAvailable = value !== null;
+        this._price.textContent = this._isAvailable
+        ? value + textPriceAppendix
+        : textPriceUnavailable;
+        
     } 
 }
