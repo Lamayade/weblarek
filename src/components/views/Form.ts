@@ -3,6 +3,7 @@ import {
 } from "../base/Component";
 import {
     IForm,
+    IUserError
 } from "../../types";
 import {
     errorNoFormSubmitButton,
@@ -31,8 +32,10 @@ export abstract class Form<T extends IForm> extends Component<T> {
         this._errors = errorsElement;
     }
 
-    set errors(value: string) {
-        this._errors.textContent = value;
+    set errors(value: IUserError) {
+        this._errors.textContent = Object.values(value).filter(
+            (v): v is string => !!v
+        ).join('\n');
     }
 
     set isValid(value: boolean) {
