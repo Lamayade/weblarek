@@ -32,6 +32,8 @@ export const errorNoCardImage = 'Не найден HTML-элемент изоб�
 export const errorNoCardCategory = 'Не найден HTML-элемент категории карточки с классом "card__category"';
 export const errorNoCardText = 'Не найден HTML-элемент текста карточки с классом "card__text"';
 export const errorNoCardButton = 'Не найден HTML-элемент кнопки карточки с классом "card__button"';
+export const errorNoFormSubmitButton = 'Не найден HTML-элемент кнопки формы с классом "button"';
+export const errorNoFormErrorsContainer = 'Не найден HTML-элемент контейнера ошибок формы с классом "form__errors"';
 
 export const textPriceAppendix = ' синапсов';
 export const textPriceUnavailable = 'Бесценно';
