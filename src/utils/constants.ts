@@ -34,6 +34,9 @@ export const errorNoCardText = 'Не найден HTML-элемент текст
 export const errorNoCardButton = 'Не найден HTML-элемент кнопки карточки с классом "card__button"';
 export const errorNoFormSubmitButton = 'Не найден HTML-элемент кнопки формы с классом "button"';
 export const errorNoFormErrorsContainer = 'Не найден HTML-элемент контейнера ошибок формы с классом "form__errors"';
+export const errorNoFormCashButton = 'Не найден HTML-элемент кнопки выбора типа оплаты с селектором ".order__buttons [name="cash"]"'; 
+export const errorNoFormCardButton = 'Не найден HTML-элемент кнопки выбора типа оплаты с селектором ".order__buttons [name="card"]"';
+export const errorNoFormAddressInput = 'Не найден HTML-элемент поля ввода адреса с классом "order__field"';
 
 export const textPriceAppendix = ' синапсов';
 export const textPriceUnavailable = 'Бесценно';

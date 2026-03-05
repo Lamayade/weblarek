@@ -12,7 +12,7 @@ import {
 
 export abstract class Form<T extends IForm> extends Component<T> {
     protected _submitButton: HTMLButtonElement;
-    protected _errors: HTMLElement;
+    protected _errorsElement: HTMLElement;
 
     constructor(container: HTMLElement) {
         super(container);
@@ -29,13 +29,14 @@ export abstract class Form<T extends IForm> extends Component<T> {
         if (errorsElement === null) {
             throw new Error(errorNoFormErrorsContainer);
         }
-        this._errors = errorsElement;
+        this._errorsElement = errorsElement;
     }
 
     set errors(value: IUserError) {
-        this._errors.textContent = Object.values(value).filter(
-            (v): v is string => !!v
-        ).join('\n');
+        if (value) {
+            const errorsToShow = Object.values(value).filter(Boolean);
+            this._errorsElement.textContent = errorsToShow.join(', ');
+        }
     }
 
     set isValid(value: boolean) {
