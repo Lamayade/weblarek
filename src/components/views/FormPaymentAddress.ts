@@ -3,7 +3,6 @@ import {
 } from './Form';
 import {
     IForm,
-    IUser,
     TPayment,
 } from '../../types';
 import {
@@ -17,7 +16,6 @@ export class FormPaymentAddress extends Form<IForm> {
     private _cardButton: HTMLButtonElement;
     private _cashButton: HTMLButtonElement;
     private _addressInput: HTMLInputElement;
-    private _payment: TPayment = null;
 
     constructor(container: HTMLElement) {
         super(container);
@@ -57,7 +55,6 @@ export class FormPaymentAddress extends Form<IForm> {
     }
 
     set payment(value: TPayment) {
-        this._payment = value;
         this._cardButton.classList.toggle('button_alt-active', value === 'card');
         this._cashButton.classList.toggle('button_alt-active', value === 'cash');
     }
