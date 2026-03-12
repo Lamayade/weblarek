@@ -46,14 +46,24 @@ export function ensureElement<T extends HTMLElement>(selectorElement: SelectorEl
 
 export function findElement<T extends HTMLElement>(
     container: HTMLElement,
-    selector: string,
+    selector: string | T,
     errorMessage?: string
 ): T {
-    const element = container.querySelector<T>(selector);
-    if (element === null) {
-        throw new Error(errorMessage ?? `Element not found: ${selector}`);
+    if (isSelector(selector)) {
+        const elements = container.querySelectorAll(selector);
+        if (elements.length > 1) {
+            console.warn(`Selector "${selector}" returns more than one element`);
+        }
+        const element = elements[0] as T | undefined;
+        if (!element) {
+            throw new Error(errorMessage ?? `Element not found: ${selector}`);
+        }
+        return element;
     }
-    return element;
+    if (selector instanceof HTMLElement) {
+        return selector as T;
+    }
+    throw new Error('Unknown selector element');
 }
 
 export function cloneTemplate<T extends HTMLElement>(query: string | HTMLTemplateElement): T {
