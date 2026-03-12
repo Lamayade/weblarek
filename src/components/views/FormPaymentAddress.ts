@@ -10,6 +10,8 @@ import {
     errorNoFormCardButton,
     errorNoFormCashButton,
     errorNoFormAddressInput,
+    errorNoFormSubmitButton,
+    errorNoFormErrorsContainer,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
 
@@ -22,8 +24,17 @@ export class FormPaymentAddress extends Form<IForm> {
     constructor(container: HTMLElement) {
         super(container);
 
-        this._initSubmitButton('modal__actions button[type="submit"]');
-        this._initErrorsElement('.form__errors');
+        this._submitButton = findElement<HTMLButtonElement>(
+            this.container,
+            'modal__actions button[type="submit"]',
+            errorNoFormSubmitButton
+        );
+
+        this._errorsElement = findElement<HTMLElement>(
+            this.container,
+            '.form__errors',
+            errorNoFormErrorsContainer
+        );
 
         this._cardButton = findElement<HTMLButtonElement>(
             this.container,
