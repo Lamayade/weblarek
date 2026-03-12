@@ -9,37 +9,36 @@ import {
     errorNoFormSubmitButton,
     errorNoFormErrorsContainer,
 } from "../../utils/constants";
+import { findElement } from "../../utils/utils";
 
 export abstract class Form<T extends IForm> extends Component<T> {
-    protected _submitButton: HTMLButtonElement;
-    protected _errorsElement: HTMLElement;
+    protected _submitButton: HTMLButtonElement | null;
+    protected _errorsElement: HTMLElement | null;
 
     constructor(container: HTMLElement) {
         super(container);
-        const buttonElement = this.container.querySelector<HTMLButtonElement>(
-            'modal__actions button[type="submit"]'
-        );
-        if (buttonElement === null) {
-            throw new Error(errorNoFormSubmitButton);
-        }
-        this._submitButton = buttonElement;
-        const errorsElement = this.container.querySelector<HTMLElement>(
-            '.form__errors'
-        );
-        if (errorsElement === null) {
-            throw new Error(errorNoFormErrorsContainer);
-        }
-        this._errorsElement = errorsElement;
+        this._submitButton = null;
+        this._errorsElement = null;
+    }
+
+    protected _initSubmitButton(selector: string) {
+        this._submitButton = findElement<HTMLButtonElement>(this.container, selector, errorNoFormSubmitButton);
+    }
+
+    protected _initErrorsElement(selector: string) {
+        this._errorsElement = findElement<HTMLElement>(this.container, selector, errorNoFormErrorsContainer);
     }
 
     set errors(value: IUserError) {
-        if (value) {
+        if (value && this._errorsElement) {
             const errorsToShow = Object.values(value).filter(Boolean);
             this._errorsElement.textContent = errorsToShow.join(', ');
         }
     }
 
     set isValid(value: boolean) {
-        this._submitButton.disabled = !value;
+        if (this._submitButton) {
+            this._submitButton.disabled = !value;
+        }
     }
 }

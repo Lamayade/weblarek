@@ -6,6 +6,7 @@ import {
     textPriceAppendix,
     textPriceUnavailable,
 } from "../../utils/constants";
+import { findElement } from "../../utils/utils";
 
 
 export abstract class Card<T extends ICard> extends Component<T> {
@@ -16,21 +17,17 @@ export abstract class Card<T extends ICard> extends Component<T> {
     protected constructor(container: HTMLElement) {
         super(container);
 
-        const titleElement = this.container.querySelector<HTMLElement>(
-            '.card__title'
+        this._title = findElement<HTMLElement>(
+            this.container,
+            '.card__title',
+            errorNoCardTitle
         );
-        if (titleElement === null) {
-            throw new Error(errorNoCardTitle);
-        }
-        this._title = titleElement;
 
-        const priceElement = this.container.querySelector<HTMLElement>(
-            '.card__price'
+        this._price = findElement<HTMLElement>(
+            this.container,
+            '.card__price',
+            errorNoCardPrice
         );
-        if (priceElement === null) {
-            throw new Error(errorNoCardPrice);
-        }
-        this._price = priceElement;
     }
 
     protected set title(value: string) {

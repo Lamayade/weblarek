@@ -44,6 +44,18 @@ export function ensureElement<T extends HTMLElement>(selectorElement: SelectorEl
     throw new Error('Unknown selector element');
 }
 
+export function findElement<T extends HTMLElement>(
+    container: HTMLElement,
+    selector: string,
+    errorMessage?: string
+): T {
+    const element = container.querySelector<T>(selector);
+    if (element === null) {
+        throw new Error(errorMessage ?? `Element not found: ${selector}`);
+    }
+    return element;
+}
+
 export function cloneTemplate<T extends HTMLElement>(query: string | HTMLTemplateElement): T {
     const template = ensureElement(query) as HTMLTemplateElement;
     if (!template.content.firstElementChild) {

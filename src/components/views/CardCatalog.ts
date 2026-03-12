@@ -11,6 +11,7 @@ import {
     errorNoCardImage,
     errorNoCardCategory,
 } from "../../utils/constants";
+import { findElement } from "../../utils/utils";
 
 
 export class CardCatalog<T extends ICardCatalog> extends Card<T> {
@@ -20,21 +21,17 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
     constructor(container: HTMLElement) {
         super(container);
         
-        const imageElement = this.container.querySelector<HTMLImageElement>(
-            '.card__image'
+        this._image = findElement<HTMLImageElement>(
+            this.container,
+            '.card__image',
+            errorNoCardImage
         );
-        if (imageElement === null) {
-            throw new Error(errorNoCardImage);
-        }
-        this._image = imageElement;
 
-        const categoryElement = this.container.querySelector<HTMLElement>(
-            '.card__category'
+        this._category = findElement<HTMLElement>(
+            this.container,
+            '.card__category',
+            errorNoCardCategory
         );
-        if (categoryElement === null) {
-            throw new Error(errorNoCardCategory);
-        }
-        this._category = categoryElement;
     }
 
     protected set image(value: string) {

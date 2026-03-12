@@ -9,6 +9,7 @@ import {
     ICardDetailed,
 } from "../../types";
 import { CardCatalog } from "./CardCatalog";
+import { findElement } from "../../utils/utils";
 
 
 export class CardDetailed extends CardCatalog<ICardDetailed> {
@@ -19,22 +20,17 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
     constructor(container: HTMLElement) {
         super(container);
 
-        const textElement = this.container.querySelector<HTMLElement>(
-            '.card__text'
+        this._text = findElement<HTMLElement>(
+            this.container,
+            '.card__text',
+            errorNoCardText
         );
-        if (textElement === null) {
-            throw new Error(errorNoCardText);
-        }
-        this._text = textElement;
 
-        const cardButton = this.container.querySelector<HTMLButtonElement>(
-            '.card__button'
+        this._button = findElement<HTMLButtonElement>(
+            this.container,
+            '.card__button',
+            errorNoCardButton
         );
-        if (cardButton === null) {
-            throw new Error(errorNoCardButton);
-        }
-        this._button = cardButton;
-
     }
 
     protected set text(value: string) {
