@@ -6,8 +6,8 @@ import {
     IUserError
 } from "../../types";
 import {
-    errorNoFormSubmitButton,
-    errorNoFormErrorsContainer,
+    ERROR_NO_FORM_SUBMIT_BUTTON,
+    ERROR_NO_FORM_ERRORS_CONTAINER,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
 
@@ -22,11 +22,11 @@ export abstract class Form<T extends IForm> extends Component<T> {
     }
 
     protected _initSubmitButton(selector: string) {
-        this._submitButton = findElement<HTMLButtonElement>(this.container, selector, errorNoFormSubmitButton);
+        this._submitButton = findElement<HTMLButtonElement>(this.container, selector, ERROR_NO_FORM_SUBMIT_BUTTON);
     }
 
     protected _initErrorsElement(selector: string) {
-        this._errorsElement = findElement<HTMLElement>(this.container, selector, errorNoFormErrorsContainer);
+        this._errorsElement = findElement<HTMLElement>(this.container, selector, ERROR_NO_FORM_ERRORS_CONTAINER);
     }
 
     set errors(value: IUserError) {

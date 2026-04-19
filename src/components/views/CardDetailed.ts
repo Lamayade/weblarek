@@ -1,6 +1,6 @@
-import { 
-    errorNoCardText,
-    errorNoCardButton,
+import {
+    ERROR_NO_CARD_TEXT,
+    ERROR_NO_CARD_BUTTON,
     textButtonAddToCart,
     textButtonRemoveFromCart,
     textButtonUnavailable
@@ -23,13 +23,13 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
         this._text = findElement<HTMLElement>(
             this.container,
             '.card__text',
-            errorNoCardText
+            ERROR_NO_CARD_TEXT
         );
 
         this._button = findElement<HTMLButtonElement>(
             this.container,
             '.card__button',
-            errorNoCardButton
+            ERROR_NO_CARD_BUTTON
         );
     }
 

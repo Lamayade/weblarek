@@ -5,10 +5,10 @@ import {
 } from "../../types";
 
 import {
-    errorNoPayment,
-    errorNoEmail,
-    errorNoPhone,
-    errorNoAddress,
+    ERROR_NO_PAYMENT,
+    ERROR_NO_EMAIL,
+    ERROR_NO_PHONE,
+    ERROR_NO_ADDRESS,
 } from "../../utils/constants";
 
 
@@ -42,16 +42,16 @@ export class User {
         const errors: IUserError = {};
 
         if (this.payment === null) {
-            errors.payment = errorNoPayment;
+            errors.payment = ERROR_NO_PAYMENT;
         }
         if (this.email === '') {
-            errors.email = errorNoEmail;
+            errors.email = ERROR_NO_EMAIL;
         }
         if (this.phone === '') {
-            errors.phone = errorNoPhone;
+            errors.phone = ERROR_NO_PHONE;
         }
         if (this.address === '') {
-            errors.address = errorNoAddress;
+            errors.address = ERROR_NO_ADDRESS;
         }
 
         return errors;

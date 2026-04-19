@@ -1,8 +1,8 @@
 import { Component } from "../base/Component";
 import { ICard } from "../../types";
 import {
-    errorNoCardTitle,
-    errorNoCardPrice,
+    ERROR_NO_CARD_TITLE,
+    ERROR_NO_CARD_PRICE,
     textPriceAppendix,
     textPriceUnavailable,
 } from "../../utils/constants";
@@ -20,13 +20,13 @@ export abstract class Card<T extends ICard> extends Component<T> {
         this._title = findElement<HTMLElement>(
             this.container,
             '.card__title',
-            errorNoCardTitle
+            ERROR_NO_CARD_TITLE
         );
 
         this._price = findElement<HTMLElement>(
             this.container,
             '.card__price',
-            errorNoCardPrice
+            ERROR_NO_CARD_PRICE
         );
     }
 

@@ -7,11 +7,11 @@ import {
     TPayment,
 } from '../../types';
 import {
-    errorNoFormCardButton,
-    errorNoFormCashButton,
-    errorNoFormAddressInput,
-    errorNoFormSubmitButton,
-    errorNoFormErrorsContainer,
+    ERROR_NO_FORM_CARD_BUTTON,
+    ERROR_NO_FORM_CASH_BUTTON,
+    ERROR_NO_FORM_ADDRESS_INPUT,
+    ERROR_NO_FORM_SUBMIT_BUTTON,
+    ERROR_NO_FORM_ERRORS_CONTAINER,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
 
@@ -27,19 +27,19 @@ export class FormPaymentAddress extends Form<IForm> {
         this._submitButton = findElement<HTMLButtonElement>(
             this.container,
             'modal__actions button[type="submit"]',
-            errorNoFormSubmitButton
+            ERROR_NO_FORM_SUBMIT_BUTTON
         );
 
         this._errorsElement = findElement<HTMLElement>(
             this.container,
             '.form__errors',
-            errorNoFormErrorsContainer
+            ERROR_NO_FORM_ERRORS_CONTAINER
         );
 
         this._cardButton = findElement<HTMLButtonElement>(
             this.container,
             '.order__buttons button[name="card"]',
-            errorNoFormCardButton
+            ERROR_NO_FORM_CARD_BUTTON
         );
         this._cardButton.addEventListener('click', () =>{
             this.payment = 'card';
@@ -48,7 +48,7 @@ export class FormPaymentAddress extends Form<IForm> {
         this._cashButton = findElement<HTMLButtonElement>(
             this.container,
             '.order__buttons button[name="cash"]',
-            errorNoFormCashButton
+            ERROR_NO_FORM_CASH_BUTTON
         );
         this._cashButton.addEventListener('click', () =>{
             this.payment = 'cash';
@@ -57,7 +57,7 @@ export class FormPaymentAddress extends Form<IForm> {
         this._addressInput = findElement<HTMLInputElement>(
             this.container,
             '.order__field input[name="address"]',
-            errorNoFormAddressInput
+            ERROR_NO_FORM_ADDRESS_INPUT
         );
     }
 

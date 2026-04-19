@@ -8,8 +8,8 @@ import {
     categoryMap,
     TCategory,
     CDN_URL,
-    errorNoCardImage,
-    errorNoCardCategory,
+    ERROR_NO_CARD_IMAGE,
+    ERROR_NO_CARD_CATEGORY,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
 
@@ -24,13 +24,13 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
         this._image = findElement<HTMLImageElement>(
             this.container,
             '.card__image',
-            errorNoCardImage
+            ERROR_NO_CARD_IMAGE
         );
 
         this._category = findElement<HTMLElement>(
             this.container,
             '.card__category',
-            errorNoCardCategory
+            ERROR_NO_CARD_CATEGORY
         );
     }
 

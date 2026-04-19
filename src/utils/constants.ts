@@ -22,21 +22,21 @@ export const settings = {
 
 };
 
-export const errorNoPayment = 'Не указан вид оплаты';
-export const errorNoEmail = 'Не указана почта';
-export const errorNoPhone = 'Не указан номер телефона';
-export const errorNoAddress = 'Не указан адрес';
-export const errorNoCardTitle = 'Не найден HTML-элемент заголовка карточки с классом "card__title"';
-export const errorNoCardPrice = 'Не найден HTML-элемент цены карточки с классом "card__price"';
-export const errorNoCardImage = 'Не найден HTML-элемент изображения карточки с классом "card__image"';
-export const errorNoCardCategory = 'Не найден HTML-элемент категории карточки с классом "card__category"';
-export const errorNoCardText = 'Не найден HTML-элемент текста карточки с классом "card__text"';
-export const errorNoCardButton = 'Не найден HTML-элемент кнопки карточки с классом "card__button"';
-export const errorNoFormSubmitButton = 'Не найден HTML-элемент кнопки формы с классом "button"';
-export const errorNoFormErrorsContainer = 'Не найден HTML-элемент контейнера ошибок формы с классом "form__errors"';
-export const errorNoFormCashButton = 'Не найден HTML-элемент кнопки выбора типа оплаты с селектором ".order__buttons [name="cash"]"'; 
-export const errorNoFormCardButton = 'Не найден HTML-элемент кнопки выбора типа оплаты с селектором ".order__buttons [name="card"]"';
-export const errorNoFormAddressInput = 'Не найден HTML-элемент поля ввода адреса с классом "order__field"';
+export const ERROR_NO_PAYMENT = 'Не указан вид оплаты';
+export const ERROR_NO_EMAIL = 'Не указана почта';
+export const ERROR_NO_PHONE = 'Не указан номер телефона';
+export const ERROR_NO_ADDRESS = 'Не указан адрес';
+export const ERROR_NO_CARD_TITLE = 'Не найден HTML-элемент заголовка карточки с классом "card__title"';
+export const ERROR_NO_CARD_PRICE = 'Не найден HTML-элемент цены карточки с классом "card__price"';
+export const ERROR_NO_CARD_IMAGE = 'Не найден HTML-элемент изображения карточки с классом "card__image"';
+export const ERROR_NO_CARD_CATEGORY = 'Не найден HTML-элемент категории карточки с классом "card__category"';
+export const ERROR_NO_CARD_TEXT = 'Не найден HTML-элемент текста карточки с классом "card__text"';
+export const ERROR_NO_CARD_BUTTON = 'Не найден HTML-элемент кнопки карточки с классом "card__button"';
+export const ERROR_NO_FORM_SUBMIT_BUTTON = 'Не найден HTML-элемент кнопки формы с классом "button"';
+export const ERROR_NO_FORM_ERRORS_CONTAINER = 'Не найден HTML-элемент контейнера ошибок формы с классом "form__errors"';
+export const ERROR_NO_FORM_CASH_BUTTON = 'Не найден HTML-элемент кнопки выбора типа оплаты с селектором ".order__buttons [name="cash"]"';
+export const ERROR_NO_FORM_CARD_BUTTON = 'Не найден HTML-элемент кнопки выбора типа оплаты с селектором ".order__buttons [name="card"]"';
+export const ERROR_NO_FORM_ADDRESS_INPUT = 'Не найден HTML-элемент поля ввода адреса с классом "order__field"';
 
 export const textPriceAppendix = ' синапсов';
 export const textPriceUnavailable = 'Бесценно';
