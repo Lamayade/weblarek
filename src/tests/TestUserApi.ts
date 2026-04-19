@@ -3,10 +3,10 @@ import { UserApi } from "../components/models/UserApi";
 import { Catalog } from "../components/models/Catalog";
 import {
     API_URL,
-    testAddress,
-    testEmail,
-    testPayment,
-    testPhone
+    TEST_ADDRESS,
+    TEST_EMAIL,
+    TEST_PAYMENT,
+    TEST_PHONE
 } from "../utils/constants";
 
 export async function testUserApi() {
@@ -25,10 +25,10 @@ export async function testUserApi() {
 
         //Order
         const order = await userApi.post({
-            payment: testPayment,
-            email: testEmail,
-            phone: testPhone,
-            address: testAddress,
+            payment: TEST_PAYMENT,
+            email: TEST_EMAIL,
+            phone: TEST_PHONE,
+            address: TEST_ADDRESS,
             total: 
                 (products.items[0].price ?? 0) + 
                 (products.items[1].price ?? 0),

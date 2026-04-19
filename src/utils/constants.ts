@@ -38,18 +38,18 @@ export const ERROR_NO_FORM_CASH_BUTTON = 'Не найден HTML-элемент 
 export const ERROR_NO_FORM_CARD_BUTTON = 'Не найден HTML-элемент кнопки выбора типа оплаты с селектором ".order__buttons [name="card"]"';
 export const ERROR_NO_FORM_ADDRESS_INPUT = 'Не найден HTML-элемент поля ввода адреса с классом "order__field"';
 
-export const textPriceAppendix = ' синапсов';
-export const textPriceUnavailable = 'Бесценно';
-export const textButtonAddToCart = 'Купить';
-export const textButtonRemoveFromCart = 'Удалить из корзины';
-export const textButtonUnavailable = 'Недоступно';
+export const TEXT_PRICE_APPENDIX = ' синапсов';
+export const TEXT_PRICE_UNAVAILABLE = 'Бесценно';
+export const TEXT_BUTTON_ADD_TO_CART = 'Купить';
+export const TEXT_BUTTON_REMOVE_FROM_CART = 'Удалить из корзины';
+export const TEXT_BUTTON_UNAVAILABLE = 'Недоступно';
 
-export const routeProduct = '/product/';
-export const routeOrder = '/order/';
+export const ROUTE_PRODUCT = '/product/';
+export const ROUTE_ORDER = '/order/';
 
-export const testPayment = 'card';
-export const testEmail = 'new@user.com';
-export const testPhone = '88005553535';
-export const testAddress = '3-я улица Строителей, дом 25, квартира 12';
+export const TEST_PAYMENT = 'card';
+export const TEST_EMAIL = 'new@user.com';
+export const TEST_PHONE = '88005553535';
+export const TEST_ADDRESS = '3-я улица Строителей, дом 25, квартира 12';
 
 

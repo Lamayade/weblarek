@@ -3,8 +3,8 @@ import { ICard } from "../../types";
 import {
     ERROR_NO_CARD_TITLE,
     ERROR_NO_CARD_PRICE,
-    textPriceAppendix,
-    textPriceUnavailable,
+    TEXT_PRICE_APPENDIX,
+    TEXT_PRICE_UNAVAILABLE,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
 
@@ -37,8 +37,8 @@ export abstract class Card<T extends ICard> extends Component<T> {
     protected set price(value: number | null) {
         this._isAvailable = value !== null;
         this._price.textContent = this._isAvailable
-        ? value + textPriceAppendix
-        : textPriceUnavailable;
-        
+        ? value + TEXT_PRICE_APPENDIX
+        : TEXT_PRICE_UNAVAILABLE;
+
     } 
 }

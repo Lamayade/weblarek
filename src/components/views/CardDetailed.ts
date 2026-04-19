@@ -1,9 +1,9 @@
 import {
     ERROR_NO_CARD_TEXT,
     ERROR_NO_CARD_BUTTON,
-    textButtonAddToCart,
-    textButtonRemoveFromCart,
-    textButtonUnavailable
+    TEXT_BUTTON_ADD_TO_CART,
+    TEXT_BUTTON_REMOVE_FROM_CART,
+    TEXT_BUTTON_UNAVAILABLE
 } from "../../utils/constants";
 import {
     ICardDetailed,
@@ -41,11 +41,11 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
         this._isInCart = value;
         if (!this._isAvailable) {
             this._button.disabled = true;
-            this._button.textContent = textButtonUnavailable;
+            this._button.textContent = TEXT_BUTTON_UNAVAILABLE;
         } else if (this._isInCart) {
-            this._button.textContent = textButtonRemoveFromCart;
+            this._button.textContent = TEXT_BUTTON_REMOVE_FROM_CART;
         } else {
-            this._button.textContent = textButtonAddToCart;
+            this._button.textContent = TEXT_BUTTON_ADD_TO_CART;
         }
     }
 }
