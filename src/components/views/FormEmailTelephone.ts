@@ -17,16 +17,21 @@ export class FormEmailTelephone extends Form<IForm> {
     private _phoneInput: HTMLInputElement;
 
     constructor(container: HTMLElement) {
-
-
-
-export class FormPaymentAddress extends Form<IForm> {
-    private _cardButton: HTMLButtonElement;
-    private _cashButton: HTMLButtonElement;
-    private _addressInput: HTMLInputElement;
-
-    constructor(container: HTMLElement) {
         super(container);
+
+        this._emailInput = findElement<HTMLInputElement>(
+            this.container,
+            '.order__field input[name="email"]',
+            ERROR_NO_FORM_EMAIL_INPUT
+        );
+        this._phoneInput = findElement<HTMLInputElement>(
+            this.container,
+            '.order__field input[name="phone"]',
+            ERROR_NO_FORM_PHONE_INPUT
+        );
+    }
+
+
 
         this._submitButton = findElement<HTMLButtonElement>(
             this.container,
