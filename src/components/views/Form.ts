@@ -22,11 +22,19 @@ export abstract class Form<T extends IForm> extends Component<T> {
     }
 
     protected _initSubmitButton(selector: string) {
-        this._submitButton = findElement<HTMLButtonElement>(this.container, selector, ERROR_NO_FORM_SUBMIT_BUTTON);
+        this._submitButton = findElement<HTMLButtonElement>(
+            this.container,
+            selector,
+            ERROR_NO_FORM_SUBMIT_BUTTON
+        );
     }
 
     protected _initErrorsElement(selector: string) {
-        this._errorsElement = findElement<HTMLElement>(this.container, selector, ERROR_NO_FORM_ERRORS_CONTAINER);
+        this._errorsElement = findElement<HTMLElement>(
+            this.container,
+            selector,
+            ERROR_NO_FORM_ERRORS_CONTAINER
+        );
     }
 
     set errors(value: IUserError) {
