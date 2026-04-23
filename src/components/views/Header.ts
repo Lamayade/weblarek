@@ -5,13 +5,14 @@ import {
     ERROR_NO_HEADER_CART_COUNT,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
+import { IEvents } from "../base/Events";
 
 
 export class Header extends Component<ICartCount> {
     protected _cartButton: HTMLButtonElement;
     protected _countElement: HTMLElement;
 
-    constructor(container: HTMLElement) {
+    constructor(container: HTMLElement, private events:IEvents) {
         super(container);
         this._cartButton = findElement<HTMLButtonElement>(
             this.container,
@@ -24,6 +25,7 @@ export class Header extends Component<ICartCount> {
             ERROR_NO_HEADER_CART_COUNT
         );
         this._cartButton.addEventListener('click', () => {
+            this.events.emit('cart:open');
         })
     }
 
