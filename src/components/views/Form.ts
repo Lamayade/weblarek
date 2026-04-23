@@ -3,19 +3,20 @@ import {
 } from "../base/Component";
 import {
     IForm,
-    IUserError
+    IUserError,
 } from "../../types";
 import {
     ERROR_NO_FORM_SUBMIT_BUTTON,
     ERROR_NO_FORM_ERRORS_CONTAINER,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
+import { IEvents } from "../base/Events";
 
 export abstract class Form<T extends IForm> extends Component<T> {
     protected _submitButton: HTMLButtonElement | null;
     protected _errorsElement: HTMLElement | null;
 
-    constructor(container: HTMLElement) {
+    constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
         this._submitButton = null;
         this._errorsElement = null;
@@ -48,5 +49,12 @@ export abstract class Form<T extends IForm> extends Component<T> {
         if (this._submitButton) {
             this._submitButton.disabled = !value;
         }
+    }
+
+    protected bindSubmit(event: string) {
+        this.container.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.events.emit(event);
+        });
     }
 }

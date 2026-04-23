@@ -3,21 +3,28 @@ import {
 } from './Form';
 import {
     IForm,
-    IUser,
 } from '../../types';
 import {
     ERROR_NO_FORM_EMAIL_INPUT,
     ERROR_NO_FORM_PHONE_INPUT,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
+import { IEvents } from '../base/Events';
 
 
-export class FormEmailTelephone extends Form<IForm> {
+export class FormEmailPhone extends Form<IForm> {
     private _emailInput: HTMLInputElement;
     private _phoneInput: HTMLInputElement;
 
-    constructor(container: HTMLElement) {
-        super(container);
+    constructor(container: HTMLElement, events: IEvents) {
+        super(container, events);
+
+        this._initSubmitButton(
+            'modal__actions button[type="submit"]'
+        );
+        this._initErrorsElement(
+            '.form__errors'
+        );
 
         this._emailInput = findElement<HTMLInputElement>(
             this.container,
@@ -29,22 +36,27 @@ export class FormEmailTelephone extends Form<IForm> {
             '.order__field input[name="phone"]',
             ERROR_NO_FORM_PHONE_INPUT
         );
+
+        this._emailInput.addEventListener('input', () => {
+            this.events.emit(
+                'email:change',
+                {email: this._emailInput.value},
+            );
+        });
+        this._phoneInput.addEventListener('input', () => {
+            this.events.emit(
+                'phone:change',
+                {phone: this._phoneInput.value},
+            );
+        });
+        this.bindSubmit('order:submit');
     }
 
-    set email(value: string) {
+    protected set email(value: string) {
         this._emailInput.value = value;
     }
 
-    set phone(value: string) {
+    protected set phone(value: string) {
         this._phoneInput.value = value;
-    }
-
-    get data(): Partial<IUser> {
-        const form = this.container as HTMLFormElement;
-        const formData = new FormData(form);
-        return {
-            email: formData.get('email') as string,
-            phone: formData.get('phone') as string,
-        }
     }
 }

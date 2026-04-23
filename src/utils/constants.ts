@@ -39,6 +39,8 @@ export const ERROR_NO_FORM_CARD_BUTTON = 'Не найден HTML-элемент 
 export const ERROR_NO_FORM_ADDRESS_INPUT = 'Не найден HTML-элемент поля ввода адреса с классом "order__field"';
 export const ERROR_NO_FORM_EMAIL_INPUT = 'Не найден HTML-элемент поля ввода электронной почты с классом "order__field"';
 export const ERROR_NO_FORM_PHONE_INPUT = 'Не найден HTML-элемент поля ввода телефона с классом "order__field"';
+export const ERROR_NO_HEADER_CART_BUTTON = 'Не найден HTML-элемент кнопки корзины с классом "header__basket"';
+export const ERROR_NO_HEADER_CART_COUNT = 'Не найден HTML-элемент счётчика корзины с классом "header__basket-counter"';
 
 export const TEXT_PRICE_APPENDIX = ' синапсов';
 export const TEXT_PRICE_UNAVAILABLE = 'Бесценно';

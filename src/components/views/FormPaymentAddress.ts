@@ -3,17 +3,15 @@ import {
 } from './Form';
 import {
     IForm,
-    IUser,
     TPayment,
 } from '../../types';
 import {
     ERROR_NO_FORM_CARD_BUTTON,
     ERROR_NO_FORM_CASH_BUTTON,
     ERROR_NO_FORM_ADDRESS_INPUT,
-    ERROR_NO_FORM_SUBMIT_BUTTON,
-    ERROR_NO_FORM_ERRORS_CONTAINER,
 } from "../../utils/constants";
 import { findElement } from "../../utils/utils";
+import { IEvents } from '../base/Events';
 
 
 export class FormPaymentAddress extends Form<IForm> {
@@ -21,19 +19,14 @@ export class FormPaymentAddress extends Form<IForm> {
     private _cashButton: HTMLButtonElement;
     private _addressInput: HTMLInputElement;
 
-    constructor(container: HTMLElement) {
-        super(container);
+    constructor(container: HTMLElement, events: IEvents) {
+        super(container, events);
 
-        this._submitButton = findElement<HTMLButtonElement>(
-            this.container,
-            'modal__actions button[type="submit"]',
-            ERROR_NO_FORM_SUBMIT_BUTTON
+        this._initSubmitButton(
+            'modal__actions button[type="submit"]'
         );
-
-        this._errorsElement = findElement<HTMLElement>(
-            this.container,
-            '.form__errors',
-            ERROR_NO_FORM_ERRORS_CONTAINER
+        this._initErrorsElement(
+            '.form__errors'
         );
 
         this._cardButton = findElement<HTMLButtonElement>(
@@ -41,24 +34,40 @@ export class FormPaymentAddress extends Form<IForm> {
             '.order__buttons button[name="card"]',
             ERROR_NO_FORM_CARD_BUTTON
         );
-        this._cardButton.addEventListener('click', () =>{
-            this.payment = 'card';
-        });
 
         this._cashButton = findElement<HTMLButtonElement>(
             this.container,
             '.order__buttons button[name="cash"]',
             ERROR_NO_FORM_CASH_BUTTON
         );
-        this._cashButton.addEventListener('click', () =>{
-            this.payment = 'cash';
-        });
 
         this._addressInput = findElement<HTMLInputElement>(
             this.container,
             '.order__field input[name="address"]',
             ERROR_NO_FORM_ADDRESS_INPUT
         );
+
+        this._cardButton.addEventListener('click', () => {
+            this.events.emit(
+                'payment:change',
+                {payment: 'card'},
+            );
+        });
+
+        this._cashButton.addEventListener('click', () => {
+            this.events.emit(
+                'payment:change',
+                {payment: 'cash'},
+            );
+        });
+
+        this._addressInput.addEventListener('input', () => {
+            this.events.emit(
+                'address:change',
+                {address: this._addressInput.value},
+            );
+        });
+        this.bindSubmit('order:next');
     }
 
     set payment(value: TPayment) {
@@ -68,14 +77,5 @@ export class FormPaymentAddress extends Form<IForm> {
 
     set address(value: string) {
         this._addressInput.value = value;
-    }
-
-    get data(): Partial<IUser> {
-        const form = this.container as HTMLFormElement;
-        const formData = new FormData(form);
-        return {
-            payment: formData.get('payment') as TPayment,
-            address: formData.get('address') as string,
-        }
     }
 }
