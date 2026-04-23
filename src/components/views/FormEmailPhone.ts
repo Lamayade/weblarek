@@ -8,8 +8,12 @@ import {
     ERROR_NO_FORM_EMAIL_INPUT,
     ERROR_NO_FORM_PHONE_INPUT,
 } from "../../utils/constants";
-import { findElement } from "../../utils/utils";
-import { IEvents } from '../base/Events';
+import {
+    findElement
+} from "../../utils/utils";
+import {
+    IEvents
+} from '../base/Events';
 
 
 export class FormEmailPhone extends Form<IForm> {
