@@ -67,3 +67,27 @@ export interface IForm {
 export interface ICartCount {
   count: number;
 }
+
+export type TModalView = {
+  open: (content: HTMLElement) => void;
+  close: () => void;
+};
+
+export type TFormPaymentView = {
+  payment: TPayment;
+  address: string;
+  errors: IUserError;
+};
+
+export type TFormContactsView = {
+  email: string;
+  phone: string;
+  errors: IUserError;
+};
+
+export type TViews = {
+  gallery: HTMLElement;
+  modal: TModalView;
+  formPayment: TFormPaymentView;
+  formContacts: TFormContactsView;
+};
