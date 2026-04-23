@@ -63,3 +63,7 @@ export interface IForm {
   isValid: boolean;
   errors: IUserError;
 }
+
+export interface ICartCount {
+  count: number;
+}
