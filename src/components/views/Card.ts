@@ -1,5 +1,5 @@
 import { Component } from "../base/Component";
-import { ICard } from "../../types";
+import { ICard, IProduct } from "../../types";
 import {
     ERROR_NO_CARD_TITLE,
     ERROR_NO_CARD_PRICE,
@@ -28,6 +28,11 @@ export abstract class Card<T extends ICard> extends Component<T> {
             '.card__price',
             ERROR_NO_CARD_PRICE
         );
+    }
+
+    public setData(product: IProduct): void {
+        this.title = product.title;
+        this.price = product.price;
     }
 
     public set title(value: string) {

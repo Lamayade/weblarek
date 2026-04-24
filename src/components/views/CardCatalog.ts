@@ -3,10 +3,13 @@ import {
 } from "./Card";
 import { 
     ICardCatalog,
+    IProduct,
 } from "../../types";
+import { IEvents } from "../base/Events";
 import {
     categoryMap,
     TCategory,
+    CDN_URL,
     ERROR_NO_CARD_IMAGE,
     ERROR_NO_CARD_CATEGORY,
 } from "../../utils/constants";
@@ -14,10 +17,11 @@ import { findElement } from "../../utils/utils";
 
 
 export class CardCatalog<T extends ICardCatalog> extends Card<T> {
-    private _image: HTMLImageElement;
-    private _category: HTMLElement;
+    protected _image: HTMLImageElement;
+    protected _category: HTMLElement;
+    protected _product: IProduct | null = null;
 
-    constructor(container: HTMLElement) {
+    constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
         
         this._image = findElement<HTMLImageElement>(
@@ -31,6 +35,19 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
             '.card__category',
             ERROR_NO_CARD_CATEGORY
         );
+
+        container.addEventListener('click', () => {
+            if (this._product) {
+                this.events.emit('card:select', { id: this._product.id });
+            }
+        });
+    }
+
+    public setData(product: IProduct): void {
+        super.setData(product);
+        this._product = product;
+        this.image = `${CDN_URL}${product.image.replace('.svg', '.png')}`;
+        this.category = product.category as TCategory;
     }
 
     public set image(value: string) {

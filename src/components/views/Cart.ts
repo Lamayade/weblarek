@@ -29,10 +29,10 @@ export class CartView extends Component<IProduct[]> {
             this.events.emit('order:open');
         });
 
-        this.events.on('cart:changed', (products: IProduct[]) => {
-            this.items = products;
+        this.events.on('cart:changed', () => {
+            this.items = this.cart.getProducts();
             this.total = this.cart.getTotalPrice();
-            this._buttonElement.disabled = products.length === 0;
+            this._buttonElement.disabled = this.cart.getProducts().length === 0;
         });
     }
 

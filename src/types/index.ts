@@ -56,7 +56,6 @@ export interface ICardCatalog extends ICard {
 
 export interface ICardDetailed extends ICardCatalog {
     text: string;
-    isInCart: boolean;
 }
 
 export interface IForm {

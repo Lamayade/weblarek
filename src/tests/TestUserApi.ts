@@ -1,6 +1,7 @@
 import { Api } from "../components/base/Api";
 import { UserApi } from "../components/models/UserApi";
 import { Catalog } from "../components/models/Catalog";
+import { EventEmitter } from "../components/base/Events";
 import {
     API_URL,
     TEST_ADDRESS,
@@ -13,7 +14,7 @@ export async function testUserApi() {
     try {
         const api = new Api(API_URL);
         const userApi = new UserApi(api);
-        const catalog = new Catalog();
+        const catalog = new Catalog(new EventEmitter());
 
         //Product List
         const products = await userApi.get();

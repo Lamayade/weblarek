@@ -1,9 +1,10 @@
 import { Catalog } from '../components/models/Catalog';
+import { EventEmitter } from '../components/base/Events';
 import { apiProducts } from '../utils/data';
 
 
 export function testCatalog(): void {
-    const productsModel = new Catalog();
+    const productsModel = new Catalog(new EventEmitter());
 
     productsModel.setProducts(apiProducts.items);
     console.info(

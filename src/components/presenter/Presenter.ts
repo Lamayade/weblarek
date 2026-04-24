@@ -11,8 +11,8 @@ import { Modal } from "../views/Modal";
 import { FormPaymentAddress } from "../views/FormPaymentAddress";
 import { FormEmailPhone } from "../views/FormEmailPhone";
 import { CardDetailed } from "../views/CardDetailed";
+import { CardCatalog } from "../views/CardCatalog";
 import { CartView } from "../views/Cart";
-import { CDN_URL, TEXT_PRICE_APPENDIX, TEXT_PRICE_UNAVAILABLE, TCategory } from "../../utils/constants";
 import { cloneTemplate } from "../../utils/utils";
 
 
@@ -38,61 +38,48 @@ export class Presenter {
     private async loadCatalog(): Promise<void> {
         const data = await this.userApi.get();
         this.catalog.setProducts(data.items);
-        this.events.emit('catalog:loaded', data.items);
     }
 
     private bindCatalogEvents(): void {
-        let cardDetailed: CardDetailed | null = null;
-        let currentProduct: IProduct | null = null;
-
-        this.events.on('catalog:loaded', (products: IProduct[]) => {
+        this.events.on('catalog:changed', () => {
+            const products = this.catalog.getProducts();
             const elements = products.map(product => {
-                const element = document.createElement('button');
-                element.className = 'gallery__item card';
-                element.innerHTML = `
-                    <span class="card__category">${product.category}</span>
-                    <h2 class="card__title">${product.title}</h2>
-                    <img class="card__image" src="${CDN_URL}${product.image.replace('.svg', '.png')}" alt="" />
-                    <span class="card__price">${product.price !== null ? product.price + TEXT_PRICE_APPENDIX : TEXT_PRICE_UNAVAILABLE}</span>
-                `;
-                element.addEventListener('click', () => {
-                    currentProduct = product;
-                    this.events.emit('card:selected', product);
-                    this.catalog.setDetailedProduct(product);
-                    const preview = cloneTemplate('#card-preview') as HTMLElement;
-                    cardDetailed = new CardDetailed(preview, this.events);
-                    cardDetailed.product = product;
-                    cardDetailed.title = product.title;
-                    cardDetailed.price = product.price;
-                    cardDetailed.image = `${CDN_URL}${product.image.replace('.svg', '.png')}`;
-                    cardDetailed.category = product.category as TCategory;
-                    cardDetailed.text = product.description;
-                    cardDetailed.isInCart = this.cart.contains(product.id);
-                    this.modal.open(preview);
-                });
-                return element;
+                const itemElement = cloneTemplate('#card-catalog') as HTMLElement;
+                const card = new CardCatalog(itemElement, this.events);
+                card.setData(product);
+                return itemElement;
             });
             this.gallery.catalog = elements;
         });
 
+        this.events.on('catalog:previewChanged', () => {
+            const product = this.catalog.getDetailedProduct();
+            if (!product) return;
+
+            const preview = cloneTemplate('#card-preview') as HTMLElement;
+            const cardDetailed = new CardDetailed(preview, this.events, this.cart);
+            cardDetailed.setData(product);
+            this.modal.open(preview);
+        });
+
+        this.events.on<{ id: string }>('card:select', ({ id }) => {
+            const product = this.catalog.getProductById(id);
+            if (!product) return;
+            this.catalog.setDetailedProduct(product);
+        });
+
         this.events.on('cart:changed', () => {
-            if (cardDetailed && currentProduct) {
-                cardDetailed.isInCart = this.cart.contains(currentProduct.id);
-            }
+            this.cartView.total = this.cart.getTotalPrice();
         });
     }
 
     private bindCartEvents(): void {
         this.events.on<{ product: IProduct }>('card:added', ({ product }) => {
             this.cart.addProduct(product);
-            this.events.emit('cart:changed', this.cart.getProducts());
-            this.cartView.total = this.cart.getTotalPrice();
         });
 
         this.events.on<{ product: IProduct }>('card:removed', ({ product }) => {
             this.cart.removeProduct(product);
-            this.events.emit('cart:changed', this.cart.getProducts());
-            this.cartView.total = this.cart.getTotalPrice();
         });
     }
 

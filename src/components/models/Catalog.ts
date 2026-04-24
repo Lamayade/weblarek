@@ -1,15 +1,16 @@
 import { IProduct } from "../../types";
-import { EventEmitter } from "../base/Events";
+import { IEvents } from "../base/Events";
 
 
-export class Catalog extends EventEmitter {
+export class Catalog {
     private products: IProduct[] = [];
     private detailed: IProduct | null = null;
 
+    constructor(private events: IEvents) {}
 
     public setProducts(products: IProduct[]): void {
         this.products = products;
-        this.emit('catalog:loaded')
+        this.events.emit('catalog:changed', products);
     }
 
     public getProducts(): IProduct[] {
@@ -24,6 +25,7 @@ export class Catalog extends EventEmitter {
 
     public setDetailedProduct(product: IProduct): void {
         this.detailed = product;
+        this.events.emit('catalog:previewChanged', product);
     }
 
     public getDetailedProduct(): IProduct | null {

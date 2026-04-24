@@ -12,9 +12,9 @@ import {
 
 
 export class CardCart extends Component<IProduct> {
-    private _deleteButton!: HTMLButtonElement;
-    private _title!: HTMLElement;
-    private _price!: HTMLElement;
+    private _deleteButton: HTMLButtonElement;
+    private _title: HTMLElement;
+    private _price: HTMLElement;
     private _product!: IProduct;
 
     constructor(container: HTMLElement, private events: IEvents) {

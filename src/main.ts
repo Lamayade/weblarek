@@ -28,8 +28,8 @@ interface IProduct {
 const events = new EventEmitter();
 const api = new Api(API_URL);
 
-const catalog = new Catalog();
-const cart = new Cart();
+const catalog = new Catalog(events);
+const cart = new Cart(events);
 const user = new User();
 const userApi = new UserApi(api);
 
@@ -67,24 +67,21 @@ const cartView = new CartView(
     cart
 );
 
-new Presenter(events, catalog, cart, user, userApi, gallery, modal, cartView, formPaymentAddress, formEmailPhone);
-
-events.on<{ product: IProduct }>('card:selected', ({ product }) => {
-    catalog.setDetailedProduct(product);
-});
-
-events.on('cart:opened', () => {
+events.on('cart:changed', () => {
+    header.count = cart.getCount();
     cartView.items = cart.getProducts();
     cartView.total = cart.getTotalPrice();
+});
+
+new Presenter(events, catalog, cart, user, userApi, gallery, modal, cartView, formPaymentAddress, formEmailPhone);
+
+(async () => {
+    const data = await userApi.get();
+    catalog.setProducts(data.items);
+})();
+
+events.on('cart:opened', () => {
     modal.open(cartView.container);
-});
-
-events.on<{ product: IProduct }>('card:added', () => {
-    header.count = cart.getCount();
-});
-
-events.on<{ product: IProduct }>('card:removed', () => {
-    header.count = cart.getCount();
 });
 
 events.on('order:open', () => {

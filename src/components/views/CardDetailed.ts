@@ -3,8 +3,8 @@ import {
 } from "../base/Events";
 import {
     ICardDetailed,
+    IProduct,
 } from "../../types";
-import { IProduct } from "../../types";
 import {
     ERROR_NO_CARD_TEXT,
     ERROR_NO_CARD_BUTTON,
@@ -20,10 +20,11 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
     private _text: HTMLElement;
     private _button: HTMLButtonElement;
     private _isInCart: boolean = false;
-    private _product: IProduct | null = null;
+    private _cart: { contains(id: string): boolean };
 
-    constructor(container: HTMLElement, private events: IEvents) {
-        super(container);
+    constructor(container: HTMLElement, events: IEvents, cart: { contains(id: string): boolean }) {
+        super(container, events);
+        this._cart = cart;
 
         this._text = findElement<HTMLElement>(
             this._container,
@@ -46,22 +47,15 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
                 }
             }
         });
+
+        this.events.on('cart:changed', () => {
+            this.updateButton();
+        });
     }
 
-    set product(product: IProduct) {
-        this._product = product;
-    }
-
-    public set text(value: string) {
-        this._text.textContent = value;
-    }
-
-    public get text(): string {
-        return this._text.textContent ?? '';
-    }
-
-    public set isInCart(value: boolean) {
-        this._isInCart = value;
+    private updateButton(): void {
+        if (!this._product) return;
+        this._isInCart = this._cart.contains(this._product.id);
         if (!this._isAvailable) {
             this._button.disabled = true;
             this._button.textContent = TEXT_BUTTON_UNAVAILABLE;
@@ -72,7 +66,18 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
         }
     }
 
-    public get isInCart(): boolean {
-        return this._isInCart;
+    public setData(product: IProduct): void {
+        super.setData(product);
+        this._product = product;
+        this.text = product.description;
+        this.updateButton();
+    }
+
+    public set text(value: string) {
+        this._text.textContent = value;
+    }
+
+    public get text(): string {
+        return this._text.textContent ?? '';
     }
 }

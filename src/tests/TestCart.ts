@@ -1,9 +1,10 @@
 import { Cart } from '../components/models/Cart';
+import { EventEmitter } from '../components/base/Events';
 import { apiProducts } from '../utils/data';
 
 
 export function testCart(): void {
-    const cartModel = new Cart();
+    const cartModel = new Cart(new EventEmitter());
 
     cartModel.addProduct(apiProducts.items[0]);
     cartModel.addProduct(apiProducts.items[1]);

@@ -1,10 +1,11 @@
 import { IProduct } from "../../types";
-import { EventEmitter } from "../base/Events";
+import { IEvents } from "../base/Events";
 
 
-export class Cart extends EventEmitter {
+export class Cart {
     private products: IProduct[] = [];
 
+    constructor(private events: IEvents) {}
 
     public getProducts(): IProduct[] {
         return this.products;
@@ -12,7 +13,7 @@ export class Cart extends EventEmitter {
 
     public addProduct(product: IProduct): void {
         this.products.push(product);
-        this.emit('cart:productAdded', { product });
+        this.events.emit('cart:changed');
     }
 
     public removeProduct(product: IProduct): void {
@@ -21,13 +22,13 @@ export class Cart extends EventEmitter {
         );
         if (idx !== -1) {
             this.products.splice(idx, 1);
-            this.emit('cart:productRemoved', { product });
+            this.events.emit('cart:changed');
         }
     }
 
     public clear(): void {
         this.products = [];
-        this.emit('cart:cleared');
+        this.events.emit('cart:changed');
     }
 
     public getTotalPrice(): number {

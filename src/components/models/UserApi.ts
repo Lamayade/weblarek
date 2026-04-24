@@ -22,14 +22,11 @@ export class UserApi extends EventEmitter {
 
     public async get(): Promise<IProducts> {
         const data = await this.api.get<IProducts>(ROUTE_PRODUCT);
-        this.emit('api:getSuccess', data);
         return data;
     }
 
     public async post(data: IOrderRequest): Promise<IOrderResponse> {
-        this.emit('api:postStart');
         const response = await this.api.post<IOrderResponse>(ROUTE_ORDER, data);
-        this.emit('api:postSuccess', response);
         return response;
     }
 }

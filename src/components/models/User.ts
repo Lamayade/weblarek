@@ -29,7 +29,7 @@ export class User extends EventEmitter {
         this.email = '';
         this.phone = '';
         this.address = '';
-        this.emit('user:cleared');
+        this.emit('user:changed', this.get());
     }
 
     public get(): IUser {
