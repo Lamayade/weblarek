@@ -18,27 +18,35 @@ export abstract class Card<T extends ICard> extends Component<T> {
         super(container);
 
         this._title = findElement<HTMLElement>(
-            this.container,
+            this._container,
             '.card__title',
             ERROR_NO_CARD_TITLE
         );
 
         this._price = findElement<HTMLElement>(
-            this.container,
+            this._container,
             '.card__price',
             ERROR_NO_CARD_PRICE
         );
     }
 
-    protected set title(value: string) {
+    public set title(value: string) {
         this._title.textContent = value;
     }
 
-    protected set price(value: number | null) {
+    public get title(): string {
+        return this._title.textContent ?? '';
+    }
+
+    public set price(value: number | null) {
         this._isAvailable = value !== null;
         this._price.textContent = this._isAvailable
         ? value + TEXT_PRICE_APPENDIX
         : TEXT_PRICE_UNAVAILABLE;
 
+    }
+
+    public get price(): number | null {
+        return this._isAvailable ? parseInt(this._price.textContent ?? '0') : null;
     } 
 }

@@ -2,6 +2,10 @@ import { Component } from "../base/Component";
 import { IProduct } from "../../types";
 import { IEvents } from "../base/Events";
 import { findElement } from "../../utils/utils";
+import {
+    TEXT_PRICE_APPENDIX,
+    TEXT_PRICE_UNAVAILABLE,
+} from "../../utils/constants";
 
 
 export class CardCart extends Component<IProduct> {
@@ -25,6 +29,8 @@ export class CardCart extends Component<IProduct> {
     set product(value: IProduct) {
         this._product = value;
         this._title.textContent = value.title;
-        this._price.textContent = value.price ? String(value.price) + ' ₽' : 'Бесплатно';
+        this._price.textContent = value.price !== null
+            ? String(value.price) + TEXT_PRICE_APPENDIX
+            : TEXT_PRICE_UNAVAILABLE;
     }
 }

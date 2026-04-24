@@ -15,12 +15,12 @@ export class Header extends Component<ICartCount> {
     constructor(container: HTMLElement, private events:IEvents) {
         super(container);
         this._cartButton = findElement<HTMLButtonElement>(
-            this.container,
+            this._container,
             '.header__basket',
             ERROR_NO_HEADER_CART_BUTTON
         );
         this._countElement = findElement<HTMLElement>(
-            this.container,
+            this._container,
             '.header__basket-counter',
             ERROR_NO_HEADER_CART_COUNT
         );

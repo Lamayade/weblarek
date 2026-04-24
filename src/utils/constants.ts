@@ -41,8 +41,9 @@ export const ERROR_NO_FORM_EMAIL_INPUT = 'Не найден HTML-элемент 
 export const ERROR_NO_FORM_PHONE_INPUT = 'Не найден HTML-элемент поля ввода телефона с классом "order__field"';
 export const ERROR_NO_HEADER_CART_BUTTON = 'Не найден HTML-элемент кнопки корзины с классом "header__basket"';
 export const ERROR_NO_HEADER_CART_COUNT = 'Не найден HTML-элемент счётчика корзины с классом "header__basket-counter"';
-export const ERROR_NO_SUCCESS_DESCRIPTION = 'Не найден HTML-элемент описания успешного заказа с классом "order__success-description"';
-export const ERROR_NO_SUCCESS_CLOSE_BUTTON = 'Не найден HTML-элемент кнопки закрытия с классом "order__success-button"';
+export const ERROR_NO_SUCCESS_DESCRIPTION = 'Не найден HTML-элемент описания успешного заказа с классом "order-success__description"';
+export const ERROR_NO_SUCCESS_CLOSE_BUTTON = 'Не найден HTML-элемент кнопки закрытия с классом "order-success__close"';
+export const ERROR_NO_GALLERY_CONTAINER = 'Не найден HTML-элемент контейнера галереи с классом "gallery"';
 
 export const TEXT_PRICE_APPENDIX = ' синапсов';
 export const TEXT_PRICE_UNAVAILABLE = 'Бесценно';

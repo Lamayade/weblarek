@@ -22,52 +22,58 @@ export class FormPaymentAddress extends Form<IForm> {
     constructor(container: HTMLElement, events: IEvents) {
         super(container, events);
 
-        this._initSubmitButton(
-            'modal__actions button[type="submit"]'
-        );
-        this._initErrorsElement(
-            '.form__errors'
-        );
+        this._initSubmitButton('button[type="submit"]');
+        this.disableFormSubmit(true);
+        this._initErrorsElement('.form__errors');
 
         this._cardButton = findElement<HTMLButtonElement>(
-            this.container,
+            this._container,
             '.order__buttons button[name="card"]',
             ERROR_NO_FORM_CARD_BUTTON
         );
 
         this._cashButton = findElement<HTMLButtonElement>(
-            this.container,
+            this._container,
             '.order__buttons button[name="cash"]',
             ERROR_NO_FORM_CASH_BUTTON
         );
 
         this._addressInput = findElement<HTMLInputElement>(
-            this.container,
+            this._container,
             '.order__field input[name="address"]',
             ERROR_NO_FORM_ADDRESS_INPUT
         );
 
         this._cardButton.addEventListener('click', () => {
-            this.events.emit(
-                'payment:changed',
-                {payment: 'card'},
-            );
+            this._cashButton.classList.remove('button_alt-active');
+            this._cardButton.classList.add('button_alt-active');
+            this.events.emit('payment:changed', { payment: 'card' });
+            this.updateValidation();
         });
 
         this._cashButton.addEventListener('click', () => {
-            this.events.emit(
-                'payment:changed',
-                {payment: 'cash'},
-            );
+            this._cardButton.classList.remove('button_alt-active');
+            this._cashButton.classList.add('button_alt-active');
+            this.events.emit('payment:changed', { payment: 'cash' });
+            this.updateValidation();
         });
 
         this._addressInput.addEventListener('input', () => {
-            this.events.emit(
-                'address:changed',
-                {address: this._addressInput.value},
-            );
+            this.events.emit('address:changed', { address: this._addressInput.value });
+            this.updateValidation();
         });
+
+        this.events.on('payment:changed', () => this.updateValidation());
+        this.events.on('address:changed', () => this.updateValidation());
+
         this.bindSubmit('order:next');
+    }
+
+    private updateValidation(): void {
+        const paymentSelected = this._cardButton.classList.contains('button_alt-active') ||
+                               this._cashButton.classList.contains('button_alt-active');
+        const addressFilled = this._addressInput.value.trim().length > 0;
+        this.disableFormSubmit(!(paymentSelected && addressFilled));
     }
 
     set payment(value: TPayment) {

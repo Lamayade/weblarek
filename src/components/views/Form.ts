@@ -24,15 +24,16 @@ export abstract class Form<T extends IForm> extends Component<T> {
 
     protected _initSubmitButton(selector: string) {
         this._submitButton = findElement<HTMLButtonElement>(
-            this.container,
+            this._container,
             selector,
             ERROR_NO_FORM_SUBMIT_BUTTON
         );
+        this._submitButton.disabled = false;
     }
 
     protected _initErrorsElement(selector: string) {
         this._errorsElement = findElement<HTMLElement>(
-            this.container,
+            this._container,
             selector,
             ERROR_NO_FORM_ERRORS_CONTAINER
         );
@@ -52,9 +53,15 @@ export abstract class Form<T extends IForm> extends Component<T> {
     }
 
     protected bindSubmit(event: string) {
-        this.container.addEventListener('submit', (e) => {
+        this._container.addEventListener('submit', (e) => {
             e.preventDefault();
             this.events.emit(event);
         });
+    }
+
+    protected disableFormSubmit(disabled: boolean) {
+        if (this._submitButton) {
+            this._submitButton.disabled = disabled;
+        }
     }
 }

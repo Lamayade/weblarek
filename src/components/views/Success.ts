@@ -20,13 +20,13 @@ export class Success extends Component<ISuccess> {
 
         this._successDescriptionElement = findElement<HTMLElement>(
             container,
-            '.order__success-description',
+            '.order-success__description',
             ERROR_NO_SUCCESS_DESCRIPTION
         );
 
         this._successCloseButton = findElement<HTMLButtonElement>(
             container,
-            '.order__success-button',
+            '.order-success__close',
             ERROR_NO_SUCCESS_CLOSE_BUTTON
         );
 

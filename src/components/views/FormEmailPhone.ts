@@ -24,19 +24,19 @@ export class FormEmailPhone extends Form<IForm> {
         super(container, events);
 
         this._initSubmitButton(
-            'modal__actions button[type="submit"]'
+            'button[type="submit"]'
         );
         this._initErrorsElement(
             '.form__errors'
         );
 
         this._emailInput = findElement<HTMLInputElement>(
-            this.container,
+            this._container,
             '.order__field input[name="email"]',
             ERROR_NO_FORM_EMAIL_INPUT
         );
         this._phoneInput = findElement<HTMLInputElement>(
-            this.container,
+            this._container,
             '.order__field input[name="phone"]',
             ERROR_NO_FORM_PHONE_INPUT
         );

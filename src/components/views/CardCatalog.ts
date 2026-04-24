@@ -7,7 +7,6 @@ import {
 import {
     categoryMap,
     TCategory,
-    CDN_URL,
     ERROR_NO_CARD_IMAGE,
     ERROR_NO_CARD_CATEGORY,
 } from "../../utils/constants";
@@ -22,27 +21,27 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
         super(container);
         
         this._image = findElement<HTMLImageElement>(
-            this.container,
+            this._container,
             '.card__image',
             ERROR_NO_CARD_IMAGE
         );
 
         this._category = findElement<HTMLElement>(
-            this.container,
+            this._container,
             '.card__category',
             ERROR_NO_CARD_CATEGORY
         );
     }
 
-    protected set image(value: string) {
+    public set image(value: string) {
         this.setImage(
             this._image,
-            `${CDN_URL}${value}`,
+            value,
             this.title,
         );
     }
 
-    protected set category(value: TCategory) {
+    public set category(value: TCategory) {
         this._category.textContent = value;
         this._category.className = 'card__category';
         this._category.classList.add(categoryMap[value]);

@@ -2,7 +2,10 @@
  * Базовый компонент
  */
 export abstract class Component<T> {
-    protected constructor(protected readonly container: HTMLElement) {
+    protected readonly _container: HTMLElement;
+
+    protected constructor(_container: HTMLElement) {
+        this._container = _container;
         // Учитывайте что код в конструкторе исполняется ДО всех объявлений в дочернем классе
     }
 
@@ -19,6 +22,10 @@ export abstract class Component<T> {
     }
 
     // Вернуть корневой DOM-элемент
+    get container(): HTMLElement {
+        return this._container;
+    }
+
     render(data?: Partial<T>): HTMLElement {
         Object.assign(this as object, data ?? {});
         return this.container;
