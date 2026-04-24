@@ -3,6 +3,7 @@ import {
     IUserError,
     TPayment,
 } from "../../types";
+import { EventEmitter } from "../base/Events";
 
 import {
     ERROR_NO_PAYMENT,
@@ -12,7 +13,7 @@ import {
 } from "../../utils/constants";
 
 
-export class User {
+export class User extends EventEmitter {
     private payment: TPayment = null;
     private email: string = '';
     private phone: string = '';
@@ -20,6 +21,15 @@ export class User {
 
     public set(user: Partial<IUser>): void {
         Object.assign(this, user);
+        this.emit('user:changed', this.get());
+    }
+
+    public clear(): void {
+        this.payment = null;
+        this.email = '';
+        this.phone = '';
+        this.address = '';
+        this.emit('user:cleared');
     }
 
     public get(): IUser {
@@ -29,13 +39,6 @@ export class User {
             phone: this.phone,
             address: this.address
         }
-    }
-
-    public clear(): void {
-        this.payment = null;
-        this.email = '';
-        this.phone = '';
-        this.address = '';
     }
 
     public validate() : IUserError {

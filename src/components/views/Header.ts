@@ -25,7 +25,7 @@ export class Header extends Component<ICartCount> {
             ERROR_NO_HEADER_CART_COUNT
         );
         this._cartButton.addEventListener('click', () => {
-            this.events.emit('cart:open');
+            this.events.emit('cart:opened');
         })
     }
 

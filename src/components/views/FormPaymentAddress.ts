@@ -49,21 +49,21 @@ export class FormPaymentAddress extends Form<IForm> {
 
         this._cardButton.addEventListener('click', () => {
             this.events.emit(
-                'payment:change',
+                'payment:changed',
                 {payment: 'card'},
             );
         });
 
         this._cashButton.addEventListener('click', () => {
             this.events.emit(
-                'payment:change',
+                'payment:changed',
                 {payment: 'cash'},
             );
         });
 
         this._addressInput.addEventListener('input', () => {
             this.events.emit(
-                'address:change',
+                'address:changed',
                 {address: this._addressInput.value},
             );
         });

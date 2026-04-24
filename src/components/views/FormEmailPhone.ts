@@ -43,17 +43,17 @@ export class FormEmailPhone extends Form<IForm> {
 
         this._emailInput.addEventListener('input', () => {
             this.events.emit(
-                'email:change',
+                'email:changed',
                 {email: this._emailInput.value},
             );
         });
         this._phoneInput.addEventListener('input', () => {
             this.events.emit(
-                'phone:change',
+                'phone:changed',
                 {phone: this._phoneInput.value},
             );
         });
-        this.bindSubmit('order:submit');
+        this.bindSubmit('order:submitted');
     }
 
     protected set email(value: string) {
