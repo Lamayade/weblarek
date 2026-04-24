@@ -1,7 +1,7 @@
 import { Component } from "../base/Component";
 import { IProduct } from "../../types";
-import { findElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
+import { findElement } from "../../utils/utils";
 
 
 export class CardCart extends Component<IProduct> {

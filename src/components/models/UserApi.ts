@@ -33,5 +33,3 @@ export class UserApi extends EventEmitter {
         return response;
     }
 }
-
-
