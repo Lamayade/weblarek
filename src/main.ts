@@ -12,7 +12,7 @@ import { Modal } from './components/views/Modal';
 import { FormPaymentAddress } from './components/views/FormPaymentAddress';
 import { FormEmailPhone } from './components/views/FormEmailPhone';
 import { Success } from './components/views/Success';
-import { Basket } from './components/views/Basket';
+import { CartView } from './components/views/Cart';
 import { cloneTemplate } from './utils/utils';
 import './scss/styles.scss';
 
@@ -61,21 +61,22 @@ const success = new Success(
     events
 );
 
-const basket = new Basket(
+const cartView = new CartView(
     cloneTemplate('#basket') as HTMLElement,
-    events
+    events,
+    cart
 );
 
-new Presenter(events, catalog, cart, user, userApi, gallery, modal, basket, formPaymentAddress, formEmailPhone);
+new Presenter(events, catalog, cart, user, userApi, gallery, modal, cartView, formPaymentAddress, formEmailPhone);
 
 events.on<{ product: IProduct }>('card:selected', ({ product }) => {
     catalog.setDetailedProduct(product);
 });
 
 events.on('cart:opened', () => {
-    basket.items = cart.getProducts();
-    basket.total = cart.getTotalPrice();
-    modal.open(basket.container);
+    cartView.items = cart.getProducts();
+    cartView.total = cart.getTotalPrice();
+    modal.open(cartView.container);
 });
 
 events.on<{ product: IProduct }>('card:added', () => {

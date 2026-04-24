@@ -55,13 +55,13 @@ export interface ICardCatalog extends ICard {
 }
 
 export interface ICardDetailed extends ICardCatalog {
-  text: string;
-  isInCart: boolean;
+    text: string;
+    isInCart: boolean;
 }
 
 export interface IForm {
-  isValid: boolean;
-  errors: IUserError;
+    isValid: boolean;
+    errors: IUserError;
 }
 
 export interface ICartCount {
@@ -70,47 +70,4 @@ export interface ICartCount {
 
 export interface IGallery {
     catalog: HTMLElement[];
-}
-
-export type TViewGallery = {
-    catalog: HTMLElement[];
-};
-
-export type TViewModal = {
-  open: (content: HTMLElement) => void;
-  close: () => void;
-};
-
-export type TViewFormPaymentAddress = {
-  payment: TPayment;
-  address: string;
-  errors: IUserError;
-};
-
-export type TViewFormEmailPhone = {
-  email: string;
-  phone: string;
-  errors: IUserError;
-};
-
-export type TViews = {
-  gallery: HTMLElement;
-  modal: TViewModal;
-  formPayment: TViewFormPaymentAddress;
-  formContacts: TViewFormEmailPhone;
-};
-
-export type Events = {
-  'catalog:loaded': IProduct[];
-  'card:selected': IProduct;
-  'card:added': IProduct;
-  'card:removed': IProduct;
-  'cart:opened': void;
-  'cart:changed': IProduct[];
-  'payment:changed': {payment: TPayment};
-  'address:changed': {address: string};
-  'email:changed': {email: string};
-  'phone:changed': {phone: string};
-  'order:next': void;
-  'order:submitted': void;
 }
