@@ -47,19 +47,28 @@ export class FormPaymentAddress extends Form<IForm> {
         this._cardButton.addEventListener('click', () => {
             this._cashButton.classList.remove('button_alt-active');
             this._cardButton.classList.add('button_alt-active');
-            this.events.emit('payment:changed', { payment: 'card' });
+            this.events.emit(
+                'payment:changed',
+                { payment: 'card' }
+            );
             this.updateValidation();
         });
 
         this._cashButton.addEventListener('click', () => {
             this._cardButton.classList.remove('button_alt-active');
             this._cashButton.classList.add('button_alt-active');
-            this.events.emit('payment:changed', { payment: 'cash' });
+            this.events.emit(
+                'payment:changed',
+                { payment: 'cash' }
+            );
             this.updateValidation();
         });
 
         this._addressInput.addEventListener('input', () => {
-            this.events.emit('address:changed', { address: this._addressInput.value });
+            this.events.emit(
+                'address:changed',
+                { address: this._addressInput.value }
+            );
             this.updateValidation();
         });
 

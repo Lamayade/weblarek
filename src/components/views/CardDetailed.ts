@@ -41,9 +41,15 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
         this._button.addEventListener('click', () => {
             if (this._product) {
                 if (this._isInCart) {
-                    this.events.emit('card:removed', { product: this._product });
+                    this.events.emit(
+                        'card:removed',
+                        { product: this._product }
+                    );
                 } else {
-                    this.events.emit('card:added', { product: this._product });
+                    this.events.emit(
+                        'card:added',
+                        { product: this._product }
+                    );
                 }
             }
         });

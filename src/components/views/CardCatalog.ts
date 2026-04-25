@@ -37,13 +37,17 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
 
         container.addEventListener('click', () => {
             if (this._product) {
-                this.events.emit('card:select', { id: this._product.id });
+                this.events.emit(
+                    'card:select',
+                    { id: this._product.id }
+                );
             }
         });
     }
 
     public set data(product: IProduct) {
         super.data = product;
+        //Для соответствия изображений макету меняю разрешение
         this.image = `${CDN_URL}${product.image.replace('.svg', '.png')}`;
         this.category = product.category as TCategory;
     }

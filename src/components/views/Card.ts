@@ -1,5 +1,8 @@
 import { Component } from "../base/Component";
-import { ICard, IProduct } from "../../types";
+import {
+    ICard,
+    IProduct,
+} from "../../types";
 import {
     ERROR_NO_CARD_TITLE,
     ERROR_NO_CARD_PRICE,
