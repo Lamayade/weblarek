@@ -59,12 +59,6 @@ const cartView = new CartView(
     cart
 );
 
-events.on('cart:changed', () => {
-    header.count = cart.getCount();
-    cartView.items = cart.getProducts();
-    cartView.total = cart.getTotalPrice();
-});
-
 new Presenter(
     events,
     catalog,
@@ -82,6 +76,12 @@ new Presenter(
     const data = await userApi.get();
     catalog.setProducts(data.items);
 })();
+
+events.on('cart:changed', () => {
+    header.count = cart.getCount();
+    cartView.items = cart.getProducts();
+    cartView.total = cart.getTotalPrice();
+});
 
 events.on('cart:opened', () => {
     modal.open(cartView.container);

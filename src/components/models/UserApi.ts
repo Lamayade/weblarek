@@ -4,20 +4,14 @@ import {
     IOrderResponse, 
     IProducts,
 } from "../../types";
-import { EventEmitter } from "../base/Events";
 import {
     ROUTE_ORDER,
     ROUTE_PRODUCT,
 } from "../../utils/constants";
 
 
-export class UserApi extends EventEmitter {
-    private api: IApi;
-
-    constructor(api: IApi) {
-        super();
-        this.api = api;
-    }
+export class UserApi {
+    constructor(private api: IApi) {}
 
 
     public async get(): Promise<IProducts> {
