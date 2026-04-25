@@ -326,15 +326,15 @@ constructor(container: HTMLElement)
 
 | Поле | Тип | Описание |
 |------|-----|---------|
-| `_text` | `HTMLElement` | Описание |
-| `_button` | `HTMLButtonElement` | Кнопка |
+| `_text` | `HTMLElement` | Описание товара |
+| `_button` | `HTMLButtonElement` | Кнопка взаимодействия с корзиной |
 | `_isInCart` | `boolean` | В корзине |
 | `onClickAdd: (id: string) => void` | Callback добавления |
 | `onClickRemove: (id: string) => void` | Callback удаления |
 
 | Метод | Описание |
 |-------|---------|
-| `set text(value: string)` | Установить описание |
+| `set text(value: string)` | Установить описание товара |
 | `set isInCart(value: boolean)` | Установить статус корзины |
 
 ---
@@ -356,7 +356,7 @@ constructor(container: HTMLElement, events: IEvents)
 | `set data(value: ICartView)` | Установить все данные |
 | `set items(products: IProduct[])` | Установить товары |
 | `set total(value: number)` | Установить сумму |
-| `set disabled(value: boolean)` | Заблокировать/разблокировать кнопку |
+| `set disabled(value: boolean)` | Заблокировать/разблокировать кнопку оформления заказа|
 
 ---
 
