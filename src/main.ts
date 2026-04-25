@@ -13,7 +13,7 @@ import { FormPaymentAddress } from './components/views/FormPaymentAddress';
 import { FormEmailPhone } from './components/views/FormEmailPhone';
 import { Success } from './components/views/Success';
 import { CartView } from './components/views/Cart';
-import { cloneTemplate } from './utils/utils';
+import { cloneTemplate, ensureElement } from './utils/utils';
 import './scss/styles.scss';
 
 interface IProduct {
@@ -34,15 +34,15 @@ const user = new User();
 const userApi = new UserApi(api);
 
 const modal = new Modal(
-    document.getElementById('modal-container') as HTMLElement,
+    ensureElement<HTMLElement>('#modal-container'),
     events
 );
 const header = new Header(
-    document.querySelector('.header') as HTMLElement,
+    ensureElement<HTMLElement>('.header'),
     events
 );
 const gallery = new Gallery(
-    document.querySelector('.gallery') as HTMLElement,
+    ensureElement<HTMLElement>('.gallery'),
     events
 );
 
@@ -73,7 +73,18 @@ events.on('cart:changed', () => {
     cartView.total = cart.getTotalPrice();
 });
 
-new Presenter(events, catalog, cart, user, userApi, gallery, modal, cartView, formPaymentAddress, formEmailPhone);
+new Presenter(
+    events,
+    catalog,
+    cart,
+    user,
+    userApi,
+    gallery,
+    modal,
+    cartView,
+    formPaymentAddress,
+    formEmailPhone,
+);
 
 (async () => {
     const data = await userApi.get();
