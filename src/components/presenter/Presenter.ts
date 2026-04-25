@@ -2,7 +2,7 @@ import {
     IEvents,
 } from "../base/Events";
 import { cloneTemplate } from "../../utils/utils";
-import { TPayment } from "../../types";
+import { IProduct, IUserError, TPayment } from "../../types";
 
 import { Catalog } from "../models/Catalog";
 import { Cart } from "../models/Cart";
@@ -155,9 +155,17 @@ export class Presenter {
     }
 
     private updateFormValidation(): void {
-        const errors = this.user.validate();
-        this.formPaymentAddress.errors = errors;
-        this.formEmailPhone.errors = errors;
+        const allErrors = this.user.validate();
+        
+        const paymentAddressErrors: IUserError = {};
+        if (allErrors.payment) paymentAddressErrors.payment = allErrors.payment;
+        if (allErrors.address) paymentAddressErrors.address = allErrors.address;
+        this.formPaymentAddress.errors = paymentAddressErrors;
+
+        const emailPhoneErrors: IUserError = {};
+        if (allErrors.email) emailPhoneErrors.email = allErrors.email;
+        if (allErrors.phone) emailPhoneErrors.phone = allErrors.phone;
+        this.formEmailPhone.errors = emailPhoneErrors;
 
         const paymentValid = this.user.get().payment !== null;
         const addressValid = this.user.get().address.trim() !== '';

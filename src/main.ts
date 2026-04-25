@@ -94,9 +94,9 @@ events.on('cart:opened', () => {
 
 events.on('order:open', () => {
     formPaymentAddress.errors = {};
+    formEmailPhone.errors = {};
     formPaymentAddress.payment = null;
     formPaymentAddress.address = '';
-    formPaymentAddress.isValid = false;
     modal.open(formPaymentAddress.container);
 });
 
