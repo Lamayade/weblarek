@@ -17,8 +17,8 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
     private _text: HTMLElement;
     private _button: HTMLButtonElement;
     private _isInCart: boolean = false;
-    onClickAdd: (product: IProduct) => void = () => {};
-    onClickRemove: (product: IProduct) => void = () => {};
+    onClickAdd: (id: string) => void = () => {};
+    onClickRemove: (id: string) => void = () => {};
 
     constructor(container: HTMLElement) {
         super(container);
@@ -36,11 +36,11 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
         );
 
         this._button.addEventListener('click', () => {
-            if (this._product) {
+            if (this._id) {
                 if (this._isInCart) {
-                    this.onClickRemove(this._product);
+                    this.onClickRemove(this._id);
                 } else {
-                    this.onClickAdd(this._product);
+                    this.onClickAdd(this._id);
                 }
             }
         });

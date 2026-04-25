@@ -36,8 +36,8 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
         );
 
         container.addEventListener('click', () => {
-            if (this._product) {
-                this.onClick(this._product.id);
+            if (this._id) {
+                this.onClick(this._id);
             }
         });
     }
@@ -52,7 +52,7 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
         this.setImage(
             this._image,
             value,
-            this._product?.title ?? '',
+            this.title,
         );
     }
 

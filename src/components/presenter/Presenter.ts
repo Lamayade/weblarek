@@ -68,11 +68,11 @@ export class Presenter {
             this.cardDetailed = new CardDetailed(preview);
             this.cardDetailed.data = product;
             this.cardDetailed.isInCart = this.cart.contains(product.id);
-            this.cardDetailed.onClickAdd = (product) => {
-                this.events.emit('card:added', { product });
+            this.cardDetailed.onClickAdd = (id) => {
+                this.events.emit('card:added', { id });
             };
-            this.cardDetailed.onClickRemove = (product) => {
-                this.events.emit('card:removed', { product });
+            this.cardDetailed.onClickRemove = (id) => {
+                this.events.emit('card:removed', { id });
             };
             this.modal.open(preview);
         });
@@ -85,19 +85,25 @@ export class Presenter {
 
         this.events.on('cart:changed', () => {
             this.cartView.total = this.cart.getTotalPrice();
-            if (this.cardDetailed && this.cardDetailed.product) {
-                this.cardDetailed.isInCart = this.cart.contains(this.cardDetailed.product.id);
+            if (this.cardDetailed) {
+                this.cardDetailed.isInCart = this.cart.contains(this.cardDetailed.id);
             }
         });
     }
 
     private bindCartEvents(): void {
-        this.events.on<{ product: IProduct }>('card:added', ({ product }) => {
-            this.cart.addProduct(product);
+        this.events.on<{ id: string }>('card:added', ({ id }) => {
+            const product = this.catalog.getProductById(id);
+            if (product) {
+                this.cart.addProduct(product);
+            }
         });
 
-        this.events.on<{ product: IProduct }>('card:removed', ({ product }) => {
-            this.cart.removeProduct(product);
+        this.events.on<{ id: string }>('card:removed', ({ id }) => {
+            const product = this.catalog.getProductById(id);
+            if (product) {
+                this.cart.removeProduct(product);
+            }
         });
     }
 

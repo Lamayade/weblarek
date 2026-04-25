@@ -16,7 +16,7 @@ export abstract class Card<T extends ICard> extends Component<T> {
     protected _title: HTMLElement;
     protected _price: HTMLElement;
     protected _isAvailable: boolean = true;
-    protected _product: IProduct | null = null;
+    protected _id: string = '';
 
     protected constructor(container: HTMLElement) {
         super(container);
@@ -35,7 +35,7 @@ export abstract class Card<T extends ICard> extends Component<T> {
     }
 
     public set data(product: IProduct) {
-        this._product = product;
+        this._id = product.id;
         this.title = product.title;
         this.price = product.price;
     }
@@ -44,8 +44,8 @@ export abstract class Card<T extends ICard> extends Component<T> {
         this._title.textContent = value;
     }
 
-    public get product(): IProduct | null {
-        return this._product;
+    public get id(): string {
+        return this._id;
     }
 
     public set price(value: number | null) {
