@@ -15,9 +15,10 @@ export class CardCart extends Component<IProduct> {
     private _deleteButton: HTMLButtonElement;
     private _title: HTMLElement;
     private _price: HTMLElement;
-    private _product!: IProduct;
+    private _id: string = '';
+    onClickRemove: (id: string) => void = () => {};
 
-    constructor(container: HTMLElement, private events: IEvents) {
+    constructor(container: HTMLElement) {
         super(container);
 
         this._title = findElement(
@@ -37,15 +38,14 @@ export class CardCart extends Component<IProduct> {
         );
 
         this._deleteButton.addEventListener('click', () => {
-            this.events.emit(
-                'card:removed',
-                { product: this._product }
-            );
+            if (this._id) {
+                this.onClickRemove(this._id);
+            }
         });
     }
 
     set product(value: IProduct) {
-        this._product = value;
+        this._id = value.id;
         this._title.textContent = value.title;
         this._price.textContent = value.price !== null
             ? String(value.price) + TEXT_PRICE_APPENDIX

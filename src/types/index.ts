@@ -70,3 +70,9 @@ export interface ICartCount {
 export interface IGallery {
     catalog: HTMLElement[];
 }
+
+export interface ICartView {
+    items: IProduct[];
+    total: number;
+    disabled: boolean;
+}

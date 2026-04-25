@@ -48,15 +48,14 @@ const formEmailPhone = new FormEmailPhone(
     events
 );
 
-const success = new Success(
-    cloneTemplate('#success') as HTMLElement,
+const cartView = new CartView(
+    cloneTemplate('#basket') as HTMLElement,
     events
 );
 
-const cartView = new CartView(
-    cloneTemplate('#basket') as HTMLElement,
-    events,
-    cart
+const success = new Success(
+    cloneTemplate('#success') as HTMLElement,
+    events
 );
 
 new Presenter(
@@ -79,8 +78,14 @@ new Presenter(
 
 events.on('cart:changed', () => {
     header.count = cart.getCount();
-    cartView.items = cart.getProducts();
-    cartView.total = cart.getTotalPrice();
+    cartView.data = {
+        items: cart.getProducts(),
+        total: cart.getTotalPrice(),
+        disabled: cart.getCount() === 0,
+    };
+    cartView.onCardRemove = (id) => {
+        events.emit('card:removed', { id });
+    };
 });
 
 events.on('cart:opened', () => {
