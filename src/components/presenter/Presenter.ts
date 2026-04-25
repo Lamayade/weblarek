@@ -2,7 +2,7 @@ import {
     IEvents,
 } from "../base/Events";
 import { cloneTemplate } from "../../utils/utils";
-import { IProduct } from "../../types";
+import { IProduct, TPayment } from "../../types";
 
 import { Catalog } from "../models/Catalog";
 import { Cart } from "../models/Cart";
@@ -19,6 +19,8 @@ import { CartView } from "../views/Cart";
 
 
 export class Presenter {
+    private cardDetailed: CardDetailed | null = null;
+
     constructor(
         private events: IEvents,
         private catalog: Catalog,
@@ -46,10 +48,14 @@ export class Presenter {
         this.events.on('catalog:changed', () => {
             const products = this.catalog.getProducts();
             const elements = products.map(product => {
-                const itemElement = cloneTemplate('#card-catalog') as HTMLElement;
-                const card = new CardCatalog(itemElement, this.events);
+                const card = new CardCatalog(
+                    cloneTemplate('#card-catalog') as HTMLElement
+                );
                 card.data = product;
-                return itemElement;
+                card.onClick = (id) => {
+                    this.events.emit('card:select', { id });
+                };
+                return card.render();
             });
             this.gallery.catalog = elements;
         });
@@ -59,8 +65,15 @@ export class Presenter {
             if (!product) return;
 
             const preview = cloneTemplate('#card-preview') as HTMLElement;
-            const cardDetailed = new CardDetailed(preview, this.events, this.cart);
-            cardDetailed.data = product;
+            this.cardDetailed = new CardDetailed(preview);
+            this.cardDetailed.data = product;
+            this.cardDetailed.isInCart = this.cart.contains(product.id);
+            this.cardDetailed.onClickAdd = (product) => {
+                this.events.emit('card:added', { product });
+            };
+            this.cardDetailed.onClickRemove = (product) => {
+                this.events.emit('card:removed', { product });
+            };
             this.modal.open(preview);
         });
 
@@ -72,6 +85,9 @@ export class Presenter {
 
         this.events.on('cart:changed', () => {
             this.cartView.total = this.cart.getTotalPrice();
+            if (this.cardDetailed && this.cardDetailed.product) {
+                this.cardDetailed.isInCart = this.cart.contains(this.cardDetailed.product.id);
+            }
         });
     }
 
@@ -87,7 +103,7 @@ export class Presenter {
 
     private bindUserEvents(): void {
         this.events.on<{ payment: string }>('payment:changed', (data) => {
-            this.user.set({ payment: data.payment as 'card' | 'cash' });
+            this.user.set({ payment: data.payment as TPayment });
             this.updateFormValidation();
         });
 

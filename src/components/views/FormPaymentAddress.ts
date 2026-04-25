@@ -23,7 +23,6 @@ export class FormPaymentAddress extends Form<IForm> {
         super(container, events);
 
         this._initSubmitButton('button[type="submit"]');
-        this.disableFormSubmit(true);
         this._initErrorsElement('.form__errors');
 
         this._cardButton = findElement<HTMLButtonElement>(

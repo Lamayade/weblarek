@@ -14,16 +14,8 @@ import { FormEmailPhone } from './components/views/FormEmailPhone';
 import { Success } from './components/views/Success';
 import { CartView } from './components/views/Cart';
 import { cloneTemplate, ensureElement } from './utils/utils';
+import { IProduct } from './types';
 import './scss/styles.scss';
-
-interface IProduct {
-    id: string;
-    title: string;
-    price: number | null;
-    category: string;
-    image: string;
-    description: string;
-}
 
 const events = new EventEmitter();
 const api = new Api(API_URL);
@@ -96,10 +88,17 @@ events.on('cart:opened', () => {
 });
 
 events.on('order:open', () => {
+    formPaymentAddress.errors = {};
+    formPaymentAddress.payment = null;
+    formPaymentAddress.address = '';
+    formPaymentAddress.isValid = false;
     modal.open(formPaymentAddress.container);
 });
 
 events.on('order:next', () => {
+    formEmailPhone.errors = {};
+    formEmailPhone.email = '';
+    formEmailPhone.phone = '';
     modal.open(formEmailPhone.container);
 });
 

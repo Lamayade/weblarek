@@ -1,7 +1,4 @@
 import {
-    IEvents,
-} from "../base/Events";
-import {
     ICardDetailed,
     IProduct,
 } from "../../types";
@@ -20,11 +17,11 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
     private _text: HTMLElement;
     private _button: HTMLButtonElement;
     private _isInCart: boolean = false;
-    private _cart: { contains(id: string): boolean };
+    onClickAdd: (product: IProduct) => void = () => {};
+    onClickRemove: (product: IProduct) => void = () => {};
 
-    constructor(container: HTMLElement, events: IEvents, cart: { contains(id: string): boolean }) {
-        super(container, events);
-        this._cart = cart;
+    constructor(container: HTMLElement) {
+        super(container);
 
         this._text = findElement<HTMLElement>(
             this._container,
@@ -41,27 +38,15 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
         this._button.addEventListener('click', () => {
             if (this._product) {
                 if (this._isInCart) {
-                    this.events.emit(
-                        'card:removed',
-                        { product: this._product }
-                    );
+                    this.onClickRemove(this._product);
                 } else {
-                    this.events.emit(
-                        'card:added',
-                        { product: this._product }
-                    );
+                    this.onClickAdd(this._product);
                 }
             }
-        });
-
-        this.events.on('cart:changed', () => {
-            this.updateButton();
         });
     }
 
     private updateButton(): void {
-        if (!this._product) return;
-        this._isInCart = this._cart.contains(this._product.id);
         if (!this._isAvailable) {
             this._button.disabled = true;
             this._button.textContent = TEXT_BUTTON_UNAVAILABLE;
@@ -75,6 +60,10 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
     public set data(product: IProduct) {
         super.data = product;
         this.text = product.description;
+    }
+
+    public set isInCart(value: boolean) {
+        this._isInCart = value;
         this.updateButton();
     }
 

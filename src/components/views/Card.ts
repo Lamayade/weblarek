@@ -44,6 +44,10 @@ export abstract class Card<T extends ICard> extends Component<T> {
         this._title.textContent = value;
     }
 
+    public get product(): IProduct | null {
+        return this._product;
+    }
+
     public set price(value: number | null) {
         this._isAvailable = value !== null;
         this._price.textContent = this._isAvailable

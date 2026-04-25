@@ -53,14 +53,23 @@ export class FormEmailPhone extends Form<IForm> {
                 {phone: this._phoneInput.value},
             );
         });
+
+        this.events.on('email:changed', () => this.updateValidation());
+        this.events.on('phone:changed', () => this.updateValidation());
         this.bindSubmit('order:submitted');
     }
 
-    protected set email(value: string) {
+    public set email(value: string) {
         this._emailInput.value = value;
     }
 
-    protected set phone(value: string) {
+    public set phone(value: string) {
         this._phoneInput.value = value;
+    }
+
+    private updateValidation(): void {
+        const emailFilled = this._emailInput.value.trim().length > 0;
+        const phoneFilled = this._phoneInput.value.trim().length > 0;
+        this.disableFormSubmit(!(emailFilled && phoneFilled));
     }
 }
