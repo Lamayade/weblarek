@@ -2,7 +2,7 @@ import {
     IEvents,
 } from "../base/Events";
 import { cloneTemplate } from "../../utils/utils";
-import { IProduct, IUserError, TPayment } from "../../types";
+import { IUserError, TPayment } from "../../types";
 
 import { Catalog } from "../models/Catalog";
 import { Cart } from "../models/Cart";
