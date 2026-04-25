@@ -66,8 +66,8 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
         }
     }
 
-    public setData(product: IProduct): void {
-        super.setData(product);
+    public set data(product: IProduct) {
+        super.data = product;
         this._product = product;
         this.text = product.description;
         this.updateButton();

@@ -1,7 +1,9 @@
 import {
     IEvents,
 } from "../base/Events";
+import { cloneTemplate } from "../../utils/utils";
 import { IProduct } from "../../types";
+
 import { Catalog } from "../models/Catalog";
 import { Cart } from "../models/Cart";
 import { User } from "../models/User";
@@ -13,7 +15,7 @@ import { FormEmailPhone } from "../views/FormEmailPhone";
 import { CardDetailed } from "../views/CardDetailed";
 import { CardCatalog } from "../views/CardCatalog";
 import { CartView } from "../views/Cart";
-import { cloneTemplate } from "../../utils/utils";
+
 
 
 export class Presenter {
@@ -46,7 +48,7 @@ export class Presenter {
             const elements = products.map(product => {
                 const itemElement = cloneTemplate('#card-catalog') as HTMLElement;
                 const card = new CardCatalog(itemElement, this.events);
-                card.setData(product);
+                card.data = product;
                 return itemElement;
             });
             this.gallery.catalog = elements;
@@ -58,7 +60,7 @@ export class Presenter {
 
             const preview = cloneTemplate('#card-preview') as HTMLElement;
             const cardDetailed = new CardDetailed(preview, this.events, this.cart);
-            cardDetailed.setData(product);
+            cardDetailed.data = product;
             this.modal.open(preview);
         });
 

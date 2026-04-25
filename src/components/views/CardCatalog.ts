@@ -43,8 +43,8 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
         });
     }
 
-    public setData(product: IProduct): void {
-        super.setData(product);
+    public set data(product: IProduct) {
+        super.data = product;
         this._product = product;
         this.image = `${CDN_URL}${product.image.replace('.svg', '.png')}`;
         this.category = product.category as TCategory;

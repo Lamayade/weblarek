@@ -30,7 +30,7 @@ export abstract class Card<T extends ICard> extends Component<T> {
         );
     }
 
-    public setData(product: IProduct): void {
+    public set data(product: IProduct) {
         this.title = product.title;
         this.price = product.price;
     }
