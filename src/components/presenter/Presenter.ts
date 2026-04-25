@@ -2,7 +2,7 @@ import {
     IEvents,
 } from "../base/Events";
 import { cloneTemplate } from "../../utils/utils";
-import { IProduct, TPayment } from "../../types";
+import { TPayment } from "../../types";
 
 import { Catalog } from "../models/Catalog";
 import { Cart } from "../models/Cart";
@@ -30,8 +30,8 @@ export class Presenter {
         private gallery: Gallery,
         private modal: Modal,
         private cartView: CartView,
-        private formPayment: FormPaymentAddress,
-        private formContacts: FormEmailPhone
+        private formPaymentAddress: FormPaymentAddress,
+        private formEmailPhone: FormEmailPhone,
     ) {
         this.bindCatalogEvents();
         this.bindCartEvents();
@@ -130,8 +130,8 @@ export class Presenter {
 
         this.events.on('order:submitted', async () => {
             const errors = this.user.validate();
-            this.formPayment.errors = errors;
-            this.formContacts.errors = errors;
+            this.formPaymentAddress.errors = errors;
+            this.formEmailPhone.errors = errors;
             if (Object.keys(errors).length === 0) {
                 const order = {
                     ...this.user.get(),
@@ -147,24 +147,24 @@ export class Presenter {
         this.events.on('order:next', () => {
             const errors = this.user.validate();
             if (Object.keys(errors).length === 0) {
-                this.modal.open(this.formContacts.container);
+                this.modal.open(this.formEmailPhone.container);
             } else {
-                this.formPayment.errors = errors;
+                this.formEmailPhone.errors = errors;
             }
         });
     }
 
     private updateFormValidation(): void {
         const errors = this.user.validate();
-        this.formPayment.errors = errors;
-        this.formContacts.errors = errors;
+        this.formPaymentAddress.errors = errors;
+        this.formEmailPhone.errors = errors;
 
         const paymentValid = this.user.get().payment !== null;
         const addressValid = this.user.get().address.trim() !== '';
-        this.formPayment.isValid = paymentValid && addressValid;
+        this.formPaymentAddress.isValid = paymentValid && addressValid;
 
         const emailValid = this.user.get().email.trim() !== '';
         const phoneValid = this.user.get().phone.trim() !== '';
-        this.formContacts.isValid = emailValid && phoneValid;
+        this.formEmailPhone.isValid = emailValid && phoneValid;
     }
 }

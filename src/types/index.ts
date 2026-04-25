@@ -76,3 +76,20 @@ export interface ICartView {
     total: number;
     disabled: boolean;
 }
+
+export interface ICardCatalogView {
+    data: IProduct;
+    onClick: (id: string) => void;
+}
+
+export interface ICardDetailedView {
+    data: IProduct;
+    isInCart: boolean;
+    onClickAdd: (id: string) => void;
+    onClickRemove: (id: string) => void;
+}
+
+export interface ICartItemView {
+    data: IProduct;
+    onCardRemove: (id: string) => void;
+}

@@ -1,6 +1,5 @@
 import { Component } from "../base/Component";
 import { IProduct } from "../../types";
-import { IEvents } from "../base/Events";
 import { findElement } from "../../utils/utils";
 import {
     TEXT_PRICE_APPENDIX,
