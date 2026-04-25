@@ -68,16 +68,11 @@ export class CardDetailed extends CardCatalog<ICardDetailed> {
 
     public set data(product: IProduct) {
         super.data = product;
-        this._product = product;
         this.text = product.description;
         this.updateButton();
     }
 
     public set text(value: string) {
         this._text.textContent = value;
-    }
-
-    public get text(): string {
-        return this._text.textContent ?? '';
     }
 }

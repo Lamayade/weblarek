@@ -19,9 +19,21 @@ export class CartView extends Component<IProduct[]> {
     constructor(container: HTMLElement, private events: IEvents, private cart: Cart) {
         super(container);
 
-        this._listElement = findElement<HTMLElement>(this._container, '.basket__list', ERROR_NO_BASKET_LIST);
-        this._totalElement = findElement<HTMLElement>(this._container, '.basket__price', ERROR_NO_BASKET_PRICE);
-        this._buttonElement = findElement<HTMLButtonElement>(this._container, '.basket__button', ERROR_NO_BASKET_BUTTON);
+        this._listElement = findElement<HTMLElement>(
+            this._container,
+            '.basket__list',
+            ERROR_NO_BASKET_LIST
+        );
+        this._totalElement = findElement<HTMLElement>(
+            this._container,
+            '.basket__price',
+            ERROR_NO_BASKET_PRICE
+        );
+        this._buttonElement = findElement<HTMLButtonElement>(
+            this._container,
+            '.basket__button',
+            ERROR_NO_BASKET_BUTTON
+        );
 
         this._buttonElement.disabled = true;
 

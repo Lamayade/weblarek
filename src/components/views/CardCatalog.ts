@@ -19,7 +19,6 @@ import { findElement } from "../../utils/utils";
 export class CardCatalog<T extends ICardCatalog> extends Card<T> {
     protected _image: HTMLImageElement;
     protected _category: HTMLElement;
-    protected _product: IProduct | null = null;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
@@ -45,7 +44,6 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
 
     public set data(product: IProduct) {
         super.data = product;
-        this._product = product;
         this.image = `${CDN_URL}${product.image.replace('.svg', '.png')}`;
         this.category = product.category as TCategory;
     }
@@ -54,7 +52,7 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T> {
         this.setImage(
             this._image,
             value,
-            this.title,
+            this._product?.title ?? '',
         );
     }
 
