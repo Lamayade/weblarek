@@ -10,7 +10,7 @@ export class Catalog {
 
     public setProducts(products: IProduct[]): void {
         this.products = products;
-        this.events.emit('catalog:changed', products);
+        this.events.emit('catalog:changed');
     }
 
     public getProducts(): IProduct[] {
@@ -25,7 +25,7 @@ export class Catalog {
 
     public setDetailedProduct(product: IProduct): void {
         this.detailed = product;
-        this.events.emit('catalog:previewChanged', product);
+        this.events.emit('catalog:previewChanged');
     }
 
     public getDetailedProduct(): IProduct | null {

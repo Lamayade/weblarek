@@ -19,20 +19,20 @@ export class User extends EventEmitter {
     private phone: string = '';
     private address: string = '';
 
-    public set(user: Partial<IUser>): void {
+    public setUser(user: Partial<IUser>): void {
         Object.assign(this, user);
-        this.emit('user:changed', this.get());
+        this.emit('user:changed');
     }
 
-    public clear(): void {
+    public clearUser(): void {
         this.payment = null;
         this.email = '';
         this.phone = '';
         this.address = '';
-        this.emit('user:changed', this.get());
+        this.emit('user:changed');
     }
 
-    public get(): IUser {
+    public getUser(): IUser {
         return {
             payment: this.payment,
             email: this.email,
@@ -41,7 +41,7 @@ export class User extends EventEmitter {
         }
     }
 
-    public validate() : IUserError {
+    public validateUser() : IUserError {
         const errors: IUserError = {};
 
         if (this.payment === null) {

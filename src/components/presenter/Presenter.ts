@@ -109,43 +109,43 @@ export class Presenter {
 
     private bindUserEvents(): void {
         this.events.on<{ payment: string }>('payment:changed', (data) => {
-            this.user.set({ payment: data.payment as TPayment });
+            this.user.setUser({ payment: data.payment as TPayment });
             this.updateFormValidation();
         });
 
         this.events.on<{ address: string }>('address:changed', (data) => {
-            this.user.set({ address: data.address });
+            this.user.setUser({ address: data.address });
             this.updateFormValidation();
         });
 
         this.events.on<{ email: string }>('email:changed', (data) => {
-            this.user.set({ email: data.email });
+            this.user.setUser({ email: data.email });
             this.updateFormValidation();
         });
 
         this.events.on<{ phone: string }>('phone:changed', (data) => {
-            this.user.set({ phone: data.phone });
+            this.user.setUser({ phone: data.phone });
             this.updateFormValidation();
         });
 
         this.events.on('order:submitted', async () => {
-            const errors = this.user.validate();
+            const errors = this.user.validateUser();
             this.formPaymentAddress.errors = errors;
             this.formEmailPhone.errors = errors;
             if (Object.keys(errors).length === 0) {
                 const order = {
-                    ...this.user.get(),
+                    ...this.user.getUser(),
                     items: this.cart.getProducts().map(p => p.id),
                     total: this.cart.getTotalPrice(),
                 };
                 await this.userApi.post(order);
                 this.cart.clear();
-                this.user.clear();
+                this.user.clearUser();
             }
         });
 
         this.events.on('order:next', () => {
-            const errors = this.user.validate();
+            const errors = this.user.validateUser();
             if (Object.keys(errors).length === 0) {
                 this.modal.open(this.formEmailPhone.container);
             } else {
@@ -155,7 +155,7 @@ export class Presenter {
     }
 
     private updateFormValidation(): void {
-        const allErrors = this.user.validate();
+        const allErrors = this.user.validateUser();
         
         const paymentAddressErrors: IUserError = {};
         if (allErrors.payment) paymentAddressErrors.payment = allErrors.payment;
@@ -167,12 +167,8 @@ export class Presenter {
         if (allErrors.phone) emailPhoneErrors.phone = allErrors.phone;
         this.formEmailPhone.errors = emailPhoneErrors;
 
-        const paymentValid = this.user.get().payment !== null;
-        const addressValid = this.user.get().address.trim() !== '';
-        this.formPaymentAddress.isValid = paymentValid && addressValid;
+        this.formPaymentAddress.isValid = Object.keys(paymentAddressErrors).length === 0;
 
-        const emailValid = this.user.get().email.trim() !== '';
-        const phoneValid = this.user.get().phone.trim() !== '';
-        this.formEmailPhone.isValid = emailValid && phoneValid;
+        this.formEmailPhone.isValid = Object.keys(emailPhoneErrors).length === 0;
     }
 }

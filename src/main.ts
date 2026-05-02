@@ -109,13 +109,13 @@ events.on('order:next', () => {
 
 events.on('order:submitted', async () => {
     const order = {
-        ...user.get(),
+        ...user.getUser(),
         items: cart.getProducts().map((p: IProduct) => p.id),
         total: cart.getTotalPrice(),
     };
     const response = await userApi.post(order);
     cart.clear();
-    user.clear();
+    user.clearUser();
     success.total = response.total;
     modal.open(success.container);
 });
