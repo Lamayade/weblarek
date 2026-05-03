@@ -1,70 +1,52 @@
 import {
     ICardDetailed,
-    IProduct,
+    TBuyButtonState,
 } from "../../types";
 import {
-    ERROR_NO_CARD_TEXT,
-    ERROR_NO_CARD_BUTTON,
-    TEXT_BUTTON_ADD_TO_CART,
-    TEXT_BUTTON_REMOVE_FROM_CART,
-    TEXT_BUTTON_UNAVAILABLE,
+    MAP_TEXT_BUTTON,
 } from "../../utils/constants";
-import { CardCatalog } from "./CardCatalog";
-import { findElement } from "../../utils/utils";
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from "../base/Events";
+import { Card } from "./Card";
 
 
-export class CardDetailed extends CardCatalog<ICardDetailed> {
+export class CardDetailed<T extends ICardDetailed> extends Card<T> {
     private _text: HTMLElement;
     private _button: HTMLButtonElement;
-    private _isInCart: boolean = false;
-    onClickAdd: (id: string) => void = () => {};
-    onClickRemove: (id: string) => void = () => {};
 
-    constructor(container: HTMLElement) {
+    constructor(
+        container: HTMLElement,
+        private events: IEvents,
+    ) {
         super(container);
 
-        this._text = findElement<HTMLElement>(
-            this._container,
+        this._text = ensureElement<HTMLElement>(
             '.card__text',
-            ERROR_NO_CARD_TEXT
+            this._container,
         );
 
-        this._button = findElement<HTMLButtonElement>(
-            this._container,
+        this._button = ensureElement<HTMLButtonElement>(
             '.card__button',
-            ERROR_NO_CARD_BUTTON
+            this._container,
         );
 
         this._button.addEventListener('click', () => {
-            if (this._id) {
-                if (this._isInCart) {
-                    this.onClickRemove(this._id);
-                } else {
-                    this.onClickAdd(this._id);
-                }
-            }
+            this.events.emit('card:detailed-click');
         });
     }
 
-    private updateButton(): void {
-        if (!this._isAvailable) {
-            this._button.disabled = true;
-            this._button.textContent = TEXT_BUTTON_UNAVAILABLE;
-        } else if (this._isInCart) {
-            this._button.textContent = TEXT_BUTTON_REMOVE_FROM_CART;
-        } else {
-            this._button.textContent = TEXT_BUTTON_ADD_TO_CART;
-        }
-    }
+    public set button(value: TBuyButtonState) {
+        // if (!isAvailable) {
+        //     this._button.disabled = true;
+        //     this._button.textContent = TEXT_BUTTON_UNAVAILABLE;
+        // } else if (isInCart) {
+        //     this._button.textContent = TEXT_BUTTON_REMOVE_FROM_CART;
+        // } else {
+        //     this._button.textContent = TEXT_BUTTON_ADD_TO_CART;
+        // }
 
-    public set data(product: IProduct) {
-        super.data = product;
-        this.text = product.description;
-    }
-
-    public set isInCart(value: boolean) {
-        this._isInCart = value;
-        this.updateButton();
+        this._button.disabled = value.isDisabled;
+        this._button.textContent = MAP_TEXT_BUTTON[value.mode];
     }
 
     public set text(value: string) {

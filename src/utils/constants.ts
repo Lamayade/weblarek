@@ -51,11 +51,21 @@ export const ERROR_NO_MODAL_CONTENT = 'Не найден HTML-элемент к�
 export const ERROR_NO_MODAL_CLOSE = 'Не найден HTML-элемент кнопки закрытия модального окна с классом "modal__close"';
 export const ERROR_NO_CARD_DELETE_BUTTON = 'Не найден HTML-элемент кнопки удаления карточки с классом "card__button"';
 
+
+
+
 export const TEXT_PRICE_APPENDIX = ' синапсов';
 export const TEXT_PRICE_UNAVAILABLE = 'Бесценно';
 export const TEXT_BUTTON_ADD_TO_CART = 'Купить';
 export const TEXT_BUTTON_REMOVE_FROM_CART = 'Удалить из корзины';
 export const TEXT_BUTTON_UNAVAILABLE = 'Недоступно';
+
+
+export const MAP_TEXT_BUTTON = {
+  add: TEXT_BUTTON_ADD_TO_CART,
+  remove: TEXT_BUTTON_REMOVE_FROM_CART,
+  unavailable: TEXT_BUTTON_UNAVAILABLE,
+}
 
 export const ROUTE_PRODUCT = '/product/';
 export const ROUTE_ORDER = '/order/';

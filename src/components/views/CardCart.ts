@@ -1,53 +1,35 @@
-import { Component } from "../base/Component";
-import { IProduct } from "../../types";
-import { findElement } from "../../utils/utils";
-import {
-    TEXT_PRICE_APPENDIX,
-    TEXT_PRICE_UNAVAILABLE,
-    ERROR_NO_CARD_DELETE_BUTTON,
-    ERROR_NO_CARD_TITLE,
-    ERROR_NO_CARD_PRICE,
-} from "../../utils/constants";
+import { 
+    Card,
+} from "./Card";
+import { ensureElement } from "../../utils/utils";
+import { ICard } from "../../types";
+import { IEvents } from "../base/Events";
 
 
-export class CardCart extends Component<IProduct> {
+export class CardCart<T extends ICard> extends Card<T>{
     private _deleteButton: HTMLButtonElement;
-    private _title: HTMLElement;
-    private _price: HTMLElement;
-    private _id: string = '';
-    onClickRemove: (id: string) => void = () => {};
 
-    constructor(container: HTMLElement) {
+    constructor(
+        container: HTMLElement,
+        private events: IEvents,
+    ) {
         super(container);
 
-        this._title = findElement(
-            this._container,
-            '.card__title',
-            ERROR_NO_CARD_TITLE
-        );
-        this._price = findElement(
-            this._container,
-            '.card__price',
-            ERROR_NO_CARD_PRICE
-        );
-        this._deleteButton = findElement<HTMLButtonElement>(
-            this._container,
+        this._deleteButton = ensureElement<HTMLButtonElement>(
             '.card__button',
-            ERROR_NO_CARD_DELETE_BUTTON
+            this._container,
         );
 
         this._deleteButton.addEventListener('click', () => {
-            if (this._id) {
-                this.onClickRemove(this._id);
-            }
+            this.events.emit('card:cart-delete-click');
         });
+
     }
 
-    set product(value: IProduct) {
-        this._id = value.id;
-        this._title.textContent = value.title;
-        this._price.textContent = value.price !== null
-            ? String(value.price) + TEXT_PRICE_APPENDIX
-            : TEXT_PRICE_UNAVAILABLE;
-    }
+    // set product(value: IProduct) {
+    //     this._title.textContent = value.title;
+    //     this._price.textContent = value.price !== null
+    //         ? String(value.price) + TEXT_PRICE_APPENDIX
+    //         : TEXT_PRICE_UNAVAILABLE;
+    // }
 }

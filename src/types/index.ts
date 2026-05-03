@@ -26,7 +26,20 @@ export type IUserError = Partial<
 >;
 
 
-export type TPayment = 'card' | 'cash' | null;
+export type TPayment = 
+'card' |
+'cash' |
+null;
+
+export type TBuyButtonMode = 
+'add' |
+'remove' |
+'unavailable';
+
+export type TBuyButtonState = {
+  isDisabled: boolean;
+  mode: TBuyButtonMode;
+}
 
 export interface IProducts {
   total: number;
@@ -46,7 +59,6 @@ export interface IOrderResponse {
 export interface ICard {
   title: string;
   price: number | null;
-  isAvailable: boolean;
 }
 
 export interface ICardCatalog extends ICard {
@@ -55,24 +67,23 @@ export interface ICardCatalog extends ICard {
 }
 
 export interface ICardDetailed extends ICardCatalog {
-    text: string;
+  text: string;
 }
 
 export interface IForm {
-    isValid: boolean;
-    errors: IUserError;
+  isValid: boolean;
+  errors: IUserError;
 }
 
 export interface ICartCount {
-    count: number;
+  count: number;
 }
 
 export interface IGallery {
-    catalog: HTMLElement[];
+  catalog: HTMLElement[];
 }
 
 export interface ICartView {
-    items: IProduct[];
-    total: number;
-    disabled: boolean;
+  items: IProduct[];
+  total: number;
 }

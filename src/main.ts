@@ -11,10 +11,8 @@ import { Gallery } from './components/views/Gallery';
 import { Modal } from './components/views/Modal';
 import { FormPaymentAddress } from './components/views/FormPaymentAddress';
 import { FormEmailPhone } from './components/views/FormEmailPhone';
-import { Success } from './components/views/Success';
 import { CartView } from './components/views/Cart';
 import { cloneTemplate, ensureElement } from './utils/utils';
-import { IProduct } from './types';
 import './scss/styles.scss';
 
 const events = new EventEmitter();
@@ -50,11 +48,6 @@ const formEmailPhone = new FormEmailPhone(
 
 const cartView = new CartView(
     cloneTemplate('#basket') as HTMLElement,
-    events
-);
-
-const success = new Success(
-    cloneTemplate('#success') as HTMLElement,
     events
 );
 
@@ -105,19 +98,6 @@ events.on('order:next', () => {
     formEmailPhone.email = '';
     formEmailPhone.phone = '';
     modal.open(formEmailPhone.container);
-});
-
-events.on('order:submitted', async () => {
-    const order = {
-        ...user.getUser(),
-        items: cart.getProducts().map((p: IProduct) => p.id),
-        total: cart.getTotalPrice(),
-    };
-    const response = await userApi.post(order);
-    cart.clear();
-    user.clearUser();
-    success.total = response.total;
-    modal.open(success.container);
 });
 
 events.on('success:close', () => {

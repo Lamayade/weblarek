@@ -2,6 +2,7 @@ import {
     Card,
 } from "./Card";
 import { 
+    ICard,
     ICardCatalog,
     IProduct,
 } from "../../types";
@@ -9,41 +10,36 @@ import {
     categoryMap,
     TCategory,
     CDN_URL,
-    ERROR_NO_CARD_IMAGE,
-    ERROR_NO_CARD_CATEGORY,
 } from "../../utils/constants";
-import { findElement } from "../../utils/utils";
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from "../base/Events";
 
-
-export class CardCatalog<T extends ICardCatalog> extends Card<T> {
+export class CardCatalog<T extends ICardCatalog> extends Card<T>{
     protected _image: HTMLImageElement;
     protected _category: HTMLElement;
-    onClick: (id: string) => void = () => {};
 
-    constructor(container: HTMLElement) {
+    constructor(
+        container: HTMLElement,
+        private events: IEvents,
+    ) {
         super(container);
         
-        this._image = findElement<HTMLImageElement>(
-            this._container,
+        this._image =  ensureElement<HTMLImageElement>(
             '.card__image',
-            ERROR_NO_CARD_IMAGE
+            this._container,
         );
 
-        this._category = findElement<HTMLElement>(
-            this._container,
+        this._category = ensureElement<HTMLElement>(
             '.card__category',
-            ERROR_NO_CARD_CATEGORY
+            this._container, 
         );
 
         container.addEventListener('click', () => {
-            if (this._id) {
-                this.onClick(this._id);
-            }
+            this.events.emit('card:catalog-click');
         });
     }
 
     public set data(product: IProduct) {
-        super.data = product;
         this.image = `${CDN_URL}${product.image.replace('.svg', '.png')}`;
         this.category = product.category as TCategory;
     }
