@@ -26,10 +26,16 @@ npm run build
 Приложение построено на архитектурном паттерне **MVP (Model-View-Presenter)**:
 
 - **Model** — слой данных. Отвечает за хранение и изменение данных приложения (каталог товаров, корзина, данные покупателя).
-- **View** — слой представления. Отвечает за отображение данных и получение пользовательского ввода. Не содержит бизнес-логики.
-- **Presenter** — связующее звено. Содержит основную логику приложения, обрабатывает события от View и взаимодействует с Model.
+- **View** — слой представления. Отвечает за отображение данных и получение пользовательского ввода. Не содержит бизнес-логики. Хранит только DOM-элементы.
+- **Presenter** — связующее звено. Содержит основную логику приложения, обрабатывает события от View и взаимодействует с Model. Все слушатели событий устанавливаются только в конструкторе.
 
 Взаимодействие между компонентами реализовано через **EventEmitter** (событийно-ориентированный подход).
+
+Поток данных строго следует цепочке **V-P-M-P-V**:
+1. View сообщает о действии пользователя → Presenter
+2. Presenter обновляет Model
+3. Model уведомляет об изменении → Presenter  
+4. Presenter обновляет View
 
 ---
 
@@ -43,23 +49,23 @@ src/
 │   │   ├── Component.ts            # Базовый компонент View
 │   │   └── Events.ts               # Брокер событий
 │   ├── models/               # Model слой
-│   │   ├── Cart.ts                 # Корзина
-│   │   ├── Catalog.ts              # Каталог товаров
-│   │   ├── User.ts                 # Данные покупателя
-│   │   └── UserApi.ts              # API для сервера
+│   │   ├── Cart.ts                 # Корзина (реализует ICartModel)
+│   │   ├── Catalog.ts              # Каталог товаров (реализует ICatalogModel)
+│   │   ├── User.ts                 # Данные покупателя (реализует IUserModel)
+│   │   └── UserApi.ts              # API для сервера (реализует IUserApi)
 │   ├── views/                # View слой
-│   │   ├── Card.ts                 # Базовый класс карточки
-│   │   ├── CardCatalog.ts          # Карточка в каталоге
-│   │   ├── CardCart.ts             # Карточка в корзине
-│   │   ├── CardDetailed.ts         # Открытая карточка
-│   │   ├── Cart.ts                 # Корзина
+│   │   ├── Card.ts                 # Базовый класс карточки (хранит только DOM)
+│   │   ├── CardCatalog.ts          # Карточка в каталоге (наследуется от Card)
+│   │   ├── CardCart.ts             # Карточка в корзине (наследуется от Card)
+│   │   ├── CardDetailed.ts         # Открытая карточка (наследуется от CardCatalog)
+│   │   ├── CartView.ts             # Корзина (реализует ICartView)
 │   │   ├── Form.ts                 # Базовый класс формы
 │   │   ├── FormEmailPhone.ts       # Форма email/телефона
 │   │   ├── FormPaymentAddress.ts   # Форма оплаты/адреса
 │   │   ├── Gallery.ts              # Галерея
-│   │   ├── Header.ts               # Шапка сайта
-│   │   ├── Modal.ts                # Модальное окно
-│   │   └── Success.ts              # Окно об успехе
+│   │   ├── Header.ts               # Шапка сайта (реализует IHeader)
+│   │   ├── Modal.ts                # Модальное окно (реализует IModal)
+│   │   └── Success.ts              # Окно об успехе (реализует ISuccessView)
 │   └── presenter/
 │       └── Presenter.ts            # Главный презентер
 ├── types/
@@ -72,12 +78,7 @@ src/
 ├── tests/                          # Тесты
 ├── scss/
 │   └── styles.scss                 # Стили
-├── common.blocks/                  # Блоки стилей
-├── images/                         # Изображения
-├── public/                         # Публичные файлы
-├── vendor/                         # Вендорные библиотеки
-├── main.ts                         # Точка входа
-└── vite-env.d.ts                   # Типы Vite
+└── main.ts                         # Точка входа
 ```
 
 ---
@@ -115,7 +116,6 @@ constructor(baseUrl: string, options?: RequestInit)
 | Поле | Тип | Описание |
 |------|-----|---------|
 | `baseUrl` | `string` | Базовый URL сервера |
-| `options` | `RequestInit` | Настройки запросов |
 
 | Метод | Описание |
 |-------|---------|
@@ -170,13 +170,60 @@ type TPayment = 'card' | 'cash' | null;
 type IUserError = Partial<Record<keyof IUser, string>>;
 ```
 
-### ICartView — Данные корзины
+### Интерфейсы Model-слоя
 
 ```ts
+interface ICatalogModel {
+  setProducts(items: IProduct[]): void;
+  getProducts(): IProduct[];
+  getProductById(id: string): IProduct | undefined;
+}
+
+interface ICartModel {
+  getProducts(): IProduct[];
+  addProduct(product: IProduct): void;
+  removeProduct(product: IProduct): void;
+  clear(): void;
+  getTotalPrice(): number;
+  getCount(): number;
+  contains(id: string): boolean;
+}
+
+interface IUserModel {
+  setUser(user: Partial<IUser>): void;
+  clearUser(): void;
+  getUser(): IUser;
+  validateUser(): IUserError;
+}
+
+interface IUserApi {
+  get(): Promise<IProducts>;
+  post(data: IOrderRequest): Promise<IOrderResponse>;
+}
+```
+
+### Интерфейсы View-слоя
+
+```ts
+interface IModal {
+  open(content: HTMLElement): void;
+  close(): void;
+}
+
+interface IHeader {
+  count: number;
+}
+
+interface ISuccessView {
+  total: string;
+  container: HTMLElement;
+}
+
 interface ICartView {
-  items: IProduct[];
-  total: number;
+  list: HTMLElement[];
+  total: string;
   disabled: boolean;
+  container: HTMLElement;
 }
 ```
 
@@ -184,40 +231,29 @@ interface ICartView {
 
 ## Model слой
 
-### Catalog
+### Catalog (реализует ICatalogModel)
 
-Хранит каталог товаров и выбранный товар.
+Хранит каталог товаров.
 
 ```ts
 constructor(events: IEvents)
 ```
-
-| Поле | Тип | Описание |
-|------|-----|---------|
-| `products` | `IProduct[]` | Массив товаров |
-| `detailed` | `IProduct \| null` | Выбранный товар |
 
 | Метод | Описание |
 |-------|---------|
 | `setProducts(products)` | Установить массив товаров |
 | `getProducts(): IProduct[]` | Получить массив товаров |
 | `getProductById(id): IProduct \| undefined` | Найти товар по id |
-| `setDetailedProduct(product)` | Сохранить выбранный товар |
-| `getDetailedProduct(): IProduct \| null` | Получить выбранный товар |
 
 ---
 
-### Cart
+### Cart (реализует ICartModel)
 
 Управляет товарами в корзине.
 
 ```ts
 constructor(events: IEvents)
 ```
-
-| Поле | Тип | Описание |
-|------|-----|---------|
-| `products` | `IProduct[]` | Массив товаров в корзине |
 
 | Метод | Описание |
 |-------|---------|
@@ -231,36 +267,29 @@ constructor(events: IEvents)
 
 ---
 
-### User
+### User (реализует IUserModel)
 
-Хранит данные покупателя.
+Хранит данные покупателя. Валидация данных производится только в модели.
 
 ```ts
-constructor()
+constructor(events: IEvents)
 ```
-
-| Поле | Тип | Описание |
-|------|-----|---------|
-| `payment` | `TPayment` | Способ оплаты |
-| `email` | `string` | Email |
-| `phone` | `string` | Телефон |
-| `address` | `string` | Адрес |
 
 | Метод | Описание |
 |-------|---------|
-| `set(user: Partial<IUser>)` | Сохранить данные |
-| `get(): IUser` | Получить все данные |
-| `clear()` | Очистить данные |
-| `validate(): IUserError` | Валидировать данные |
+| `setUser(user: Partial<IUser>)` | Сохранить данные |
+| `clearUser()` | Очистить данные |
+| `getUser(): IUser` | Получить все данные |
+| `validateUser(): IUserError` | Валидировать данные |
 
 ---
 
-### UserApi
+### UserApi (реализует IUserApi)
 
 Взаимодействие с сервером.
 
 ```ts
-constructor(api: Api)
+constructor(api: IApi)
 ```
 
 | Метод | Описание |
@@ -272,9 +301,9 @@ constructor(api: Api)
 
 ## View слой
 
-### Card
+### Card<T> (абстрактный)
 
-Абстрактный базовый класс карточки товара.
+Базовый класс карточки товара. Хранит только DOM-элементы.
 
 ```ts
 constructor(container: HTMLElement)
@@ -284,24 +313,21 @@ constructor(container: HTMLElement)
 |------|-----|---------|
 | `_title` | `HTMLElement` | Название товара |
 | `_price` | `HTMLElement` | Цена товара |
-| `_isAvailable` | `boolean` | Доступность |
-| `_id` | `string` | ID товара |
 
-| Метод | Описание |
-|-------|---------|
-| `set data(product: IProduct)` | Установить данные товара |
+| Сеттер | Описание |
+|--------|---------|
 | `set title(value: string)` | Установить название |
-| `set price(value: number \| null)` | Установить цену |
-| `get id(): string` | Получить ID |
+| `set price(value: string)` | Установить цену |
+| `set id(value: string)` | Сохранить ID в dataset |
 
 ---
 
-### CardCatalog
+### CardCatalog<T> (наследуется от Card<T>)
 
 Карточка товара в каталоге.
 
 ```ts
-constructor(container: HTMLElement)
+constructor(container: HTMLElement, events: IEvents)
 ```
 
 | Поле | Тип | Описание |
@@ -309,37 +335,53 @@ constructor(container: HTMLElement)
 | `_image` | `HTMLImageElement` | Изображение |
 | `_category` | `HTMLElement` | Категория |
 
-| Метод | Описание |
-|-------|---------|
+| Сеттер | Описание |
+|--------|---------|
 | `set image(value: string)` | Установить изображение |
 | `set category(value: TCategory)` | Установить категорию |
 
 ---
 
-### CardDetailed
+### CardDetailed<T> (наследуется от CardCatalog<T>)
 
-Карточка с подробной информацией.
+Карточка с подробной информацией. Экземпляр создается один раз в main.ts.
 
 ```ts
-constructor(container: HTMLElement)
+constructor(container: HTMLElement, events: IEvents)
 ```
 
 | Поле | Тип | Описание |
 |------|-----|---------|
 | `_text` | `HTMLElement` | Описание товара |
-| `_button` | `HTMLButtonElement` | Кнопка взаимодействия с корзиной |
-| `_isInCart` | `boolean` | В корзине |
-| `onClickAdd: (id: string) => void` | Callback добавления |
-| `onClickRemove: (id: string) => void` | Callback удаления |
+| `_button` | `HTMLButtonElement` | Кнопка взаимодействия |
 
-| Метод | Описание |
-|-------|---------|
-| `set text(value: string)` | Установить описание товара |
-| `set isInCart(value: boolean)` | Установить статус корзины |
+| Сеттер | Описание |
+|--------|---------|
+| `set text(value: string)` | Установить описание |
+| `set button(value: TBuyButtonState)` | Установить состояние кнопки |
 
 ---
 
-### CartView
+### CardCart<T> (наследуется от Card<T>)
+
+Карточка товара в корзине.
+
+```ts
+constructor(container: HTMLElement, events: IEvents)
+```
+
+| Поле | Тип | Описание |
+|------|-----|---------|
+| `_index` | `HTMLElement` | Индекс товара |
+| `_deleteButton` | `HTMLButtonElement` | Кнопка удаления |
+
+| Сеттер | Описание |
+|--------|---------|
+| `set index(value: number)` | Установить индекс |
+
+---
+
+### CartView (реализует ICartView)
 
 Отображение корзины.
 
@@ -347,36 +389,26 @@ constructor(container: HTMLElement)
 constructor(container: HTMLElement, events: IEvents)
 ```
 
-| Поле | Тип | Описание |
-|------|-----|---------|
-| `onCardRemove: (id: string) => void` | Callback удаления товара |
-
 | Сеттер | Описание |
 |--------|---------|
-| `set data(value: ICartView)` | Установить все данные |
-| `set items(products: IProduct[])` | Установить товары |
-| `set total(value: number)` | Установить сумму |
-| `set disabled(value: boolean)` | Заблокировать/разблокировать кнопку оформления заказа|
+| `set list(value: HTMLElement[])` | Установить карточки |
+| `set total(value: string)` | Установить сумму |
+| `set disabled(value: boolean)` | Заблокировать/разблокировать кнопку |
 
 ---
 
-### Form
+### Form (абстрактный)
 
-Абстракный класс формы.
+Базовый класс формы.
 
 ```ts
-constructor(container: HTMLElement, events: IEvents)
+constructor(container: HTMLElement)
 ```
 
 | Сеттер | Описание |
 |--------|---------|
-| `set errors(value: IUserError)` | Задать ошибки |
-| `set isValid(value: boolean)` | Валидность формы |
-
-| Метод | Описание |
-|-------|---------|
-| `bindSubmit(event)` | Привязать отправку к событию |
-| `disableFormSubmit(disabled)` | Заблокировать кнопку отправки |
+| `set errorText(value: string)` | Установить текст ошибок |
+| `set valid(value: boolean)` | Валидность формы |
 
 ---
 
@@ -410,22 +442,22 @@ constructor(container: HTMLElement, events: IEvents)
 
 ---
 
-### Modal
+### Modal (реализует IModal)
 
 Модальное окно.
 
 ```ts
-constructor(container: HTMLElement, events: IEvents)
+constructor(container: HTMLElement)
 ```
 
 | Метод | Описание |
 |-------|---------|
-| `open(content)` | Открыть окно |
+| `open(content: HTMLElement)` | Открыть окно |
 | `close()` | Закрыть окно |
 
 ---
 
-### Header
+### Header (реализует IHeader)
 
 Шапка сайта.
 
@@ -439,9 +471,9 @@ constructor(container: HTMLElement, events: IEvents)
 
 ---
 
-### Gallery
+### Success (реализует ISuccessView)
 
-Каталог товаров.
+Окно успешного заказа.
 
 ```ts
 constructor(container: HTMLElement, events: IEvents)
@@ -449,47 +481,74 @@ constructor(container: HTMLElement, events: IEvents)
 
 | Сеттер | Описание |
 |--------|---------|
-| `set catalog(elements: HTMLElement[])` | Установить карточки |
+| `set total(value: string)` | Установить сумму заказа |
 
 ---
 
 ## Presenter
 
-### Presenter
-
-Главный презентер, связывающий все компоненты.
+Главный презентер, связывающий все компоненты. Все слушатели событий устанавливаются только в конструкторе.
 
 ```ts
 constructor(
   events: IEvents,
-  catalog: Catalog,
-  cart: Cart,
-  user: User,
-  userApi: UserApi,
-  gallery: Gallery,
-  modal: Modal,
-  cartView: CartView,
-  formPayment: FormPaymentAddress,
-  formContacts: FormEmailPhone
+  catalog: ICatalogModel,
+  cart: ICartModel,
+  user: IUserModel,
+  userApi: IUserApi,
+  gallery: IGallery,
+  modal: IModal,
+  header: IHeader,
+  success: ISuccessView,
+  cartView: ICartView,
+  formPaymentAddress: FormPaymentAddress,
+  formEmailPhone: FormEmailPhone,
+  cardCatalogTemplate: HTMLElement,
+  cardCartTemplate: HTMLElement,
+  cardDetailed: CardDetailed,
 )
 ```
 
-| Метод | Описание |
-|-------|---------|
-| `loadCatalog()` | Загрузить каталог с сервера |
-| `bindCatalogEvents()` | Обработка событий каталога |
-| `bindCartEvents()` | Обработка событий корзины |
-| `bindUserEvents()` | Обработка событий форм |
-| `updateFormValidation()` | Обновление валидации форм |
+Presenter использует интерфейсы для взаимодействия с компонентами (инверсия зависимостей).
 
 ---
 
 ## Поток данных при оформлении заказа
 
-1. Пользователь открывает корзину → `Presenter` получает событие → открывает `CartView`
+1. Пользователь открывает корзину → `Presenter` получает событие `cart:open-click` → открывает `CartView`
 2. Пользователь нажимает «Оформить» → `Presenter` открывает `FormPaymentAddress`
-3. Пользователь заполняет данные → `Presenter` валидирует через `User.validate()`
+3. Пользователь выбирает оплату/вводит адрес → View эмитит `payment:changed`/`address:changed` → `Presenter` обновляет `User` → `User` эмитит `user:changed` → `Presenter` обновляет форму
 4. Нажимает «Далее» → `Presenter` открывает `FormEmailPhone`
-5. Заполняет контакты → валидация
+5. Заполняет контакты → аналогично этапу 3
 6. Нажимает «Оплатить» → `Presenter` отправляет заказ через `UserApi.post()`
 7. При успехе → очистка `Cart` и `User` → открытие `Success`
+
+---
+
+## События приложения
+
+### События от View (действия пользователя)
+
+| Событие | Источник | Параметры | Описание |
+|---------|----------|-----------|----------|
+| `card:select` | `CardCatalog` | `{id: string}` | Выбор карточки в каталоге |
+| `card:detailed-click` | `CardDetailed` | `{id: string}` | Клик по кнопке в превью (добавить/удалить из корзины) |
+| `cart:open-click` | `Header` | - | Открытие корзины |
+| `cart:card-delete-click` | `CardCart` | `{id: string}` | Удаление товара из корзины |
+| `cart:confirm-click` | `CartView` | - | Переход к оформлению заказа |
+| `payment:changed` | `FormPaymentAddress` | `{payment: TPayment}` | Изменение способа оплаты |
+| `address:changed` | `FormPaymentAddress` | `{address: string}` | Ввод адреса доставки |
+| `email:changed` | `FormEmailPhone` | `{email: string}` | Ввод email |
+| `phone:changed` | `FormEmailPhone` | `{phone: string}` | Ввод телефона |
+| `order:next` | `FormPaymentAddress` | - | Переход к следующему этапу (контакты) |
+| `order:submitted` | `FormEmailPhone` | - | Отправка заказа на сервер |
+| `success:close` | `Success` | - | Закрытие окна успешного заказа |
+
+### События от Model (изменение данных)
+
+| Событие | Источник | Параметры | Описание |
+|---------|----------|-----------|----------|
+| `catalog:changed` | `Catalog` | - | Каталог товаров загружен/обновлен |
+| `cart:changed` | `Cart` | - | Изменение состава корзины (добавление/удаление/очистка) |
+| `user:changed` | `User` | - | Изменение данных пользователя (оплата/адрес/email/телефон) |
+| `order:success` | `Presenter` | `IOrderResponse` | Успешное оформление заказа |
