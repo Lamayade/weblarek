@@ -36,11 +36,4 @@ export class CardCart<T extends ICard> extends Card<T>{
     set index(value: number) {
         this._index.textContent = String(value);
     }
-
-    // set product(value: IProduct) {
-    //     this._title.textContent = value.title;
-    //     this._price.textContent = value.price !== null
-    //         ? String(value.price) + TEXT_PRICE_APPENDIX
-    //         : TEXT_PRICE_UNAVAILABLE;
-    // }
 }
