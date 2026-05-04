@@ -9,8 +9,6 @@ export class CartView extends Component<ICart> {
     private _totalElement: HTMLElement;
     private _buttonElement: HTMLButtonElement;
     
-    onCardRemove: (id: string) => void = () => {};
-
     constructor(container: HTMLElement, private events: IEvents) {
         super(container);
 

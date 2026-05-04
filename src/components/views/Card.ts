@@ -3,8 +3,7 @@ import { ICard } from "../../types";
 import { ensureElement } from "../../utils/utils";
 
 
-export abstract class Card<T extends ICard> extends Component<T> {
-    protected _id!: string;
+export abstract class Card<T extends ICard  = ICard> extends Component<T> {
     protected _title: HTMLElement;
     protected _price: HTMLElement;
 
@@ -29,17 +28,15 @@ export abstract class Card<T extends ICard> extends Component<T> {
         this._title.textContent = value;
     }
 
-
-    // public set price(value: number | null) {
-    //     this._price.textContent = value !== null
-    //     ? value + TEXT_PRICE_APPENDIX
-    //     : TEXT_PRICE_UNAVAILABLE;
-    // }
     public set price(value: string) {
         this._price.textContent = value;
     }
 
-    public set id(value: string) {
-        this._id = value;
+     public set id(value: string) {
+        this._container.dataset.id = value;
+    }
+
+    protected get cardId(): string | undefined {
+        return this._container.dataset.id;
     }
 }

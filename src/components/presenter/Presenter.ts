@@ -48,7 +48,7 @@ export class Presenter {
         private formEmailPhone: FormEmailPhone,
         private cardCatalogTemplate: HTMLElement,
         private cardCartTemplate: HTMLElement,
-        private cardDetailedTemplate: HTMLElement,
+        private cardDetailed: CardDetailed,
     ) {
         this.loadCatalog();
         this.bindCatalogEvents();
@@ -93,18 +93,13 @@ export class Presenter {
             const product = this.catalog.getProductById(id);
             if (!product) return;
 
-            const cardDetailed = new CardDetailed(
-                this.cardDetailedTemplate.cloneNode(true) as HTMLElement,
-                this.events,
-            );
-
             const price = this.priceAsText(product.price);
 
-            const element = cardDetailed.render({
+            const element = this.cardDetailed.render({
                 ...product,
                 price,
             });
-            cardDetailed.button = {
+            this.cardDetailed.button = {
                 isDisabled: product.price === null,
                 mode:
                     product.price === null
@@ -113,7 +108,7 @@ export class Presenter {
                         ? 'remove'
                         : 'add',
             };
-            cardDetailed.text = product.description;        
+            this.cardDetailed.text = product.description;        
             this.modal.open(element);
         });
 

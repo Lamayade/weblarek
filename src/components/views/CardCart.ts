@@ -27,7 +27,7 @@ export class CardCart<T extends ICard> extends Card<T>{
         this._deleteButton.addEventListener('click', () => {
             this.events.emit(
                 'cart:card-delete-click', 
-                {id: this._id},
+                {id: this.cardId},
             );
         });
 

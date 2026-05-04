@@ -1,11 +1,11 @@
 import { EventEmitter } from './components/base/Events';
 import { Api } from './components/base/Api';
+import { Presenter } from './components/presenter/Presenter';
 import { API_URL } from './utils/constants';
 import { Catalog } from './components/models/Catalog';
 import { Cart } from './components/models/Cart';
 import { User } from './components/models/User';
 import { UserApi } from './components/models/UserApi';
-import { Presenter } from './components/presenter/Presenter';
 import { Header } from './components/views/Header';
 import { Gallery } from './components/views/Gallery';
 import { Modal } from './components/views/Modal';
@@ -14,6 +14,7 @@ import { FormPaymentAddress } from './components/views/FormPaymentAddress';
 import { FormEmailPhone } from './components/views/FormEmailPhone';
 import { CartView } from './components/views/Cart';
 import { cloneTemplate, ensureElement } from './utils/utils';
+import { CardDetailed } from './components/views/CardDetailed';
 import './scss/styles.scss';
 
 const events = new EventEmitter();
@@ -55,9 +56,13 @@ const cartView = new CartView(
     events
 );
 
+const cardDetailed = new CardDetailed(
+    cloneTemplate('#card-preview') as HTMLElement,
+    events
+);
+
 const cardCatalogTemplate = cloneTemplate('#card-catalog') as HTMLElement;
 const cardCartTemplate = cloneTemplate('#card-basket') as HTMLElement;
-const cardDetailedTemplate = cloneTemplate('#card-preview') as HTMLElement;
 
 
 
@@ -76,5 +81,5 @@ const presenter = new Presenter(
     formEmailPhone,
     cardCatalogTemplate,
     cardCartTemplate,
-    cardDetailedTemplate,
+    cardDetailed,
 );

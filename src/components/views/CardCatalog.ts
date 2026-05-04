@@ -7,7 +7,7 @@ import {
 } from "../../utils/constants";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
-export class CardCatalog<T extends ICardCatalog> extends Card<T>{
+export class CardCatalog<T extends ICardCatalog  = ICardCatalog> extends Card<T>{
     protected _image: HTMLImageElement;
     protected _category: HTMLElement;
 
@@ -30,7 +30,7 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T>{
         container.addEventListener('click', () => {
             this.events.emit(
                 'card:select',
-                {id: this._id},
+                {id: this.cardId},
             );
         });
     }

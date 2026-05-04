@@ -10,7 +10,7 @@ import { IEvents } from "../base/Events";
 import { CardCatalog } from "./CardCatalog";
 
 
-export class CardDetailed<T extends ICardDetailed> extends CardCatalog<T> {
+export class CardDetailed<T extends ICardDetailed = ICardDetailed> extends CardCatalog<T> {
     private _text: HTMLElement;
     private _button: HTMLButtonElement;
 
@@ -33,21 +33,12 @@ export class CardDetailed<T extends ICardDetailed> extends CardCatalog<T> {
         this._button.addEventListener('click', () => {
             this.events.emit(
                 'card:detailed-click',
-                {id: this._id},
+                {id: this.cardId},
             );
         });
     }
 
     public set button(value: TBuyButtonState) {
-        // if (!isAvailable) {
-        //     this._button.disabled = true;
-        //     this._button.textContent = TEXT_BUTTON_UNAVAILABLE;
-        // } else if (isInCart) {
-        //     this._button.textContent = TEXT_BUTTON_REMOVE_FROM_CART;
-        // } else {
-        //     this._button.textContent = TEXT_BUTTON_ADD_TO_CART;
-        // }
-
         this._button.disabled = value.isDisabled;
         this._button.textContent = MAP_TEXT_BUTTON[value.mode];
     }
