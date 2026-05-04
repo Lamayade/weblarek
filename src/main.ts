@@ -9,6 +9,7 @@ import { Presenter } from './components/presenter/Presenter';
 import { Header } from './components/views/Header';
 import { Gallery } from './components/views/Gallery';
 import { Modal } from './components/views/Modal';
+import { Success } from './components/views/Success';
 import { FormPaymentAddress } from './components/views/FormPaymentAddress';
 import { FormEmailPhone } from './components/views/FormEmailPhone';
 import { CartView } from './components/views/Cart';
@@ -20,21 +21,24 @@ const api = new Api(API_URL);
 
 const catalog = new Catalog(events);
 const cart = new Cart(events);
-const user = new User();
+const user = new User(events);
 const userApi = new UserApi(api);
 
 const modal = new Modal(
     ensureElement<HTMLElement>('#modal-container'),
-    events
 );
 const header = new Header(
     ensureElement<HTMLElement>('.header'),
-    events
+    events,
 );
 const gallery = new Gallery(
     ensureElement<HTMLElement>('.gallery'),
-    events
 );
+
+const success = new Success(
+    cloneTemplate('#success') as HTMLElement,
+    events,
+)
 
 const formPaymentAddress = new FormPaymentAddress(
     cloneTemplate('#order') as HTMLFormElement,
@@ -51,7 +55,13 @@ const cartView = new CartView(
     events
 );
 
-new Presenter(
+const cardCatalogTemplate = cloneTemplate('#card-catalog') as HTMLElement;
+const cardCartTemplate = cloneTemplate('#card-basket') as HTMLElement;
+const cardDetailedTemplate = cloneTemplate('#card-preview') as HTMLElement;
+
+
+
+const presenter = new Presenter(
     events,
     catalog,
     cart,
@@ -59,48 +69,12 @@ new Presenter(
     userApi,
     gallery,
     modal,
+    header,
+    success,
     cartView,
     formPaymentAddress,
     formEmailPhone,
+    cardCatalogTemplate,
+    cardCartTemplate,
+    cardDetailedTemplate,
 );
-
-(async () => {
-    const data = await userApi.get();
-    catalog.setProducts(data.items);
-})();
-
-events.on('cart:changed', () => {
-    header.count = cart.getCount();
-    cartView.data = {
-        items: cart.getProducts(),
-        total: cart.getTotalPrice(),
-        disabled: cart.getCount() === 0,
-    };
-    cartView.onCardRemove = (id) => {
-        events.emit('card:removed', { id });
-    };
-});
-
-events.on('cart:opened', () => {
-    modal.open(cartView.container);
-});
-
-events.on('order:open', () => {
-    formPaymentAddress.errors = {};
-    formEmailPhone.errors = {};
-    formPaymentAddress.payment = null;
-    formPaymentAddress.address = '';
-    modal.open(formPaymentAddress.container);
-});
-
-events.on('order:next', () => {
-    formEmailPhone.errors = {};
-    formEmailPhone.email = '';
-    formEmailPhone.phone = '';
-    modal.open(formEmailPhone.container);
-});
-
-events.on('success:close', () => {
-    modal.close();
-    header.count = cart.getCount();
-});

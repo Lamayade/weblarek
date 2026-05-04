@@ -1,45 +1,74 @@
 import {
     IEvents,
 } from "../base/Events";
-import { cloneTemplate } from "../../utils/utils";
-import { IUserError, TPayment } from "../../types";
-
-import { Catalog } from "../models/Catalog";
-import { Cart } from "../models/Cart";
-import { User } from "../models/User";
-import { UserApi } from "../models/UserApi";
-import { Gallery } from "../views/Gallery";
-import { Modal } from "../views/Modal";
+import {
+    IUserApi,
+    ICatalogModel,
+    ICartModel,
+    IUserModel,
+    IGallery,
+    TPayment,
+    IOrderResponse,
+    IUserError,
+    IModal,
+    IHeader,
+    ISuccessView,
+    ICartView
+} from "../../types";
+import { 
+    CardCatalog,
+ } from "../views/CardCatalog";
+import {
+    CardDetailed,
+} from "../views/CardDetailed";
+import { CardCart } from "../views/CardCart";
 import { FormPaymentAddress } from "../views/FormPaymentAddress";
 import { FormEmailPhone } from "../views/FormEmailPhone";
-import { CardDetailed } from "../views/CardDetailed";
-import { CardCatalog } from "../views/CardCatalog";
-import { CartView } from "../views/Cart";
-
+import {
+    ERROR_NO_API_RESPONSE,
+    TEXT_PRICE_APPENDIX,
+    TEXT_PRICE_UNAVAILABLE,
+    TEXT_SUCCESS_PREFIX,
+} from "../../utils/constants";
 
 
 export class Presenter {
     constructor(
         private events: IEvents,
-        private catalog: Catalog,
-        private cart: Cart,
-        private user: User,
-        private userApi: UserApi,
-        private gallery: Gallery,
-        private modal: Modal,
-        private cartView: CartView,
+        private catalog: ICatalogModel,
+        private cart: ICartModel,
+        private user: IUserModel,
+        private userApi: IUserApi,
+        private gallery: IGallery,
+        private modal: IModal,
+        private header: IHeader,
+        private success: ISuccessView,
+        private cartView: ICartView,
         private formPaymentAddress: FormPaymentAddress,
         private formEmailPhone: FormEmailPhone,
+        private cardCatalogTemplate: HTMLElement,
+        private cardCartTemplate: HTMLElement,
+        private cardDetailedTemplate: HTMLElement,
     ) {
+        this.loadCatalog();
         this.bindCatalogEvents();
         this.bindCartEvents();
         this.bindUserEvents();
-        this.loadCatalog();
+        
     }
 
     private async loadCatalog(): Promise<void> {
-        const data = await this.userApi.get();
-        this.catalog.setProducts(data.items);
+        try {
+            const data = await this.userApi.get();
+            this.catalog.setProducts(data.items);
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                console.error(ERROR_NO_API_RESPONSE, error.message);
+            } else {
+                console.error(ERROR_NO_API_RESPONSE, error);
+            }
+        }
     }
 
     private bindCatalogEvents(): void {
@@ -47,125 +76,186 @@ export class Presenter {
             const products = this.catalog.getProducts();
             const elements = products.map(product => {
                 const card = new CardCatalog(
-                    cloneTemplate('#card-catalog') as HTMLElement
+                    this.cardCatalogTemplate.cloneNode(true) as HTMLElement,
+                    this.events,
                 );
-                card.data = product;
-                card.onClick = (id) => {
-                    this.events.emit('card:select', {id});
-                };
-                return card.render();
+                const price = this.priceAsText(product.price);
+
+                return card.render({
+                    ...product,
+                    price
+                });
             });
             this.gallery.catalog = elements;
         });
 
-        this.events.on('catalog:previewChanged', () => {
-            const product = this.catalog.getDetailedProduct();
-            if (!product) return;
-
-            const preview = cloneTemplate('#card-preview') as HTMLElement;
-            const cardDetailed = new CardDetailed(preview);
-            cardDetailed.data = product;
-            cardDetailed.isInCart = this.cart.contains(product.id);
-            cardDetailed.onClickAdd = () => {
-                this.events.emit('card:add');
-            };
-            cardDetailed.onClickRemove = () => {
-                this.events.emit('card:remove');
-            };
-            this.modal.open(preview);
-        });
-
-        this.events.on<{ id: string }>('card:select', ({ id }) => {
+        this.events.on<{ id: string }>('card:select', ({id}) => {
             const product = this.catalog.getProductById(id);
             if (!product) return;
-            this.catalog.setDetailedProduct(product);
+
+            const cardDetailed = new CardDetailed(
+                this.cardDetailedTemplate.cloneNode(true) as HTMLElement,
+                this.events,
+            );
+
+            const price = this.priceAsText(product.price);
+
+            const element = cardDetailed.render({
+                ...product,
+                price,
+            });
+            cardDetailed.button = {
+                isDisabled: product.price === null,
+                mode:
+                    product.price === null
+                        ? 'unavailable'
+                        : this.cart.contains(product.id)
+                        ? 'remove'
+                        : 'add',
+            };
+            cardDetailed.text = product.description;        
+            this.modal.open(element);
         });
 
-        this.events.on('cart:changed', () => {
-            this.cartView.total = this.cart.getTotalPrice();
-});
+        this.events.on<{ id: string }>('card:detailed-click', ({id}) => {
+            const product = this.catalog.getProductById(id);
+            if (!product) return;
+            this.cart.contains(id)
+                ? this.cart.removeProduct(product)
+                : this.cart.addProduct(product) 
+        });
+
+        
     }
 
     private bindCartEvents(): void {
-        this.events.on('card:add', () => {
-            const product = this.catalog.getDetailedProduct();
-            if (product) {
-                this.cart.addProduct(product);
-            }
+        this.events.on('cart:open-click', () => {
+            this.modal.open(this.cartView.container);
+        });
+        this.events.on<{ id: string }>('cart:card-delete-click', ({ id }) => {
+            const product = this.cart.getProducts().find(p => p.id === id);
+            if (!product) return;
+            this.cart.removeProduct(product);
+            this.events.emit('cart:changed');
         });
 
-        this.events.on<{ id: string }>('card:remove', () => {
-            const product = this.catalog.getDetailedProduct();
-            if (product) {
-                this.cart.removeProduct(product);
-            }
+        this.events.on('cart:changed', () => {
+            const items = this.cart.getProducts().map((product, index) => {
+                const item = new CardCart(
+                    this.cardCartTemplate.cloneNode(true) as HTMLElement,
+                    this.events,
+                );
+
+                item.id = product.id;
+                item.index = ++index;
+                item.title = product.title;
+                item.price = this.priceAsText(product.price);
+
+                return item.container;
+            });
+
+            this.header.count = this.cart.getCount();
+            this.cartView.list = items;
+            this.cartView.total = `${this.cart.getTotalPrice()} ${TEXT_PRICE_APPENDIX}`;
+            this.cartView.disabled = this.cart.getCount() === 0;
+        });
+
+        this.events.on('cart:confirm-click', () => {
+            this.modal.open(this.formPaymentAddress.container);
         });
     }
 
     private bindUserEvents(): void {
-        this.events.on<{ payment: string }>('payment:changed', (data) => {
-            this.user.setUser({ payment: data.payment as TPayment });
-            this.updateFormValidation();
+        this.events.on<{ payment: TPayment }>('payment:changed', (data) => {
+            this.user.setUser({ payment: data.payment });
         });
 
         this.events.on<{ address: string }>('address:changed', (data) => {
             this.user.setUser({ address: data.address });
-            this.updateFormValidation();
         });
 
         this.events.on<{ email: string }>('email:changed', (data) => {
             this.user.setUser({ email: data.email });
-            this.updateFormValidation();
         });
-
         this.events.on<{ phone: string }>('phone:changed', (data) => {
             this.user.setUser({ phone: data.phone });
-            this.updateFormValidation();
         });
 
-        this.events.on('order:submitted', async () => {
-            const errors = this.user.validateUser();
-            this.formPaymentAddress.errors = errors;
-            this.formEmailPhone.errors = errors;
-            if (Object.keys(errors).length === 0) {
-                const order = {
-                    ...this.user.getUser(),
-                    items: this.cart.getProducts().map(p => p.id),
-                    total: this.cart.getTotalPrice(),
-                };
-                const response = await this.userApi.post(order);
-                this.cart.clear();
-                this.user.clearUser();
+        this.events.on('user:changed', () => {
+            const user = this.user.getUser();
 
-                this.events.emit('order:success', response);
-            }
+            this.formPaymentAddress.payment = user.payment;
+            this.formPaymentAddress.address = user.address;
+
+            this.formEmailPhone.email = user.email;
+            this.formEmailPhone.phone = user.phone;
+
+            this.updateFormValidation();
         });
 
         this.events.on('order:next', () => {
-            const errors = this.user.validateUser();
-            if (Object.keys(errors).length === 0) {
-                this.modal.open(this.formEmailPhone.container);
-            } else {
-                this.formEmailPhone.errors = errors;
-            }
+            this.modal.open(this.formEmailPhone.container);
         });
+
+        this.events.on('order:submitted', async () => {
+            const order = {
+                ...this.user.getUser(),
+                items: this.cart.getProducts().map(p => p.id),
+                total: this.cart.getTotalPrice(),
+            };
+            try {
+                const response = await this.userApi.post(order);
+                this.cart.clear();
+                this.user.clearUser();
+                this.events.emit('order:success', response);
+            }
+            catch (error) {
+                if (error instanceof Error) {
+                    console.error(ERROR_NO_API_RESPONSE, error.message);
+                } else {
+                    console.error(ERROR_NO_API_RESPONSE, error);
+                }
+            }
+            
+        });
+
+        this.events.on<IOrderResponse>('order:success', (response) => {
+            this.success.total = `${TEXT_SUCCESS_PREFIX} ${response.total} ${TEXT_PRICE_APPENDIX}`;
+            this.modal.open(this.success.container);
+
+        })
+
+        this.events.on('success:close', () => {
+            this.modal.close();
+        });
+   }
+
+    private formatErrors(errors: Partial<Record<keyof IUserError, string>>): string {
+        const errorsToShow = Object.values(errors).filter(Boolean) as string[];
+        if (errorsToShow.length === 0) return '';
+        const first = errorsToShow[0];
+        const rest = errorsToShow.slice(1).map(msg => 
+            msg.charAt(0).toLowerCase() + msg.slice(1)
+        );
+        return [first, ...rest].join(', ');
     }
 
     private updateFormValidation(): void {
-        const allErrors = this.user.validateUser();
-        
-        const paymentAddressErrors: IUserError = {};
-        if (allErrors.payment) paymentAddressErrors.payment = allErrors.payment;
-        if (allErrors.address) paymentAddressErrors.address = allErrors.address;
-        this.formPaymentAddress.errors = paymentAddressErrors;
+        const errors = this.user.validateUser();
+        this.formPaymentAddress.errors = this.formatErrors({
+            payment: errors.payment,
+            address: errors.address,
+        });
+        this.formEmailPhone.errors = this.formatErrors({
+            email: errors.email,
+            phone: errors.phone,
+        });
+        this.formPaymentAddress.valid = !errors.payment && !errors.address;
+        this.formEmailPhone.valid = !errors.email && !errors.phone;
+    }
 
-        const emailPhoneErrors: IUserError = {};
-        if (allErrors.email) emailPhoneErrors.email = allErrors.email;
-        if (allErrors.phone) emailPhoneErrors.phone = allErrors.phone;
-        this.formEmailPhone.errors = emailPhoneErrors;
-
-        this.formPaymentAddress.isValid = Object.keys(paymentAddressErrors).length === 0;
-
-        this.formEmailPhone.isValid = Object.keys(emailPhoneErrors).length === 0;
+    private priceAsText(value: number | null): string {
+        if (value !== null) return `${value} ${TEXT_PRICE_APPENDIX}`;
+        return TEXT_PRICE_UNAVAILABLE;
     }
 }

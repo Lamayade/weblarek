@@ -1,31 +1,25 @@
 import { Component } from "../base/Component";
-import { ICartCount } from "../../types";
-import {
-    ERROR_NO_HEADER_CART_BUTTON,
-    ERROR_NO_HEADER_CART_COUNT,
-} from "../../utils/constants";
-import { findElement } from "../../utils/utils";
+import { ICartCount, IHeader } from "../../types";
+import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
 
 
-export class Header extends Component<ICartCount> {
+export class Header extends Component<ICartCount> implements IHeader {
     protected _cartButton: HTMLButtonElement;
     protected _countElement: HTMLElement;
 
     constructor(container: HTMLElement, private events:IEvents) {
         super(container);
-        this._cartButton = findElement<HTMLButtonElement>(
-            this._container,
+        this._cartButton = ensureElement<HTMLButtonElement>(
             '.header__basket',
-            ERROR_NO_HEADER_CART_BUTTON
-        );
-        this._countElement = findElement<HTMLElement>(
             this._container,
+        );
+        this._countElement = ensureElement<HTMLElement>(
             '.header__basket-counter',
-            ERROR_NO_HEADER_CART_COUNT
+            this._container,
         );
         this._cartButton.addEventListener('click', () => {
-            this.events.emit('cart:opened');
+            this.events.emit('cart:open-click');
         })
     }
 
@@ -33,4 +27,3 @@ export class Header extends Component<ICartCount> {
         this._countElement.textContent = String(value);
     }
 }
-    

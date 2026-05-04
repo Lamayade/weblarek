@@ -4,10 +4,13 @@ import { ensureElement } from "../../utils/utils";
 
 
 export abstract class Card<T extends ICard> extends Component<T> {
+    protected _id!: string;
     protected _title: HTMLElement;
     protected _price: HTMLElement;
 
-    protected constructor(container: HTMLElement) {
+    protected constructor(
+        container: HTMLElement
+    ) {
         super(container);
 
         this._title = ensureElement<HTMLElement>(
@@ -34,5 +37,9 @@ export abstract class Card<T extends ICard> extends Component<T> {
     // }
     public set price(value: string) {
         this._price.textContent = value;
+    }
+
+    public set id(value: string) {
+        this._id = value;
     }
 }

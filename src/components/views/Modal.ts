@@ -1,21 +1,18 @@
 import { Component } from "../base/Component";
-import { IEvents } from "../base/Events";
-import { findElement } from "../../utils/utils";
-import {
-    ERROR_NO_MODAL_CONTENT,
-    ERROR_NO_MODAL_CLOSE,
-} from "../../utils/constants";
+import { IModal } from "../../types";
+import { ensureElement } from "../../utils/utils";
 
-export class Modal extends Component<void> {
+export class Modal extends Component<void> implements IModal {
     protected _content: HTMLElement | null = null;
     private _modalContent: HTMLElement;
 
-    constructor(container: HTMLElement, private events: IEvents) {
+    constructor(
+        container: HTMLElement,
+    ) {
         super(container);
-        this._modalContent = findElement<HTMLElement>(
-            this._container,
+        this._modalContent = ensureElement<HTMLElement>(
             '.modal__content',
-            ERROR_NO_MODAL_CONTENT
+            this._container,
         );
 
         this._container.addEventListener('click', (e) => {
@@ -24,10 +21,9 @@ export class Modal extends Component<void> {
             }
         });
 
-        const closeButton = findElement<HTMLButtonElement>(
-            this._container,
+        const closeButton = ensureElement<HTMLButtonElement>(
             '.modal__close',
-            ERROR_NO_MODAL_CLOSE
+            this._container,
         );
         if (closeButton) {
             closeButton.addEventListener('click', () => this.close());
@@ -38,13 +34,11 @@ export class Modal extends Component<void> {
         this._content = content;
         this._modalContent.replaceChildren(content);
         this._container.classList.add('modal_active');
-        this.events.emit('modal:opened');
     }
 
     close(): void {
         this._content = null;
         this._modalContent.replaceChildren();
         this._container.classList.remove('modal_active');
-        this.events.emit('modal:closed');
     }
 }

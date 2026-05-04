@@ -1,17 +1,10 @@
 import {
-    Form,
-} from './Form';
-import {
     IForm,
     TPayment,
 } from '../../types';
-import {
-    ERROR_NO_FORM_CARD_BUTTON,
-    ERROR_NO_FORM_CASH_BUTTON,
-    ERROR_NO_FORM_ADDRESS_INPUT,
-} from "../../utils/constants";
-import { findElement } from "../../utils/utils";
+import { ensureElement } from "../../utils/utils";
 import { IEvents } from '../base/Events';
+import { Form } from './Form';
 
 
 export class FormPaymentAddress extends Form<IForm> {
@@ -19,70 +12,62 @@ export class FormPaymentAddress extends Form<IForm> {
     private _cashButton: HTMLButtonElement;
     private _addressInput: HTMLInputElement;
 
-    constructor(container: HTMLElement, events: IEvents) {
-        super(container, events);
+    constructor(
+        container:HTMLElement,
+        private events: IEvents
+    ) {
+        super(container);
 
-        this._initSubmitButton('button[type="submit"]');
-        this._initErrorsElement('.form__errors');
 
-        this._cardButton = findElement<HTMLButtonElement>(
-            this._container,
+        this._cardButton = ensureElement<HTMLButtonElement>(
             '.order__buttons button[name="card"]',
-            ERROR_NO_FORM_CARD_BUTTON
+            this._container,
         );
 
-        this._cashButton = findElement<HTMLButtonElement>(
-            this._container,
+        this._cashButton = ensureElement<HTMLButtonElement>(
             '.order__buttons button[name="cash"]',
-            ERROR_NO_FORM_CASH_BUTTON
+            this._container,
         );
 
-        this._addressInput = findElement<HTMLInputElement>(
-            this._container,
+        this._addressInput = ensureElement<HTMLInputElement>(
             '.order__field input[name="address"]',
-            ERROR_NO_FORM_ADDRESS_INPUT
+            this._container,
         );
 
         this._cardButton.addEventListener('click', () => {
-            this._cashButton.classList.remove('button_alt-active');
-            this._cardButton.classList.add('button_alt-active');
             this.events.emit(
                 'payment:changed',
-                { payment: 'card' }
+                {payment: 'card' as TPayment},
             );
-            this.updateValidation();
         });
 
         this._cashButton.addEventListener('click', () => {
-            this._cardButton.classList.remove('button_alt-active');
-            this._cashButton.classList.add('button_alt-active');
             this.events.emit(
                 'payment:changed',
-                { payment: 'cash' }
+                {payment: 'cash' as TPayment},
             );
-            this.updateValidation();
         });
 
         this._addressInput.addEventListener('input', () => {
             this.events.emit(
                 'address:changed',
-                { address: this._addressInput.value }
+                {address: this._addressInput.value}
             );
-            this.updateValidation();
         });
 
-        this.events.on('payment:changed', () => this.updateValidation());
-        this.events.on('address:changed', () => this.updateValidation());
-
-        this.bindSubmit('order:next');
+        this._container.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.events.emit(
+                'order:next',
+            );
+        });
     }
 
-    private updateValidation(): void {
-        const paymentSelected = this._cardButton.classList.contains('button_alt-active') ||
-                               this._cashButton.classList.contains('button_alt-active');
-        const addressFilled = this._addressInput.value.trim().length > 0;
-        this.disableFormSubmit(!(paymentSelected && addressFilled));
-    }
+    // private updateValidation(): void {
+    //     const paymentSelected = this._cardButton.classList.contains('button_alt-active') ||
+    //                            this._cashButton.classList.contains('button_alt-active');
+    //     this.disableFormSubmit(!(paymentSelected && addressFilled));
+    // }
 
     set payment(value: TPayment) {
         this._cardButton.classList.toggle('button_alt-active', value === 'card');

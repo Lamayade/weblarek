@@ -7,18 +7,18 @@ import {
 } from "../../utils/constants";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
-import { Card } from "./Card";
+import { CardCatalog } from "./CardCatalog";
 
 
-export class CardDetailed<T extends ICardDetailed> extends Card<T> {
+export class CardDetailed<T extends ICardDetailed> extends CardCatalog<T> {
     private _text: HTMLElement;
     private _button: HTMLButtonElement;
 
     constructor(
         container: HTMLElement,
-        private events: IEvents,
+        events: IEvents,
     ) {
-        super(container);
+        super(container, events);
 
         this._text = ensureElement<HTMLElement>(
             '.card__text',
@@ -31,7 +31,10 @@ export class CardDetailed<T extends ICardDetailed> extends Card<T> {
         );
 
         this._button.addEventListener('click', () => {
-            this.events.emit('card:detailed-click');
+            this.events.emit(
+                'card:detailed-click',
+                {id: this._id},
+            );
         });
     }
 
