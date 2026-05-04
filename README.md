@@ -9,6 +9,8 @@ npm install
 npm run dev
 ```
 
+Перейти по адресу http://localhost:5173/ (или по выведенному в консоль адресу) в браузере.
+
 ## Сборка
 
 ```bash
@@ -18,6 +20,14 @@ npm run build
 # Интернет-магазин «Web-Larёk»
 
 «Web-Larёk» — интернет-магазин с товарами для веб-разработчиков. Пользователи могут просматривать каталог, добавлять товары в корзину и оформлять заказы.
+
+
+## Скриншоты
+![Главная страница](screenshots/main.png)
+![Окно товара с описанием](screenshots/detailed.png)
+![Окно корзины](screenshots/cart.png)
+![Окно формы](screenshots/form.png)
+![Окно подтверждения заказа](screenshots/success.png)
 
 ---
 
@@ -531,18 +541,18 @@ Presenter использует интерфейсы для взаимодейс�
 
 | Событие | Источник | Параметры | Описание |
 |---------|----------|-----------|----------|
-| `card:select` | `CardCatalog` | `{id: string}` | Выбор карточки в каталоге |
-| `card:detailed-click` | `CardDetailed` | `{id: string}` | Клик по кнопке в превью (добавить/удалить из корзины) |
+| `card:select` | `CardCatalog` | `{id: string}` | Выбор карточки товара в каталоге |
+| `card:detailed-click` | `CardDetailed` | `{id: string}` | Клик по кнопке в превью товара (добавить/удалить из корзины) |
 | `cart:open-click` | `Header` | - | Открытие корзины |
 | `cart:card-delete-click` | `CardCart` | `{id: string}` | Удаление товара из корзины |
 | `cart:confirm-click` | `CartView` | - | Переход к оформлению заказа |
 | `payment:changed` | `FormPaymentAddress` | `{payment: TPayment}` | Изменение способа оплаты |
 | `address:changed` | `FormPaymentAddress` | `{address: string}` | Ввод адреса доставки |
-| `email:changed` | `FormEmailPhone` | `{email: string}` | Ввод email |
+| `email:changed` | `FormEmailPhone` | `{email: string}` | Ввод эмейла |
 | `phone:changed` | `FormEmailPhone` | `{phone: string}` | Ввод телефона |
 | `order:next` | `FormPaymentAddress` | - | Переход к следующему этапу (контакты) |
 | `order:submitted` | `FormEmailPhone` | - | Отправка заказа на сервер |
-| `success:close` | `Success` | - | Закрытие окна успешного заказа |
+| `success:close` | `Success` | - | Закрытие окна об успешном подтверждении заказа |
 
 ### События от Model (изменение данных)
 
