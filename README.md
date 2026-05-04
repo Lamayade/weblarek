@@ -68,7 +68,7 @@ src/
 │   │   ├── CardCatalog.ts          # Карточка в каталоге (наследуется от Card)
 │   │   ├── CardCart.ts             # Карточка в корзине (наследуется от Card)
 │   │   ├── CardDetailed.ts         # Открытая карточка (наследуется от CardCatalog)
-│   │   ├── CartView.ts             # Корзина (реализует ICartView)
+│   │   ├── Cart.ts                 # Корзина (реализует ICartView)
 │   │   ├── Form.ts                 # Базовый класс формы
 │   │   ├── FormEmailPhone.ts       # Форма email/телефона
 │   │   ├── FormPaymentAddress.ts   # Форма оплаты/адреса
@@ -82,13 +82,43 @@ src/
 │   └── index.ts                    # Типы данных
 ├── utils/
 │   ├── constants.ts                # Константы
-│   └── utils.ts                    # Утилиты
+│   ├── utils.ts                    # Утилиты
+│   └── data.ts                     # Данные утилит
 ├── pages/
 │   └── index.html                  # HTML-страница
 ├── tests/                          # Тесты
-├── scss/
-│   └── styles.scss                 # Стили
-└── main.ts                         # Точка входа
+│   ├── TestCart.ts
+│   ├── TestCatalog.ts
+│   ├── TestUser.ts
+│   └── TestUserApi.ts
+├── scss/                           # Стили
+│   ├── styles.scss
+│   ├── _variables.scss
+│   └── mixins/
+│       ├── _index.scss
+│       ├── _background.scss
+│       ├── _container.scss
+│       ├── _fix.scss
+│       ├── _icon.scss
+│       └── _interactive.scss
+├── common.blocks/                  # БЭМ-блоки стилей
+├── images/                         # Изображения
+├── public/                         # Публичные файлы
+├── vendor/                         # Вендорные шрифты и CSS
+├── main.ts                         # Точка входа
+└── vite-env.d.ts                   # Типы Vite
+```
+
+### Корневые файлы проекта:
+```
+/
+├── index.html                      # Корневая HTML-страница
+├── vite.config.ts                  # Конфигурация Vite
+├── tsconfig.json                   # Конфигурация TypeScript
+├── package.json                    # Зависимости проекта
+├── .env                            # Переменные окружения
+├── .gitignore                      # Git ignore
+└── README.md                       # Документация
 ```
 
 ---
