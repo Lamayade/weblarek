@@ -51,27 +51,6 @@ export class Presenter {
         private cardDetailed: CardDetailed,
     ) {
         this.loadCatalog();
-        this.bindCatalogEvents();
-        this.bindCartEvents();
-        this.bindUserEvents();
-        
-    }
-
-    private async loadCatalog(): Promise<void> {
-        try {
-            const data = await this.userApi.get();
-            this.catalog.setProducts(data.items);
-        }
-        catch (error) {
-            if (error instanceof Error) {
-                console.error(ERROR_NO_API_RESPONSE, error.message);
-            } else {
-                console.error(ERROR_NO_API_RESPONSE, error);
-            }
-        }
-    }
-
-    private bindCatalogEvents(): void {
         this.events.on('catalog:changed', () => {
             const products = this.catalog.getProducts();
             const elements = products.map(product => {
@@ -120,10 +99,6 @@ export class Presenter {
                 : this.cart.addProduct(product) 
         });
 
-        
-    }
-
-    private bindCartEvents(): void {
         this.events.on('cart:open-click', () => {
             this.modal.open(this.cartView.container);
         });
@@ -158,9 +133,7 @@ export class Presenter {
         this.events.on('cart:confirm-click', () => {
             this.modal.open(this.formPaymentAddress.container);
         });
-    }
 
-    private bindUserEvents(): void {
         this.events.on<{ payment: TPayment }>('payment:changed', (data) => {
             this.user.setUser({ payment: data.payment });
         });
@@ -223,7 +196,23 @@ export class Presenter {
         this.events.on('success:close', () => {
             this.modal.close();
         });
-   }
+
+        
+    }
+
+    private async loadCatalog(): Promise<void> {
+        try {
+            const data = await this.userApi.get();
+            this.catalog.setProducts(data.items);
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                console.error(ERROR_NO_API_RESPONSE, error.message);
+            } else {
+                console.error(ERROR_NO_API_RESPONSE, error);
+            }
+        }
+    }
 
     private formatErrors(errors: Partial<Record<keyof IUserError, string>>): string {
         const errorsToShow = Object.values(errors).filter(Boolean) as string[];
