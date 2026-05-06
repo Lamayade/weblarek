@@ -5,10 +5,10 @@ import {
     MAP_TEXT_BUTTON,
 } from "../../utils/constants";
 import { ensureElement } from "../../utils/utils";
-import { CardCatalog, ICardCatalogData } from "./CardCatalog";
+import { CardCatalog, ICardCatalog } from "./CardCatalog";
 import { IEvents } from "../base/Events";
 
-export interface ICardDetailedData extends ICardCatalogData {
+export interface ICardDetailedData extends ICardCatalog {
     text: string;
 }
 

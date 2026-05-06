@@ -4,12 +4,12 @@ import {
 import { IUserError } from "../../types";
 import { ensureElement } from "../../utils/utils";
 
-export interface IFormData {
+export interface IForm {
     isValid: boolean;
     errors: IUserError;
 }
 
-export abstract class Form<T extends IFormData> extends Component<T> {
+export abstract class Form<T extends IForm> extends Component<T> {
     protected _submitButton: HTMLButtonElement;
     protected _errorsElement: HTMLElement | null;
 

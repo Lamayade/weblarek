@@ -1,7 +1,7 @@
 import { 
     Card,
     ICardActions,
-    ICardData,
+    ICard,
 } from "./Card";
 import {
     categoryMap,
@@ -11,17 +11,13 @@ import {
 import { ensureElement } from "../../utils/utils";
 
 
-export interface ICardCatalogData extends ICardData {
+export interface ICardCatalog extends ICard {
     image: string;
     category: string;
 }
 
-export interface ICardCatalog {
-    image: string;
-    category: string;
-}
 
-export class CardCatalog<T extends ICardCatalogData> extends Card<T>{
+export class CardCatalog<T extends ICardCatalog> extends Card<T>{
     protected _image: HTMLImageElement;
     protected _category: HTMLElement;
 

@@ -24,8 +24,8 @@ import {
     ICardDetailedData,
 } from "../views/CardDetailed";
 import { CardCart } from "../views/CardCart";
-import { FormPaymentAddress, IFormPaymentAddress } from "../views/FormPaymentAddress";
-import { FormEmailPhone, IFormEmailPhone } from "../views/FormEmailPhone";
+import { IFormPaymentAddress } from "../views/FormPaymentAddress";
+import { IFormEmailPhone } from "../views/FormEmailPhone";
 import {
     ERROR_NO_API_RESPONSE,
     TEXT_PRICE_APPENDIX,

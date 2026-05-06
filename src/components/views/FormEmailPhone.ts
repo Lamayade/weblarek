@@ -1,13 +1,14 @@
-import {
-    IFormData,
-} from '../../types';
+
 import {
     ensureElement
 } from "../../utils/utils";
 import {
     IEvents
 } from '../base/Events';
-import { Form } from './Form';
+import {
+    Form,
+    IForm,
+} from './Form';
 
 export interface IFormEmailPhone {
     email: string;
@@ -17,7 +18,7 @@ export interface IFormEmailPhone {
     container: HTMLElement;
 }
 
-export class FormEmailPhone extends Form<IFormData> implements IFormEmailPhone {
+export class FormEmailPhone extends Form<IForm> implements IFormEmailPhone {
     private _emailInput: HTMLInputElement;
     private _phoneInput: HTMLInputElement;
 
