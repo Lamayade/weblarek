@@ -25,7 +25,7 @@ export class Catalog {
 
     public setDetailedProduct(product: IProduct): void {
         this.detailed = product;
-        this.events.emit('catalog:previewChanged');
+        this.events.emit('catalog:detailedChanged');
     }
 
     public getDetailedProduct(): IProduct | null {
