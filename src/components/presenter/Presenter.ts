@@ -24,8 +24,8 @@ import {
     ICardDetailedData,
 } from "../views/CardDetailed";
 import { CardCart } from "../views/CardCart";
-import { FormPaymentAddress } from "../views/FormPaymentAddress";
-import { FormEmailPhone } from "../views/FormEmailPhone";
+import { FormPaymentAddress, IFormPaymentAddress } from "../views/FormPaymentAddress";
+import { FormEmailPhone, IFormEmailPhone } from "../views/FormEmailPhone";
 import {
     ERROR_NO_API_RESPONSE,
     TEXT_PRICE_APPENDIX,
@@ -46,8 +46,8 @@ export class Presenter {
         private header: IHeader,
         private success: ISuccessView,
         private cartView: ICartView,
-        private formPaymentAddress: FormPaymentAddress,
-        private formEmailPhone: FormEmailPhone,
+        private formPaymentAddress: IFormPaymentAddress,
+        private formEmailPhone: IFormEmailPhone,
         private cardCatalogTemplate: HTMLElement,
         private cardCartTemplate: HTMLElement,
         private cardDetailed: CardDetailed<ICardDetailedData>,
