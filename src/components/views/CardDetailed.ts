@@ -1,24 +1,31 @@
 import {
-    ICardDetailed,
     TBuyButtonState,
 } from "../../types";
 import {
     MAP_TEXT_BUTTON,
 } from "../../utils/constants";
 import { ensureElement } from "../../utils/utils";
+import { CardCatalog, ICardCatalogData } from "./CardCatalog";
 import { IEvents } from "../base/Events";
-import { CardCatalog } from "./CardCatalog";
 
+export interface ICardDetailedData extends ICardCatalogData {
+    text: string;
+}
 
-export class CardDetailed<T extends ICardDetailed = ICardDetailed> extends CardCatalog<T> {
+export interface ICardDetailed {
+    button: TBuyButtonState;
+    text: string;
+}
+
+export class CardDetailed<T extends ICardDetailedData> extends CardCatalog<T> implements ICardDetailed {
     private _text: HTMLElement;
     private _button: HTMLButtonElement;
 
     constructor(
         container: HTMLElement,
-        events: IEvents,
+        private events: IEvents,
     ) {
-        super(container, events);
+        super(container);
 
         this._text = ensureElement<HTMLElement>(
             '.card__text',
@@ -31,11 +38,14 @@ export class CardDetailed<T extends ICardDetailed = ICardDetailed> extends CardC
         );
 
         this._button.addEventListener('click', () => {
-            this.events.emit(
-                'card:detailed-click',
-                {id: this.cardId},
-            );
+            this.events.emit('card:detailed-click');
         });
+
+        // if (actions?.onClick) {
+        //     this._button.addEventListener('click', actions.onClick);
+        // }
+                // 'card:detailed-click',
+
     }
 
     public set button(value: TBuyButtonState) {

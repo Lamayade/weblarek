@@ -1,5 +1,6 @@
 import { User } from '../components/models/User';
 import { IUser } from '../types';
+import { EventEmitter } from '../components/base/Events';
 import {
     TEST_ADDRESS,
     TEST_EMAIL,
@@ -8,7 +9,8 @@ import {
 } from '../utils/constants';
 
 export function testUser(): void {
-    const userModel = new User();
+    const events = new EventEmitter();
+    const userModel = new User(events);
     const newUser: IUser = {
         payment: TEST_PAYMENT,
         email: TEST_EMAIL,
@@ -16,26 +18,26 @@ export function testUser(): void {
         address: TEST_ADDRESS,
     }
 
-    userModel.set(newUser);
+    userModel.setUser(newUser);
 
     console.info(
         'Данные покупателя: ', 
-        userModel.get(),
+        userModel.getUser(),
     );
     console.info(
         'Проверка данных покупателя: ', 
-        userModel.validate(),
+        userModel.validateUser(),
     );
 
-    userModel.clear();
+    userModel.clearUser();
 
     console.info(
         'Данные покупателя: ', 
-        userModel.get(),
+        userModel.getUser(),
     );
     console.info(
         'Проверка данных покупателя: ', 
-        userModel.validate(),
+        userModel.validateUser(),
     );
 
 }

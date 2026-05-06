@@ -1,10 +1,21 @@
 import { Component } from "../base/Component";
-import { ICart } from "../../types";
+import { IProduct } from "../../types";
 import { IEvents } from "../base/Events";
 import { ensureElement } from "../../utils/utils";
 
+export interface ICartView {
+    list: HTMLElement[];
+    total: string;
+    disabled: boolean;
+    container: HTMLElement;
+}
 
-export class CartView extends Component<ICart> {
+export interface ICartData {
+    items: IProduct[];
+    total: number;
+}
+
+export class CartView extends Component<ICartData> implements ICartView {
     private _listElement: HTMLElement;
     private _totalElement: HTMLElement;
     private _buttonElement: HTMLButtonElement;

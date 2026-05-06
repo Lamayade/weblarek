@@ -1,13 +1,20 @@
 import {
-    IForm,
+    IFormData,
     TPayment,
 } from '../../types';
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from '../base/Events';
 import { Form } from './Form';
 
+export interface IFormPaymentAddress {
+    payment: TPayment;
+    address: string;
+    valid: boolean;
+    errors: string;
+    container: HTMLElement;
+}
 
-export class FormPaymentAddress extends Form<IForm> {
+export class FormPaymentAddress extends Form<IFormData> implements IFormPaymentAddress {
     private _cardButton: HTMLButtonElement;
     private _cashButton: HTMLButtonElement;
     private _addressInput: HTMLInputElement;

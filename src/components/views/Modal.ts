@@ -1,6 +1,10 @@
 import { Component } from "../base/Component";
-import { IModal } from "../../types";
 import { ensureElement } from "../../utils/utils";
+
+export interface IModal {
+    open(content: HTMLElement): void;
+    close(): void;
+}
 
 export class Modal extends Component<void> implements IModal {
     protected _content: HTMLElement | null = null;

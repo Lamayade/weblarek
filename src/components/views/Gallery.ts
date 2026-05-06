@@ -1,8 +1,15 @@
 import { Component } from "../base/Component";
-import { IGallery } from "../../types";
 import { ERROR_NO_GALLERY_CONTAINER } from "../../utils/constants";
 
-export class Gallery extends Component<IGallery> {
+export interface IGallery {
+    catalog: HTMLElement[];
+}
+
+export interface IGalleryData {
+    catalog: HTMLElement[];
+}
+
+export class Gallery extends Component<IGalleryData> implements IGallery {
     private catalogElement: HTMLElement;
 
     constructor(

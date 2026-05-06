@@ -6,20 +6,22 @@ import {
     ICatalogModel,
     ICartModel,
     IUserModel,
-    IGallery,
     TPayment,
     IOrderResponse,
     IUserError,
-    IModal,
-    IHeader,
-    ISuccessView,
-    ICartView
+    IProduct
 } from "../../types";
+import { IGallery } from "../views/Gallery";
+import { IModal } from "../views/Modal";
+import { IHeader } from "../views/Header";
+import { ISuccessView } from "../views/Success";
+import { ICartView } from "../views/Cart";
 import { 
     CardCatalog,
  } from "../views/CardCatalog";
 import {
     CardDetailed,
+    ICardDetailedData,
 } from "../views/CardDetailed";
 import { CardCart } from "../views/CardCart";
 import { FormPaymentAddress } from "../views/FormPaymentAddress";
@@ -48,15 +50,16 @@ export class Presenter {
         private formEmailPhone: FormEmailPhone,
         private cardCatalogTemplate: HTMLElement,
         private cardCartTemplate: HTMLElement,
-        private cardDetailed: CardDetailed,
+        private cardDetailed: CardDetailed<ICardDetailedData>,
     ) {
+        // const cardDetailed = new CardDetailed
         this.loadCatalog();
         this.events.on('catalog:changed', () => {
             const products = this.catalog.getProducts();
             const elements = products.map(product => {
                 const card = new CardCatalog(
                     this.cardCatalogTemplate.cloneNode(true) as HTMLElement,
-                    this.events,
+                    { onClick: () => this.events.emit('card:select', product) }
                 );
                 const price = this.priceAsText(product.price);
 
@@ -68,55 +71,100 @@ export class Presenter {
             this.gallery.catalog = elements;
         });
 
-        this.events.on<{ id: string }>('card:select', ({id}) => {
-            const product = this.catalog.getProductById(id);
+        // this.events.on('card:select', (product: IProduct) => {
+        //     // const product = this.catalog.getProductById(id);
+        //     if (!product) return;
+
+        //     const price = this.priceAsText(product.price);
+
+        //     const element = this.cardDetailed.render({
+        //         ...product,
+        //         price,
+        //     });
+        //     this.cardDetailed.button = {
+        //         isDisabled: product.price === null,
+        //         mode:
+        //             product.price === null
+        //                 ? 'unavailable'
+        //                 : this.cart.contains(product.id)
+        //                 ? 'remove'
+        //                 : 'add',
+        //     };
+        //     this.cardDetailed.text = product.description;
+        //     this.cardDetailed.onClick = () => {
+        //         this.events.emit('card:detailed-click', product);
+        //     }; 
+        //     this.modal.open(element);
+        // });
+
+
+        this.events.on('card:select', (product: IProduct) => {
             if (!product) return;
+            this.catalog.setDetailedProduct(product);
+        });
+
+        this.events.on('catalog:detailedChanged', () => {
+            const product = this.catalog.getDetailedProduct();
+            if (!product) return;
+            // const card = new CardDetailed(
+            //         this.cardDetailedTemplate,
+            //         { onClick: () => this.events.emit('card:detailed-click', product) }
+            //     );
+            
+            // const price = this.priceAsText(product.price);
+            // card.button = {
+            //     isDisabled: product.price === null,
+            //     mode:
+            //         product.price === null
+            //             ? 'unavailable'
+            //             : this.cart.contains(product.id)
+            //             ? 'remove'
+            //             : 'add',
+            // };
+            // card.text = product.description;
+
+            // const product = this.catalog.getProductById(id);
 
             const price = this.priceAsText(product.price);
-
+            
             const element = this.cardDetailed.render({
                 ...product,
                 price,
             });
-            this.cardDetailed.button = {
-                isDisabled: product.price === null,
-                mode:
-                    product.price === null
-                        ? 'unavailable'
-                        : this.cart.contains(product.id)
-                        ? 'remove'
-                        : 'add',
-            };
-            this.cardDetailed.text = product.description;        
+            this.updateDetailedButton(product);
+            this.cardDetailed.text = product.description;
             this.modal.open(element);
         });
 
-        this.events.on<{ id: string }>('card:detailed-click', ({id}) => {
-            const product = this.catalog.getProductById(id);
+
+        this.events.on('card:detailed-click', () => {
+            const product = this.catalog.getDetailedProduct();
             if (!product) return;
-            this.cart.contains(id)
+            this.cart.contains(product.id)
                 ? this.cart.removeProduct(product)
-                : this.cart.addProduct(product) 
+                : this.cart.addProduct(product)
         });
 
         this.events.on('cart:open-click', () => {
             this.modal.open(this.cartView.container);
         });
-        this.events.on<{ id: string }>('cart:card-delete-click', ({ id }) => {
-            const product = this.cart.getProducts().find(p => p.id === id);
+        this.events.on('cart:card-delete-click', (product: IProduct) => {
             if (!product) return;
             this.cart.removeProduct(product);
-            this.events.emit('cart:changed');
         });
 
         this.events.on('cart:changed', () => {
+            const detailedProduct = this.catalog.getDetailedProduct();
+            if (detailedProduct) {
+                this.updateDetailedButton(detailedProduct);
+            }
             const items = this.cart.getProducts().map((product, index) => {
                 const item = new CardCart(
                     this.cardCartTemplate.cloneNode(true) as HTMLElement,
-                    this.events,
+                    { onClick: () => this.events.emit('cart:card-delete-click', product) }
                 );
 
-                item.id = product.id;
+                // item.id = product.id;
                 item.index = ++index;
                 item.title = product.title;
                 item.price = this.priceAsText(product.price);
@@ -242,4 +290,15 @@ export class Presenter {
         if (value !== null) return `${value} ${TEXT_PRICE_APPENDIX}`;
         return TEXT_PRICE_UNAVAILABLE;
     }
+
+    private updateDetailedButton(product: IProduct): void {
+    this.cardDetailed.button = {
+        isDisabled: product.price === null,
+        mode: product.price === null
+            ? 'unavailable'
+            : this.cart.contains(product.id)
+            ? 'remove'
+            : 'add',
+    };
+}
 }

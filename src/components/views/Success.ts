@@ -1,11 +1,15 @@
 import { Component } from "../base/Component";
 import { ensureElement } from "../../utils/utils";
-import { ISuccessView } from "../../types";
 import { IEvents } from "../base/Events";
 
+export interface ISuccessView {
+    total: string;
+    container: HTMLElement;
+}
 
+import { ISuccessViewData } from "../../types";
 
-export class Success extends Component<ISuccessView> implements ISuccessView {
+export class Success extends Component<ISuccessViewData> implements ISuccessView {
     private _successDescriptionElement: HTMLElement;
     private _successCloseButton: HTMLButtonElement;
 

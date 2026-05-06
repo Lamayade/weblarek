@@ -58,7 +58,7 @@ const cartView = new CartView(
 
 const cardDetailed = new CardDetailed(
     cloneTemplate('#card-preview') as HTMLElement,
-    events
+    events,
 );
 
 const cardCatalogTemplate = cloneTemplate('#card-catalog') as HTMLElement;

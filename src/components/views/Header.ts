@@ -1,8 +1,11 @@
 import { Component } from "../base/Component";
-import { ICartCount, IHeader } from "../../types";
+import { ICartCount } from "../../types";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
 
+export interface IHeader {
+    count: number;
+}
 
 export class Header extends Component<ICartCount> implements IHeader {
     protected _cartButton: HTMLButtonElement;

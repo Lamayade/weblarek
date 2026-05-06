@@ -1,19 +1,33 @@
-import { Card } from "./Card";
-import { ICardCatalog } from "../../types";
+import { 
+    Card,
+    ICardActions,
+    ICardData,
+} from "./Card";
 import {
     categoryMap,
     TCategory,
     CDN_URL,
 } from "../../utils/constants";
 import { ensureElement } from "../../utils/utils";
-import { IEvents } from "../base/Events";
-export class CardCatalog<T extends ICardCatalog  = ICardCatalog> extends Card<T>{
+
+
+export interface ICardCatalogData extends ICardData {
+    image: string;
+    category: string;
+}
+
+export interface ICardCatalog {
+    image: string;
+    category: string;
+}
+
+export class CardCatalog<T extends ICardCatalogData> extends Card<T>{
     protected _image: HTMLImageElement;
     protected _category: HTMLElement;
 
     constructor(
         container: HTMLElement,
-        protected events: IEvents,
+        actions?: ICardActions,
     ) {
         super(container);
         
@@ -27,12 +41,11 @@ export class CardCatalog<T extends ICardCatalog  = ICardCatalog> extends Card<T>
             this._container, 
         );
 
-        container.addEventListener('click', () => {
-            this.events.emit(
-                'card:select',
-                {id: this.cardId},
-            );
-        });
+        if (actions?.onClick) {
+            this._container.addEventListener('click', actions.onClick);
+        }
+
+                // 'card:select',
     }
 
     public set image(value: string) {

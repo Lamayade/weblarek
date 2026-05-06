@@ -1,12 +1,15 @@
 import {
     Component,
 } from "../base/Component";
-import {
-    IForm,
-} from "../../types";
+import { IUserError } from "../../types";
 import { ensureElement } from "../../utils/utils";
 
-export abstract class Form<T extends IForm> extends Component<T> {
+export interface IFormData {
+    isValid: boolean;
+    errors: IUserError;
+}
+
+export abstract class Form<T extends IFormData> extends Component<T> {
     protected _submitButton: HTMLButtonElement;
     protected _errorsElement: HTMLElement | null;
 

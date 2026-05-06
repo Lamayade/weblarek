@@ -1,9 +1,17 @@
 import { Component } from "../base/Component";
-import { ICard } from "../../types";
 import { ensureElement } from "../../utils/utils";
 
+export interface ICardData {
+  id: string;
+  title: string;
+  price: string;
+}
 
-export abstract class Card<T extends ICard  = ICard> extends Component<T> {
+export interface ICardActions {
+    onClick?: () => void;
+}
+
+export abstract class Card<T extends ICardData> extends Component<T> {
     protected _title: HTMLElement;
     protected _price: HTMLElement;
 

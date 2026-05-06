@@ -1,16 +1,23 @@
-import { Card } from "./Card";
+import { 
+    Card,
+    ICardActions,
+    ICardData,
+ } from "./Card";
 import { ensureElement } from "../../utils/utils";
-import { ICard } from "../../types";
-import { IEvents } from "../base/Events";
 
 
-export class CardCart<T extends ICard> extends Card<T>{
+// interface ICardCart extends ICardData {
+//     index: number;
+// }
+
+
+export class CardCart<T extends ICardData> extends Card<T>{
     private _index: HTMLElement;
     private _deleteButton: HTMLButtonElement;
 
     constructor(
         container: HTMLElement,
-        private events: IEvents,
+        actions?: ICardActions,
     ) {
         super(container);
 
@@ -24,12 +31,11 @@ export class CardCart<T extends ICard> extends Card<T>{
             this._container,
         );
 
-        this._deleteButton.addEventListener('click', () => {
-            this.events.emit(
-                'cart:card-delete-click', 
-                {id: this.cardId},
-            );
-        });
+        if (actions?.onClick) {
+            this._deleteButton.addEventListener('click', actions.onClick);
+        }
+                //  'cart:card-delete-click', 
+
 
     }
 

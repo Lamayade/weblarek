@@ -54,7 +54,7 @@ export interface IOrderResponse {
   total: number;
 }
 
-export interface ICard {
+export interface ICardData {
   id: string;
   title: string;
   price: string;
@@ -76,7 +76,6 @@ export interface ICartModel {
   getTotalPrice(): number;
   getCount(): number;
   contains(id: string): boolean;
-
 }
 
 export interface IUserModel {
@@ -86,16 +85,16 @@ export interface IUserModel {
   validateUser() : IUserError;
 }
 
-export interface ICardCatalog extends ICard {
+export interface ICardCatalogData extends ICardData {
   image: string;
   category: string;
 }
 
-export interface ICardDetailed extends ICardCatalog {
+export interface ICardDetailedData extends ICardCatalogData {
   text: string;
 }
 
-export interface IForm {
+export interface IFormData {
   isValid: boolean;
   errors: IUserError;
 }
@@ -104,33 +103,22 @@ export interface ICartCount {
   count: number;
 }
 
-export interface IGallery {
-  catalog: HTMLElement[];
+export interface IGalleryData {
+    catalog: HTMLElement[];
+}
+
+export interface ICartData {
+    items: IProduct[];
+    total: number;
+}
+
+export interface ISuccessViewData {
+    total: string;
 }
 
 export interface ICart {
   items: IProduct[];
   total: number;
-}
-
-export interface ISuccessView {
-    total: string;
-    container: HTMLElement;
-}
-
-export interface IModal {
-    open(content: HTMLElement): void;
-    close(): void;
-}
-export interface IHeader {
-    count: number;
-}
-
-export interface ICartView {
-    list: HTMLElement[];
-    total: string;
-    disabled: boolean;
-    container: HTMLElement;
 }
 
 export interface IUserApi {
