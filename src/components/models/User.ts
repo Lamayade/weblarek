@@ -1,6 +1,4 @@
 import { 
-    IUser,
-    IUserError,
     TPayment,
 } from "../../types";
 import { IEvents } from "../base/Events";
@@ -11,6 +9,10 @@ import {
     ERROR_NO_PHONE,
     ERROR_NO_ADDRESS,
 } from "../../utils/constants";
+import { 
+    IUser,
+    IUserError,
+} from "../../types";
 
 
 export class User {

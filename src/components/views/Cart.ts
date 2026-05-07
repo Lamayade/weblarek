@@ -1,21 +1,15 @@
 import { Component } from "../base/Component";
-import { IProduct } from "../../types";
 import { IEvents } from "../base/Events";
 import { ensureElement } from "../../utils/utils";
+import { TEXT_PRICE_POSTFIX } from "../../utils/constants";
 
 export interface ICartView {
     list: HTMLElement[];
-    total: string;
-    disabled: boolean;
-    container: HTMLElement;
-}
-
-export interface ICartData {
-    items: IProduct[];
     total: number;
+    disabled: boolean;
 }
 
-export class CartView extends Component<ICartData> implements ICartView {
+export class CartView extends Component<ICartView> {
     private _listElement: HTMLElement;
     private _totalElement: HTMLElement;
     private _buttonElement: HTMLButtonElement;
@@ -36,7 +30,6 @@ export class CartView extends Component<ICartData> implements ICartView {
             this._container,
         );
         this._buttonElement.disabled = true;
-
         this._buttonElement.addEventListener('click', () => {
             this.events.emit('cart:confirm-click');
         });
@@ -46,8 +39,8 @@ export class CartView extends Component<ICartData> implements ICartView {
         this._listElement.replaceChildren(...value);
     }
 
-    set total(value: string) {
-        this._totalElement.textContent = value;
+    set total(value: number) {
+        this._totalElement.textContent =  `${value} ${TEXT_PRICE_POSTFIX}`;
     }
 
     set disabled(value: boolean) {

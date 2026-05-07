@@ -1,25 +1,22 @@
-import { 
-    Card,
-    ICardActions,
-    ICard,
-} from "./Card";
+import { CardView, ICardActions } from "./Card";
 import {
     categoryMap,
     TCategory,
     CDN_URL,
 } from "../../utils/constants";
 import { ensureElement } from "../../utils/utils";
+import { ICardView } from "./Card";
 
 
-export interface ICardCatalog extends ICard {
+export interface ICardCatalogView extends ICardView {
     image: string;
     category: string;
 }
 
 
-export class CardCatalog<T extends ICardCatalog> extends Card<T>{
-    protected _image: HTMLImageElement;
-    protected _category: HTMLElement;
+export class CardCatalogView extends CardView<ICardCatalogView>{
+    protected _imageElement: HTMLImageElement;
+    protected _categoryElement: HTMLElement;
 
     constructor(
         container: HTMLElement,
@@ -27,12 +24,12 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T>{
     ) {
         super(container);
         
-        this._image =  ensureElement<HTMLImageElement>(
+        this._imageElement = ensureElement<HTMLImageElement>(
             '.card__image',
             this._container,
         );
 
-        this._category = ensureElement<HTMLElement>(
+        this._categoryElement = ensureElement<HTMLElement>(
             '.card__category',
             this._container, 
         );
@@ -40,24 +37,19 @@ export class CardCatalog<T extends ICardCatalog> extends Card<T>{
         if (actions?.onClick) {
             this._container.addEventListener('click', actions.onClick);
         }
-
-                // 'card:select',
     }
 
     public set image(value: string) {
         this.setImage(
-            this._image,
+            this._imageElement,
             `${CDN_URL}${value.replace('.svg', '.png')}`,
-            this.title,
         );
     }
 
     public set category(value: TCategory) {
-        this._category.textContent = value;
-        this._category.className = 'card__category';
-        this._category.classList.add(categoryMap[value]);
+        this._categoryElement.textContent = value;
+        this._categoryElement.className = 'card__category';
+        this._categoryElement.classList.add(categoryMap[value]);
     }
-
-    
 }
 

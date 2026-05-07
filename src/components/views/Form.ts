@@ -1,15 +1,11 @@
-import {
-    Component,
-} from "../base/Component";
-import { IUserError } from "../../types";
+import { Component } from "../base/Component";
 import { ensureElement } from "../../utils/utils";
 
-export interface IForm {
-    isValid: boolean;
-    errors: IUserError;
+export interface IFormView {
+    valid: boolean;
+    errors: string;
 }
-
-export abstract class Form<T extends IForm> extends Component<T> {
+export abstract class FormView<T extends IFormView> extends Component<T> {
     protected _submitButton: HTMLButtonElement;
     protected _errorsElement: HTMLElement | null;
 
@@ -30,7 +26,6 @@ export abstract class Form<T extends IForm> extends Component<T> {
     set valid(value: boolean) {
         this._submitButton.disabled = !value;
     }
-
 
     set errors(value: string) {
         if (this._errorsElement) {

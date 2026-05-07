@@ -1,18 +1,18 @@
 import { 
-    Card,
     ICardActions,
-    ICardData,
+    ICardView,
+    CardView,
  } from "./Card";
 import { ensureElement } from "../../utils/utils";
 
 
-// interface ICardCart extends ICardData {
-//     index: number;
-// }
+export interface ICardCartView extends ICardView {
+    index: string;
+}
 
 
-export class CardCart<T extends ICardData> extends Card<T>{
-    private _index: HTMLElement;
+export class CardCartView extends CardView<ICardCartView>{
+    private _indexElement: HTMLElement;
     private _deleteButton: HTMLButtonElement;
 
     constructor(
@@ -21,7 +21,7 @@ export class CardCart<T extends ICardData> extends Card<T>{
     ) {
         super(container);
 
-        this._index = ensureElement(
+        this._indexElement = ensureElement(
             '.basket__item-index',
             this._container,
         );
@@ -34,12 +34,9 @@ export class CardCart<T extends ICardData> extends Card<T>{
         if (actions?.onClick) {
             this._deleteButton.addEventListener('click', actions.onClick);
         }
-                //  'cart:card-delete-click', 
-
-
     }
 
-    set index(value: number) {
-        this._index.textContent = String(value);
+    set index(value: string) {
+        this._indexElement.textContent = value;
     }
 }

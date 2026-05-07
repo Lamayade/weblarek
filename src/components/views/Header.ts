@@ -1,13 +1,12 @@
 import { Component } from "../base/Component";
-import { ICartCount } from "../../types";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
 
-export interface IHeader {
+export interface IHeaderView {
     count: number;
 }
 
-export class Header extends Component<ICartCount> implements IHeader {
+export class HeaderView extends Component<IHeaderView> {
     protected _cartButton: HTMLButtonElement;
     protected _countElement: HTMLElement;
 

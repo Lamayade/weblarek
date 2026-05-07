@@ -1,5 +1,4 @@
 import { 
-    IApi, 
     IOrderRequest,
     IOrderResponse, 
     IProducts,
@@ -8,6 +7,12 @@ import {
     ROUTE_ORDER,
     ROUTE_PRODUCT,
 } from "../../utils/constants";
+import { IApi } from "../base/Api";
+
+export interface IUserApi {
+  get(): Promise<IProducts>;
+  post(data: IOrderRequest): Promise<IOrderResponse>;
+}
 
 
 export class UserApi {

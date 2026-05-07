@@ -1,12 +1,12 @@
 import { Component } from "../base/Component";
 import { ensureElement } from "../../utils/utils";
 
-export interface IModal {
+export interface IModalView {
     open(content: HTMLElement): void;
     close(): void;
 }
 
-export class Modal extends Component<void> implements IModal {
+export class ModalView extends Component<IModalView> {
     protected _content: HTMLElement | null = null;
     private _modalContent: HTMLElement;
 
@@ -29,19 +29,15 @@ export class Modal extends Component<void> implements IModal {
             '.modal__close',
             this._container,
         );
-        if (closeButton) {
-            closeButton.addEventListener('click', () => this.close());
-        }
+        closeButton.addEventListener('click', () => this.close());
     }
 
     open(content: HTMLElement): void {
-        this._content = content;
         this._modalContent.replaceChildren(content);
         this._container.classList.add('modal_active');
     }
 
     close(): void {
-        this._content = null;
         this._modalContent.replaceChildren();
         this._container.classList.remove('modal_active');
     }

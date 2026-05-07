@@ -1,24 +1,15 @@
 
-import {
-    ensureElement
-} from "../../utils/utils";
-import {
-    IEvents
-} from '../base/Events';
-import {
-    Form,
-    IForm,
-} from './Form';
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from '../base/Events';
+import { FormView, IFormView } from './Form';
 
-export interface IFormEmailPhone {
+
+export interface IFormEmailPhoneView extends IFormView {
     email: string;
     phone: string;
-    valid: boolean;
-    errors: string;
-    container: HTMLElement;
 }
 
-export class FormEmailPhone extends Form<IForm> implements IFormEmailPhone {
+export class FormEmailPhoneView extends FormView<IFormEmailPhoneView> {
     private _emailInput: HTMLInputElement;
     private _phoneInput: HTMLInputElement;
 
@@ -36,7 +27,6 @@ export class FormEmailPhone extends Form<IForm> implements IFormEmailPhone {
             '.order__field input[name="phone"]',
             this._container,
         );
-
         this._emailInput.addEventListener('input', () => {
             this.events.emit(
                 'email:changed',

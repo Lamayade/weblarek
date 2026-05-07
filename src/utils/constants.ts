@@ -26,11 +26,10 @@ export const ERROR_NO_PAYMENT = 'Не указан вид оплаты';
 export const ERROR_NO_EMAIL = 'Не указана почта';
 export const ERROR_NO_PHONE = 'Не указан номер телефона';
 export const ERROR_NO_ADDRESS = 'Не указан адрес';
-export const ERROR_NO_GALLERY_CONTAINER = 'Не найден HTML-элемент контейнера галереи с классом "gallery"';
 export const ERROR_NO_API_RESPONSE = 'Нет ответа от API';
 
 
-export const TEXT_PRICE_APPENDIX = 'синапсов';
+export const TEXT_PRICE_POSTFIX = 'синапсов';
 export const TEXT_PRICE_UNAVAILABLE = 'Бесценно';
 export const TEXT_BUTTON_ADD_TO_CART = 'Купить';
 export const TEXT_BUTTON_REMOVE_FROM_CART = 'Удалить из корзины';

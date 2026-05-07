@@ -1,20 +1,15 @@
-import {
-    IFormData,
-    TPayment,
-} from '../../types';
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from '../base/Events';
-import { Form } from './Form';
+import { TPayment } from '../../types';
+import { FormView, IFormView } from './Form';
 
-export interface IFormPaymentAddress {
+
+export interface IFormPaymentAddressView extends IFormView {
     payment: TPayment;
     address: string;
-    valid: boolean;
-    errors: string;
-    container: HTMLElement;
 }
 
-export class FormPaymentAddress extends Form<IFormData> implements IFormPaymentAddress {
+export class FormPaymentAddressView extends FormView<IFormPaymentAddressView> {
     private _cardButton: HTMLButtonElement;
     private _cashButton: HTMLButtonElement;
     private _addressInput: HTMLInputElement;
@@ -69,12 +64,6 @@ export class FormPaymentAddress extends Form<IFormData> implements IFormPaymentA
             );
         });
     }
-
-    // private updateValidation(): void {
-    //     const paymentSelected = this._cardButton.classList.contains('button_alt-active') ||
-    //                            this._cashButton.classList.contains('button_alt-active');
-    //     this.disableFormSubmit(!(paymentSelected && addressFilled));
-    // }
 
     set payment(value: TPayment) {
         this._cardButton.classList.toggle('button_alt-active', value === 'card');
