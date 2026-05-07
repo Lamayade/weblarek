@@ -9,11 +9,6 @@ import {
 } from "../../utils/constants";
 import { IApi } from "../base/Api";
 
-export interface IUserApi {
-  get(): Promise<IProducts>;
-  post(data: IOrderRequest): Promise<IOrderResponse>;
-}
-
 
 export class UserApi {
     constructor(private api: IApi) {}
