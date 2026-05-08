@@ -141,11 +141,8 @@ events.on('card:select', (product: IProduct) => {
 events.on('catalog:detailedChanged', () => {
     const product = catalog.getDetailedProduct();
     if (!product) return;
-    cardDetailed.render({
-        ...product,
-    });
     updateDetailedButton(product);
-    modal.open(cardDetailed.render());
+    modal.open(cardDetailed.render({...product}));
 });
 
 events.on('card:detailed-click', () => {
@@ -167,10 +164,6 @@ events.on('cart:card-delete-click', (product: IProduct) => {
 });
 
 events.on('cart:changed', () => {
-    const detailedProduct = catalog.getDetailedProduct();
-    if (detailedProduct) {
-        updateDetailedButton(detailedProduct);
-    }
     const items = cart.getProducts().map((product, index) => {
         const item = new CardCartView(
             cardCartTemplate.cloneNode(true) as HTMLElement,
