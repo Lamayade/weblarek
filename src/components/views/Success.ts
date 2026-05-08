@@ -11,32 +11,32 @@ export interface ISuccessView {
 }
 
 export class SuccessView extends Component<ISuccessView> {
-    private _successDescriptionElement: HTMLElement;
-    private _successCloseButton: HTMLButtonElement;
+    private successDescriptionElement: HTMLElement;
+    private successCloseButton: HTMLButtonElement;
 
-    constructor(
+    public constructor(
         container: HTMLElement,
         private events: IEvents,
     ) {
         super(container);
 
-        this._successDescriptionElement = ensureElement<HTMLElement>(
+        this.successDescriptionElement = ensureElement<HTMLElement>(
             '.order-success__description',
             container,
         );
 
-        this._successCloseButton = ensureElement<HTMLButtonElement>(
+        this.successCloseButton = ensureElement<HTMLButtonElement>(
             '.order-success__close',
             container,
         );
 
-        this._successCloseButton.addEventListener('click', () => {
+        this.successCloseButton.addEventListener('click', () => {
             this.events.emit('success:close')
         });
     }
 
-    set total(value: number) {
-        this._successDescriptionElement.textContent = 
+    protected set total(value: number) {
+        this.successDescriptionElement.textContent = 
         `${TEXT_SUCCESS_PREFIX} ${String(value)} ${TEXT_PRICE_POSTFIX}`;
     }
 }

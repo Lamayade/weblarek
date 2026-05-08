@@ -15,41 +15,41 @@ export interface ICardCatalogView extends ICardView {
 
 
 export class CardCatalogView extends CardView<ICardCatalogView>{
-    protected _imageElement: HTMLImageElement;
-    protected _categoryElement: HTMLElement;
+    protected imageElement: HTMLImageElement;
+    protected categoryElement: HTMLElement;
 
-    constructor(
+    public constructor(
         container: HTMLElement,
         actions?: ICardActions,
     ) {
         super(container);
         
-        this._imageElement = ensureElement<HTMLImageElement>(
+        this.imageElement = ensureElement<HTMLImageElement>(
             '.card__image',
-            this._container,
+            this.container,
         );
 
-        this._categoryElement = ensureElement<HTMLElement>(
+        this.categoryElement = ensureElement<HTMLElement>(
             '.card__category',
-            this._container, 
+            this.container, 
         );
 
         if (actions?.onClick) {
-            this._container.addEventListener('click', actions.onClick);
+            this.container.addEventListener('click', actions.onClick);
         }
     }
 
-    public set image(value: string) {
+    protected set image(value: string) {
         this.setImage(
-            this._imageElement,
+            this.imageElement,
             `${CDN_URL}${value.replace('.svg', '.png')}`,
         );
     }
 
-    public set category(value: TCategory) {
-        this._categoryElement.textContent = value;
-        this._categoryElement.className = 'card__category';
-        this._categoryElement.classList.add(categoryMap[value]);
+    protected set category(value: TCategory) {
+        this.categoryElement.textContent = value;
+        this.categoryElement.className = 'card__category';
+        this.categoryElement.classList.add(categoryMap[value]);
     }
 }
 

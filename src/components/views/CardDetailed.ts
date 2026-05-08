@@ -12,36 +12,36 @@ export interface ICardDetailedView extends ICardCatalogView {
 }
 
 export class CardDetailedView extends CardCatalogView {
-    private _textElement: HTMLElement;
-    private _buttonElement: HTMLButtonElement;
+    private textElement: HTMLElement;
+    private buttonElement: HTMLButtonElement;
 
-    constructor(
+    public constructor(
         container: HTMLElement,
         private events: IEvents,
     ) {
         super(container);
 
-        this._textElement = ensureElement<HTMLElement>(
+        this.textElement = ensureElement<HTMLElement>(
             '.card__text',
-            this._container,
+            this.container,
         );
 
-        this._buttonElement = ensureElement<HTMLButtonElement>(
+        this.buttonElement = ensureElement<HTMLButtonElement>(
             '.card__button',
-            this._container,
+            this.container,
         );
 
-        this._buttonElement.addEventListener('click', () => {
+        this.buttonElement.addEventListener('click', () => {
             this.events.emit('card:detailed-click');
         });
     }
 
     public set button(value: TBuyButtonState) {
-        this._buttonElement.disabled = value.isDisabled;
-        this._buttonElement.textContent = MAP_TEXT_BUTTON[value.mode];
+        this.buttonElement.disabled = value.isDisabled;
+        this.buttonElement.textContent = MAP_TEXT_BUTTON[value.mode];
     }
 
-    public set text(value: string) {
-        this._textElement.textContent = value;
+    protected set text(value: string) {
+        this.textElement.textContent = value;
     }
 }

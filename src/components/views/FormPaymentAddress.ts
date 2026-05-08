@@ -10,54 +10,54 @@ export interface IFormPaymentAddressView extends IFormView {
 }
 
 export class FormPaymentAddressView extends FormView<IFormPaymentAddressView> {
-    private _cardButton: HTMLButtonElement;
-    private _cashButton: HTMLButtonElement;
-    private _addressInput: HTMLInputElement;
+    private cardButton: HTMLButtonElement;
+    private cashButton: HTMLButtonElement;
+    private addressInput: HTMLInputElement;
 
-    constructor(
+    public constructor(
         container:HTMLElement,
         private events: IEvents
     ) {
         super(container);
 
 
-        this._cardButton = ensureElement<HTMLButtonElement>(
+        this.cardButton = ensureElement<HTMLButtonElement>(
             '.order__buttons button[name="card"]',
-            this._container,
+            this.container,
         );
 
-        this._cashButton = ensureElement<HTMLButtonElement>(
+        this.cashButton = ensureElement<HTMLButtonElement>(
             '.order__buttons button[name="cash"]',
-            this._container,
+            this.container,
         );
 
-        this._addressInput = ensureElement<HTMLInputElement>(
+        this.addressInput = ensureElement<HTMLInputElement>(
             '.order__field input[name="address"]',
-            this._container,
+            this.container,
         );
 
-        this._cardButton.addEventListener('click', () => {
+        this.cardButton.addEventListener('click', () => {
             this.events.emit(
                 'payment:changed',
                 {payment: 'card' as TPayment},
             );
         });
 
-        this._cashButton.addEventListener('click', () => {
+        this.cashButton.addEventListener('click', () => {
             this.events.emit(
                 'payment:changed',
                 {payment: 'cash' as TPayment},
             );
         });
 
-        this._addressInput.addEventListener('input', () => {
+        this.addressInput.addEventListener('input', () => {
             this.events.emit(
                 'address:changed',
-                {address: this._addressInput.value}
+                {address: this.addressInput.value}
             );
         });
 
-        this._container.addEventListener('submit', (e) => {
+        this.container.addEventListener('submit', (e) => {
             e.preventDefault();
             this.events.emit(
                 'order:next',
@@ -65,12 +65,12 @@ export class FormPaymentAddressView extends FormView<IFormPaymentAddressView> {
         });
     }
 
-    set payment(value: TPayment) {
-        this._cardButton.classList.toggle('button_alt-active', value === 'card');
-        this._cashButton.classList.toggle('button_alt-active', value === 'cash');
+    protected set payment(value: TPayment) {
+        this.cardButton.classList.toggle('button_alt-active', value === 'card');
+        this.cashButton.classList.toggle('button_alt-active', value === 'cash');
     }
 
-    set address(value: string) {
-        this._addressInput.value = value;
+    protected set address(value: string) {
+        this.addressInput.value = value;
     }
 }

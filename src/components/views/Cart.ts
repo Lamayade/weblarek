@@ -10,40 +10,40 @@ export interface ICartView {
 }
 
 export class CartView extends Component<ICartView> {
-    private _listElement: HTMLElement;
-    private _totalElement: HTMLElement;
-    private _buttonElement: HTMLButtonElement;
+    private listElement: HTMLElement;
+    private totalElement: HTMLElement;
+    private buttonElement: HTMLButtonElement;
     
-    constructor(container: HTMLElement, private events: IEvents) {
+    public constructor(container: HTMLElement, private events: IEvents) {
         super(container);
 
-        this._listElement = ensureElement<HTMLElement>(
+        this.listElement = ensureElement<HTMLElement>(
             '.basket__list',
-            this._container,
+            this.container,
         );
-        this._totalElement = ensureElement<HTMLElement>(
+        this.totalElement = ensureElement<HTMLElement>(
             '.basket__price',
-            this._container,
+            this.container,
         );
-        this._buttonElement = ensureElement<HTMLButtonElement>(
+        this.buttonElement = ensureElement<HTMLButtonElement>(
             '.basket__button',
-            this._container,
+            this.container,
         );
-        this._buttonElement.disabled = true;
-        this._buttonElement.addEventListener('click', () => {
+        this.buttonElement.disabled = true;
+        this.buttonElement.addEventListener('click', () => {
             this.events.emit('cart:confirm-click');
         });
     }
 
-    set list(value: HTMLElement[]) {
-        this._listElement.replaceChildren(...value);
+    protected set list(value: HTMLElement[]) {
+        this.listElement.replaceChildren(...value);
     }
 
-    set total(value: number) {
-        this._totalElement.textContent =  `${value} ${TEXT_PRICE_POSTFIX}`;
+    protected set total(value: number) {
+        this.totalElement.textContent =  `${value} ${TEXT_PRICE_POSTFIX}`;
     }
 
-    set disabled(value: boolean) {
-        this._buttonElement.disabled = value;
+    protected set disabled(value: boolean) {
+        this.buttonElement.disabled = value;
     }
 }

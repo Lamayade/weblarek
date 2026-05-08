@@ -7,25 +7,25 @@ export interface IHeaderView {
 }
 
 export class HeaderView extends Component<IHeaderView> {
-    protected _cartButton: HTMLButtonElement;
-    protected _countElement: HTMLElement;
+    protected cartButton: HTMLButtonElement;
+    protected countElement: HTMLElement;
 
-    constructor(container: HTMLElement, private events:IEvents) {
+    public constructor(container: HTMLElement, private events:IEvents) {
         super(container);
-        this._cartButton = ensureElement<HTMLButtonElement>(
+        this.cartButton = ensureElement<HTMLButtonElement>(
             '.header__basket',
-            this._container,
+            this.container,
         );
-        this._countElement = ensureElement<HTMLElement>(
+        this.countElement = ensureElement<HTMLElement>(
             '.header__basket-counter',
-            this._container,
+            this.container,
         );
-        this._cartButton.addEventListener('click', () => {
+        this.cartButton.addEventListener('click', () => {
             this.events.emit('cart:open-click');
         })
     }
 
-    set count(value: number) {
-        this._countElement.textContent = String(value);
+    protected set count(value: number) {
+        this.countElement.textContent = String(value);
     }
 }

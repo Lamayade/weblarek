@@ -128,7 +128,9 @@ events.on('catalog:changed', () => {
             ...product,
         });
     });
-    gallery.render({catalog: elements});
+    gallery.render({
+        catalog: elements,
+    });
 });
 
 events.on('card:select', (product: IProduct) => {
@@ -143,7 +145,7 @@ events.on('catalog:detailedChanged', () => {
         ...product,
     });
     updateDetailedButton(product);
-    modal.open(cardDetailed.container);
+    modal.open(cardDetailed.render());
 });
 
 events.on('card:detailed-click', () => {
@@ -156,7 +158,7 @@ events.on('card:detailed-click', () => {
 });
 
 events.on('cart:open-click', () => {
-    modal.open(cartView.container);
+    modal.open(cartView.render());
 });
 
 events.on('cart:card-delete-click', (product: IProduct) => {
@@ -179,7 +181,7 @@ events.on('cart:changed', () => {
             title: product.title,
             price: product.price,
         });
-        return item.container;
+        return item.render();
     });
     header.render({
         count: cart.getCount(),
@@ -192,7 +194,7 @@ events.on('cart:changed', () => {
 });
 
 events.on('cart:confirm-click', () => {
-    modal.open(formPaymentAddress.container);
+    modal.open(formPaymentAddress.render());
 });
 
 events.on<{ payment: TPayment }>('payment:changed', (data) => {
@@ -224,7 +226,7 @@ events.on('user:changed', () => {
 });
 
 events.on('order:next', () => {
-    modal.open(formEmailPhone.container);
+    modal.open(formEmailPhone.render());
 });
 
 events.on('order:submitted', async () => {
@@ -240,7 +242,7 @@ events.on('order:submitted', async () => {
         success.render({
             total: response.total,
         });
-        modal.open(success.container);
+        modal.open(success.render());
     }
     catch (error) {
         if (error instanceof Error) {

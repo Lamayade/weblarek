@@ -10,36 +10,36 @@ export interface IFormEmailPhoneView extends IFormView {
 }
 
 export class FormEmailPhoneView extends FormView<IFormEmailPhoneView> {
-    private _emailInput: HTMLInputElement;
-    private _phoneInput: HTMLInputElement;
+    private emailInput: HTMLInputElement;
+    private phoneInput: HTMLInputElement;
 
-    constructor(
+    public constructor(
         container: HTMLElement, 
         private events: IEvents,
     ) {
         super(container);
 
-        this._emailInput = ensureElement<HTMLInputElement>(
+        this.emailInput = ensureElement<HTMLInputElement>(
             '.order__field input[name="email"]',
-            this._container,
+            this.container,
         );
-        this._phoneInput = ensureElement<HTMLInputElement>(
+        this.phoneInput = ensureElement<HTMLInputElement>(
             '.order__field input[name="phone"]',
-            this._container,
+            this.container,
         );
-        this._emailInput.addEventListener('input', () => {
+        this.emailInput.addEventListener('input', () => {
             this.events.emit(
                 'email:changed',
-                {email: this._emailInput.value},
+                {email: this.emailInput.value},
             );
         });
-        this._phoneInput.addEventListener('input', () => {
+        this.phoneInput.addEventListener('input', () => {
             this.events.emit(
                 'phone:changed',
-                {phone: this._phoneInput.value},
+                {phone: this.phoneInput.value},
             );
         });
-        this._container.addEventListener('submit', (e) => {
+        this.container.addEventListener('submit', (e) => {
             e.preventDefault();
             this.events.emit(
                 'order:submitted'
@@ -47,11 +47,11 @@ export class FormEmailPhoneView extends FormView<IFormEmailPhoneView> {
         });
     }
 
-    public set email(value: string) {
-        this._emailInput.value = value;
+    protected set email(value: string) {
+        this.emailInput.value = value;
     }
 
-    public set phone(value: string) {
-        this._phoneInput.value = value;
+    protected set phone(value: string) {
+        this.phoneInput.value = value;
     }
 }

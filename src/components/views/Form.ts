@@ -6,30 +6,30 @@ export interface IFormView {
     errors: string;
 }
 export abstract class FormView<T extends IFormView> extends Component<T> {
-    protected _submitButton: HTMLButtonElement;
-    protected _errorsElement: HTMLElement | null;
+    protected submitButton: HTMLButtonElement;
+    protected errorsElement: HTMLElement | null;
 
     protected constructor(
         container: HTMLElement,
     ) {
         super(container);
-        this._submitButton = ensureElement<HTMLButtonElement>(
+        this.submitButton = ensureElement<HTMLButtonElement>(
             'button[type="submit"]',
-            this._container,
+            this.container,
         );
-        this._errorsElement = ensureElement<HTMLButtonElement>(
+        this.errorsElement = ensureElement<HTMLButtonElement>(
             '.form__errors',
-            this._container,
+            this.container,
         );
     }
 
-    set valid(value: boolean) {
-        this._submitButton.disabled = !value;
+    protected set valid(value: boolean) {
+        this.submitButton.disabled = !value;
     }
 
-    set errors(value: string) {
-        if (this._errorsElement) {
-            this._errorsElement.textContent = value;
+    protected set errors(value: string) {
+        if (this.errorsElement) {
+            this.errorsElement.textContent = value;
         }
     }
 }

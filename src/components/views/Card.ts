@@ -24,21 +24,21 @@ export abstract class CardView<T extends ICardView> extends Component<T> {
 
         this._titleElement = ensureElement<HTMLElement>(
             '.card__title',
-            this._container, 
+            this.container, 
         );
 
         this._priceElement = ensureElement<HTMLElement>(
             '.card__price',
-            this._container,
+            this.container,
         );
     }
 
 
-    public set title(value: string) {
+    protected set title(value: string) {
         this._titleElement.textContent = value;
     }
 
-    public set price(value: number | null) {
+    protected set price(value: number | null) {
         this._priceElement.textContent =
             value !== null
                 ? `${value} ${TEXT_PRICE_POSTFIX}`

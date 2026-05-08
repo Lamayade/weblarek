@@ -5,13 +5,13 @@ export interface IGalleryView {
 }
 
 export class GalleryView extends Component<IGalleryView> {
-    constructor(
+    public constructor(
         container: HTMLElement,
     ) {
         super(container);
     }
 
-    set catalog(items: HTMLElement[]) {
-        this._container.replaceChildren(...items);
+    protected set catalog(items: HTMLElement[]) {
+        this.container.replaceChildren(...items);
     }
 }

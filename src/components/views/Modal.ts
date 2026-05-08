@@ -7,38 +7,38 @@ export interface IModalView {
 }
 
 export class ModalView extends Component<IModalView> {
-    protected _content: HTMLElement | null = null;
-    private _modalContent: HTMLElement;
+    protected content: HTMLElement | null = null;
+    private modalContent: HTMLElement;
 
-    constructor(
+    public constructor(
         container: HTMLElement,
     ) {
         super(container);
-        this._modalContent = ensureElement<HTMLElement>(
+        this.modalContent = ensureElement<HTMLElement>(
             '.modal__content',
-            this._container,
+            this.container,
         );
 
-        this._container.addEventListener('click', (e) => {
-            if (e.target === this._container) {
+        this.container.addEventListener('click', (e) => {
+            if (e.target === this.container) {
                 this.close();
             }
         });
 
         const closeButton = ensureElement<HTMLButtonElement>(
             '.modal__close',
-            this._container,
+            this.container,
         );
         closeButton.addEventListener('click', () => this.close());
     }
 
-    open(content: HTMLElement): void {
-        this._modalContent.replaceChildren(content);
-        this._container.classList.add('modal_active');
+    public open(content: HTMLElement): void {
+        this.modalContent.replaceChildren(content);
+        this.container.classList.add('modal_active');
     }
 
-    close(): void {
-        this._modalContent.replaceChildren();
-        this._container.classList.remove('modal_active');
+    public close(): void {
+        this.modalContent.replaceChildren();
+        this.container.classList.remove('modal_active');
     }
 }
